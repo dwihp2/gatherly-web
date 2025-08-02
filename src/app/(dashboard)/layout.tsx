@@ -5,6 +5,7 @@
 'use client'
 
 import { useRequireAuth } from '../(auth)/hooks/useAuth'
+import { DashboardNavigation } from './view/presentation/DashboardNavigation'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
@@ -36,6 +37,7 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <DashboardNavigation />
       {children}
     </div>
   )
