@@ -7,6 +7,7 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Plus, QrCode } from 'lucide-react'
+import { useEventFormStore } from '../../../events/stores/eventFormStore'
 
 interface DashboardHeaderProps {
   organizerName: string
@@ -21,9 +22,10 @@ export function DashboardHeader({ organizerName, organizationName }: DashboardHe
     day: 'numeric'
   })
 
+  const { openCreateModal } = useEventFormStore()
+
   const handleCreateEvent = () => {
-    // TODO: Open create event modal
-    console.log('Open create event modal')
+    openCreateModal()
   }
 
   const handleQRScanner = () => {

@@ -41,6 +41,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '../../../(auth)/hooks/useAuth'
 import { useSidebarStore } from '../../stores/sidebarStore'
+import { useEventFormStore } from '../../../events/stores/eventFormStore'
 import { cn } from '@/lib/utils'
 
 interface SidebarProps {
@@ -67,6 +68,11 @@ export function Sidebar({ className }: SidebarProps) {
     toggleCollapsed,
     toggleSubmenu
   } = useSidebarStore()
+  const { openCreateModal } = useEventFormStore()
+
+  const handleCreateEvent = () => {
+    openCreateModal()
+  }
 
   // Keyboard navigation support
   useEffect(() => {
@@ -89,11 +95,6 @@ export function Sidebar({ className }: SidebarProps) {
     } catch (error) {
       console.error('Sign out error:', error)
     }
-  }
-
-  const handleCreateEvent = () => {
-    console.log('Open create event modal')
-    // TODO: Open create event modal
   }
 
   // Navigation items
@@ -271,7 +272,7 @@ export function Sidebar({ className }: SidebarProps) {
   }
 
   return (
-    <nav 
+    <nav
       className={cn(
         "flex flex-col h-full bg-background border-r border-border transition-all duration-300",
         isCollapsed ? "w-16" : "w-64",
@@ -336,9 +337,9 @@ export function Sidebar({ className }: SidebarProps) {
           <div className="px-3 space-y-1">
             {navigationItems.map(item => renderNavItem(item))}
           </div>
-          
+
           <Separator className="my-4 mx-3" />
-          
+
           <div className="px-3 space-y-1">
             {secondaryItems.map(item => renderNavItem(item))}
           </div>

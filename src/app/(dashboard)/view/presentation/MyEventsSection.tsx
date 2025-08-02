@@ -42,6 +42,7 @@ import {
   Calendar
 } from 'lucide-react'
 import { formatIDR } from '@/lib/utils/currency'
+import { useEventFormStore } from '../../../events/stores/eventFormStore'
 
 // Mock event data - TODO: Replace with actual data from usecases
 const mockEvents = [
@@ -82,6 +83,7 @@ const mockEvents = [
 
 export function MyEventsSection() {
   const [statusFilter, setStatusFilter] = useState('all')
+  const { openCreateModal } = useEventFormStore()
 
   const filteredEvents = mockEvents.filter(event =>
     statusFilter === 'all' || event.status === statusFilter
@@ -113,8 +115,7 @@ export function MyEventsSection() {
   }
 
   const handleCreateEvent = () => {
-    console.log('Create new event')
-    // TODO: Open create event modal
+    openCreateModal()
   }
 
   const getStatusBadge = (status: string) => {

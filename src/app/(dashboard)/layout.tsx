@@ -7,6 +7,7 @@
 import { useRequireAuth } from '../(auth)/hooks/useAuth'
 import { Sidebar } from './view/presentation/Sidebar'
 import { DashboardTopHeader } from './view/presentation/DashboardTopHeader'
+import { CreateEventModalContainer } from '../events/view/container/CreateEventModalContainer'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import { cn } from '@/lib/utils'
@@ -57,6 +58,9 @@ export default function DashboardLayout({
           {children}
         </main>
       </div>
+
+      {/* Global Modals */}
+      <CreateEventModalContainer />
     </div>
   )
 }
