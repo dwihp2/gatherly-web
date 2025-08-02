@@ -17,7 +17,13 @@ import { RecentActivitySection } from '../presentation/RecentActivitySection'
 import { SummaryCards } from '../presentation/SummaryCards'
 
 export function DashboardContainer() {
-  const { user, organizationName, isLoading } = useAuth()
+  const { user, organizationName, isLoading, organizationId } = useAuth()
+  console.log("🚀 ~ DashboardContainer ~ user:", {
+    user,
+    organizationName,
+    isLoading,
+    organizationId
+  })
   const router = useRouter()
 
   // Redirect to sign-in if not authenticated

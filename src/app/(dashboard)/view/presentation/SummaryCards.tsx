@@ -1,29 +1,47 @@
 /**
  * Summary Cards Component
- * Location: app/(dashboard)/view/presentation/SummaryCards.tsx
+ * Location: app/(dashboard)/view/present          <div className="text-2xl font-bold text-gray-900">
+            {stats.totalTicketsSold.toLocaleString()}
+          </div>
+          <div className="flex items-center mt-2">
+            <TrendingUp className="h-3 w-3 text-blue-500 mr-1" />
+            <span className="text-xs text-blue-600 font-medium">
+              All Time
+            </span>
+            <span className="text-xs text-gray-500 ml-1">
+              tickets sold
+            </span>ryCards.tsx
  * 
  * Dashboard summary cards showing key metrics
  */
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
+import { Skeleton } from '@/components/ui/skeleton'
 import { DollarSign, Ticket, Calendar, TrendingUp } from 'lucide-react'
 import { formatIDR } from '@/lib/utils/currency'
+import { useDashboardStats } from '../../../events/usecases/useDashboardStats'
+import { useAuth } from '../../../(auth)/hooks/useAuth'
 
 export function SummaryCards() {
-  // TODO: Replace with real data from usecase hooks
-  const mockData = {
-    totalRevenue: 15750000,
-    revenueGrowth: 12.5,
-    totalTicketsSold: 247,
-    ticketsGrowth: 8.3,
-    activeEvents: 5,
-    publishedEvents: 3,
-    draftEvents: 2,
-    upcomingEvent: {
-      name: "Jakarta Music Festival",
-      daysUntil: 5
-    }
+  const { user } = useAuth()
+  const { stats, isLoading } = useDashboardStats(user?.tenantId || undefined)
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Card key={i}>
+            <CardHeader className="space-y-0 pb-2">
+              <Skeleton className="h-4 w-24" />
+            </CardHeader>
+            <CardContent>
+              <Skeleton className="h-8 w-32 mb-2" />
+              <Skeleton className="h-4 w-20" />
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    )
   }
 
   return (
@@ -38,15 +56,15 @@ export function SummaryCards() {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-gray-900">
-            {formatIDR(mockData.totalRevenue)}
+            {formatIDR(stats.totalRevenue)}
           </div>
           <div className="flex items-center mt-2">
             <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
             <span className="text-xs text-green-600 font-medium">
-              +{mockData.revenueGrowth}%
+              All Time
             </span>
             <span className="text-xs text-gray-500 ml-1">
-              from last month
+              total revenue
             </span>
           </div>
         </CardContent>
@@ -62,15 +80,15 @@ export function SummaryCards() {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold text-gray-900">
-            {mockData.totalTicketsSold}
+            {stats.totalTicketsSold.toLocaleString()}
           </div>
           <div className="flex items-center mt-2">
             <TrendingUp className="h-3 w-3 text-green-500 mr-1" />
             <span className="text-xs text-green-600 font-medium">
-              +{mockData.ticketsGrowth}%
+              All Time
             </span>
             <span className="text-xs text-gray-500 ml-1">
-              from last month
+              total tickets
             </span>
           </div>
         </CardContent>
@@ -85,17 +103,21 @@ export function SummaryCards() {
           <Calendar className="h-4 w-4 text-purple-600" />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold text-gray-900">
-            {mockData.activeEvents}
+                    <div className="text-2xl font-bold text-gray-900">
+            {stats.activeEvents}
           </div>
-          <div className="flex items-center gap-2 mt-2">
-            <Badge variant="secondary" className="text-xs">
-              {mockData.publishedEvents} Published
-            </Badge>
-            <Badge variant="outline" className="text-xs">
-              {mockData.draftEvents} Draft
-            </Badge>
+          <div className="flex items-center justify-between mt-2">
+            <div className="text-xs text-gray-600">
+              {stats.publishedEvents} Published
+            </div>
+            <div className="text-xs text-gray-600">
+              {stats.draftEvents} Draft
+            </div>
           </div>
+          <Progress 
+            value={stats.activeEvents > 0 ? (stats.publishedEvents / stats.activeEvents) * 100 : 0} 
+            className="mt-2" 
+          />
         </CardContent>
       </Card>
 
@@ -109,18 +131,22 @@ export function SummaryCards() {
         </CardHeader>
         <CardContent>
           <div className="text-lg font-semibold text-gray-900 mb-1">
-            {mockData.upcomingEvent.name}
+            {stats.upcomingEvent ? stats.upcomingEvent.name : 'No upcoming events'}
           </div>
           <div className="text-sm text-gray-600 mb-2">
-            in {mockData.upcomingEvent.daysUntil} days
+            {stats.upcomingEvent ? `in ${stats.upcomingEvent.daysUntil} days` : 'Create an event to get started'}
           </div>
-          <Progress
-            value={75}
-            className="h-2"
-          />
-          <p className="text-xs text-gray-500 mt-1">
-            75% tickets sold
-          </p>
+          {stats.upcomingEvent && (
+            <>
+              <Progress
+                value={75}
+                className="h-2"
+              />
+              <p className="text-xs text-gray-500 mt-1">
+                75% tickets sold
+              </p>
+            </>
+          )}
         </CardContent>
       </Card>
     </div>

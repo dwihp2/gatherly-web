@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Progress } from '@/components/ui/progress'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
   TableBody,
@@ -39,53 +40,30 @@ import {
   Download,
   MoreHorizontal,
   Plus,
-  Calendar
+  Calendar,
+  AlertCircle
 } from 'lucide-react'
 import { formatIDR } from '@/lib/utils/currency'
 import { useEventFormStore } from '../../../events/stores/eventFormStore'
+import { useEventsByOrganization } from '../../../events/usecases/useEventsByOrganization'
+import { useAuth } from '../../../(auth)/hooks/useAuth'
+import type { Event } from '../../../events/models/interfaces/event'
 
-// Mock event data - TODO: Replace with actual data from usecases
-const mockEvents = [
-  {
-    id: '1',
-    name: 'Jakarta Music Festival',
-    date: '2024-12-15T19:00:00Z',
-    location: 'Jakarta Convention Center',
-    status: 'published' as const,
-    ticketsSold: 750,
-    totalTickets: 1000,
-    revenue: 37500000,
-    posterUrl: '/placeholder-event.jpg'
-  },
-  {
-    id: '2',
-    name: 'Startup Networking Night',
-    date: '2024-12-20T18:30:00Z',
-    location: 'WeWork SCBD',
-    status: 'published' as const,
-    ticketsSold: 45,
-    totalTickets: 50,
-    revenue: 2250000,
-    posterUrl: '/placeholder-event.jpg'
-  },
-  {
-    id: '3',
-    name: 'Tech Conference 2024',
-    date: '2025-01-10T09:00:00Z',
-    location: 'Hotel Indonesia Kempinski',
-    status: 'draft' as const,
-    ticketsSold: 0,
-    totalTickets: 200,
-    revenue: 0,
-    posterUrl: '/placeholder-event.jpg'
-  }
-]
+// Using real event data from useEventsByOrganization hook
 
 export function MyEventsSection() {
   const [statusFilter, setStatusFilter] = useState('all')
   const { openCreateModal } = useEventFormStore()
+  const { user } = useAuth()
 
-  const filteredEvents = mockEvents.filter(event =>
+  // Fetch events data
+  const {
+    data: events = [],
+    isLoading,
+    error
+  } = useEventsByOrganization(user?.tenantId || undefined)
+
+  const filteredEvents = events.filter((event: Event) =>
     statusFilter === 'all' || event.status === statusFilter
   )
 
@@ -139,6 +117,60 @@ export function MyEventsSection() {
       hour: '2-digit',
       minute: '2-digit'
     })
+  }
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>My Events</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="flex items-center space-x-4">
+                <Skeleton className="h-12 w-12 rounded" />
+                <div className="space-y-2 flex-1">
+                  <Skeleton className="h-4 w-[250px]" />
+                  <Skeleton className="h-4 w-[200px]" />
+                </div>
+                <Skeleton className="h-6 w-20" />
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center justify-between">
+            My Events
+            <Button onClick={handleCreateEvent} className="flex items-center gap-2">
+              <Plus className="h-4 w-4" />
+              Create Event
+            </Button>
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center py-12">
+            <AlertCircle className="h-12 w-12 text-red-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Failed to load events</h3>
+            <p className="text-gray-600 mb-6">
+              There was an error loading your events. Please try again.
+            </p>
+            <Button variant="outline" onClick={() => window.location.reload()}>
+              Retry
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    )
   }
 
   if (filteredEvents.length === 0 && statusFilter === 'all') {
@@ -226,7 +258,7 @@ export function MyEventsSection() {
                   </TableCell>
                   <TableCell>
                     <div className="text-sm">
-                      {formatEventDate(event.date)}
+                      {formatEventDate(event.dateTime)}
                     </div>
                   </TableCell>
                   <TableCell>
@@ -245,7 +277,7 @@ export function MyEventsSection() {
                   </TableCell>
                   <TableCell>
                     <div className="font-medium">
-                      {formatIDR(event.revenue)}
+                      {formatIDR(event.totalRevenue)}
                     </div>
                   </TableCell>
                   <TableCell className="text-right">

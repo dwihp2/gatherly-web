@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Plus, QrCode } from 'lucide-react'
 import { useEventFormStore } from '../../../events/stores/eventFormStore'
+import { getEventsByOrganizationAction } from '@/app/events/actions/eventActions'
 
 interface DashboardHeaderProps {
   organizerName: string
@@ -28,9 +29,10 @@ export function DashboardHeader({ organizerName, organizationName }: DashboardHe
     openCreateModal()
   }
 
-  const handleQRScanner = () => {
+  const handleQRScanner = async () => {
     // TODO: Open QR scanner modal
-    console.log('Open QR scanner modal')
+    const res = await getEventsByOrganizationAction('5aac6e90-ca71-4553-88db-aad8465e237d');
+    console.log('Open QR scanner modal', res);
   }
 
   return (

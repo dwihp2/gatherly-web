@@ -42,7 +42,7 @@ export const auth = betterAuth({
     updateAge: 60 * 60 * 24, // 1 day
   },
 
-  // Secret key for signing tokens
+  // Secret key for signing tokens - must be 32+ character hex string
   secret: process.env.BETTER_AUTH_SECRET!,
 
   // Base URL

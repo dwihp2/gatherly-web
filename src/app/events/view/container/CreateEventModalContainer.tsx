@@ -7,12 +7,16 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useEventFormStore } from '../../stores/eventFormStore'
+import { useCreateEvent } from '../../usecases/useCreateEvent'
+import { useUpdateEvent } from '../../usecases/useUpdateEvent'
 import { CreateEventModal } from '../presentation/CreateEventModal'
 import { EventDetailsForm } from '../presentation/EventDetailsForm'
 import { TicketConfigurationForm } from '../presentation/TicketConfigurationForm'
 import { PublicationSettingsForm } from '../presentation/PublicationSettingsForm'
 import { EventFormStep } from '../../models/interfaces/eventForm'
 import { useAuth } from '../../../(auth)/hooks/useAuth'
+import { toast } from 'sonner'
+import type { CreateEventInput } from '../../models/interfaces/event'
 
 export function CreateEventModalContainer() {
   const router = useRouter()
@@ -20,13 +24,16 @@ export function CreateEventModalContainer() {
   const {
     isModalOpen,
     isEditMode,
+    editingEventId,
     currentStep,
-    isLoading,
     closeModal,
     resetForm,
     getFormData,
-    setLoading
   } = useEventFormStore()
+
+  // Mutations for creating and updating events
+  const createEventMutation = useCreateEvent()
+  const updateEventMutation = useUpdateEvent()
 
   // Handle expand to full page
   const handleExpand = () => {
@@ -39,39 +46,55 @@ export function CreateEventModalContainer() {
   // Handle form submission
   const handleSubmit = async () => {
     if (!user?.tenantId) {
-      console.error('No tenant ID found')
+      toast.error('Authentication Error', {
+        description: 'Please sign in to continue'
+      })
       return
     }
 
-    setLoading(true)
-
     try {
       const formData = getFormData()
-      formData.organizationId = user.tenantId
+      
+      // Prepare data for API
+      const eventData: CreateEventInput = {
+        tenantId: user.tenantId,
+        name: formData.name,
+        description: formData.description,
+        dateTime: formData.dateTime,
+        location: formData.location,
+        posterUrl: formData.posterUrl,
+      }
 
-      // TODO: Implement actual event creation via usecase
-      console.log('Creating event:', formData)
+      console.log('Submitting event data:', eventData)
 
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      if (isEditMode && editingEventId) {
+        // Update existing event
+        await updateEventMutation.mutateAsync({
+          id: editingEventId,
+          ...eventData,
+        })
+      } else {
+        // Create new event
+        await createEventMutation.mutateAsync(eventData)
+      }
 
-      // Close modal and reset form on success
-      closeModal()
-
-      // TODO: Show success toast
-      // TODO: Refresh events list
+      // Success is handled in the mutation hooks (toast, modal close, etc.)
 
     } catch (error) {
-      console.error('Error creating event:', error)
-      // TODO: Show error toast
-    } finally {
-      setLoading(false)
+      console.error('Error submitting event:', error)
+      
+      // Show error toast if mutations didn't handle it
+      toast.error('Submission failed', {
+        description: error instanceof Error ? error.message : 'Please try again'
+      })
     }
   }
 
   // Handle modal close
   const handleClose = () => {
-    if (!isLoading) {
+    const isSubmitting = createEventMutation.isPending || updateEventMutation.isPending
+    
+    if (!isSubmitting) {
       closeModal()
     }
   }
@@ -82,6 +105,9 @@ export function CreateEventModalContainer() {
       resetForm()
     }
   }, [isModalOpen, resetForm])
+
+  // Loading state
+  const isLoading = createEventMutation.isPending || updateEventMutation.isPending
 
   // Render step content
   const renderStepContent = () => {

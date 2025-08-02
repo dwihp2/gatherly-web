@@ -6,42 +6,15 @@
 
 ### Progress Overview
 - [x] Project Setup & Dependencies
-- [x] Authentication System (Better #### 2.1 Crea##### Step 1: Even##### Step 2: ##### Step 3: Publication Settings
-- [x] Auto-generated event URL with custom slug option - **COMPLETED**
-- [x] URL availability checking - **COMPLETED**
-- [x] Visibility settings (Draft/Published) - **COMPLETED**
-- [x] Publication date scheduling - **COMPLETED**
-- [x] Terms & conditions agreement - **COMPLETED**
-- [x] Event preview functionality - **COMPLETED**Configuration
-- [x] Dynamic ticket type creation system - **COMPLETED**
-- [x] Ticket pricing in IDR with proper formatting - **COMPLETED**
-- [x] Quantity management per ticket type - **COMPLETED**
-- [x] Ticket description fields - **COMPLETED**
-- [x] Pricing summary with commission calculation - **COMPLETED**
-- [x] Add/remove ticket types functionality - **COMPLETED**ls Form
-- [x] Event name input with character counter (255 max) - **COMPLETED**
-- [x] Event description textarea with rich text formatting - **COMPLETED**
-- [x] Date & time picker with timezone support - **COMPLETED**
-- [x] Location input with autocomplete/maps integration - **COMPLETED**
-- [x] Event poster upload with drag & drop - **COMPLETED**
-  - [x] File validation (size, type) - **COMPLETED**
-  - [x] Image preview functionality - **COMPLETED**
-  - [x] Crop/resize options - **COMPLETED**Modal System
-- [x] Design multi-step modal using Dialog component - **COMPLETED**
-- [x] Implement progress indicator for 3 steps - **COMPLETED**
-- [x] Create form validation schemas with Zod - **COMPLETED**
-- [x] **FIX**: Remove duplicate close buttons - **COMPLETED**
-- [x] **FIX**: Enable modal scrolling - **COMPLETED**
-- [x] **ENHANCEMENT**: Add expand button to redirect to `/events/create` page - **COMPLETED**
-- [x] Create dedicated `/events/create` full-page experience - **COMPLETED**) - COMPLETED
+- [x] Authentication System (Better Auth) - COMPLETED
 - [x] Core Infrastructure & Architecture
 - [x] Landing Page (Guest Dashboard) - COMPLETED  
 - [x] Organizer Dashboard - COMPLETED
 - [x] **COMPLETED**: Context-Aware Navigation System ✅
 - [x] **COMPLETED**: Event Management System - UI Layer (Modal System) ✅
-- [ ] **CURRENT PRIORITY**: Guest Dashboard UI/UX Enhancement (Desktop & Mobile)
-- [ ] **NEXT**: Event Management System - Data Layer (Repositories & Use Cases)
-- [ ] Public Event Pages & Ticket Purchase
+- [x] **COMPLETED**: Event Management System - Data Layer (Repositories & Use Cases) ✅
+- [ ] **CURRENT PRIORITY**: Event Edit Modal & Status Management
+- [ ] **NEXT**: Public Event Pages & Ticket Purchase
 - [ ] QR Scanner & Check-in System
 
 ## Detailed Task List
@@ -148,9 +121,9 @@
 **Goal**: Implement professional SaaS navigation that adapts to user context
 **Status**: ✅ **FULLY COMPLETED** - All core features implemented and working.
 
-### 🎪 Priority 3: Event Management System - **READY TO RESUME** 🚧
+### 🎪 Priority 3: Event Management System - **DATA LAYER COMPLETED** ✅
 **Goal**: Complete event creation, editing, and management system
-**Status**: 🚧 **UI LAYER COMPLETED** - Multi-step modal system implemented. **NEXT**: Data layer implementation.
+**Status**: ✅ **UI & DATA LAYERS COMPLETED** - Multi-step modal system and complete data layer implemented. **NEXT**: Event edit modal functionality.
 
 #### What's Completed:
 - [x] Event Form Schemas - Complete Zod validation schemas for all 3 steps
@@ -162,13 +135,43 @@
 - [x] Dashboard Integration - Connected all "Create Event" buttons to open modal
 - [x] TypeScript Compilation - All forms compile without errors
 - [x] Build Success - Complete application builds successfully
+- [x] **NEW**: Complete Data Layer Implementation - All repository functions, use cases, and server actions
 
 #### Next Implementation Steps:
-- [ ] **NEXT**: Event Repository Layer - Implement actual event creation API calls
-- [ ] **NEXT**: Event Use Cases - Business logic hooks for event management
-- [ ] **NEXT**: Event Listing Integration - Connect modal to actual event data
+- [x] **COMPLETED**: Event Repository Layer - Implement actual event creation API calls
+  - [x] Implement createEvent repository function with database integration
+  - [x] Implement getEventsByOrganization repository function
+  - [x] Implement getEventById repository function
+  - [x] Implement updateEvent repository function
+  - [x] Implement deleteEvent repository function
+  - [x] Add proper error handling and validation
+- [x] **COMPLETED**: Event Use Cases - Business logic hooks for event management
+  - [x] Create useCreateEvent mutation hook with TanStack Query
+  - [x] Create useEventsByOrganization query hook
+  - [x] Create useEventById query hook
+  - [x] Create useUpdateEvent mutation hook
+  - [x] Create useDeleteEvent mutation hook
+  - [x] Add optimistic updates and cache management
+  - [x] Set up TanStack Query provider in app layout
+- [x] **COMPLETED**: Event Listing Integration - Connect modal to actual event data
+  - [x] Update dashboard to use real event data instead of dummy
+  - [x] Connect create event modal to repository layer
+  - [x] Add proper loading states and error handling
+  - [x] Update SummaryCards to use real statistics
+  - [x] Update MyEventsSection to use real events data
+- [x] **COMPLETED**: Server Actions & Client/Server Boundary
+  - [x] Implement server actions for all event operations
+  - [x] Separate type definitions for client/server boundary
+  - [x] Fix Next.js server action export restrictions
+  - [x] Resolve development server runtime issues
 - [ ] **NEXT**: Event Edit Modal - Populate modal for editing existing events
+  - [ ] Pre-populate form fields with existing event data
+  - [ ] Handle update vs create logic in modal
+  - [ ] Add confirmation dialogs for destructive actions
 - [ ] **NEXT**: Event Status Management - Draft/Published state transitions
+  - [ ] Implement status change repository functions
+  - [ ] Add status change UI controls
+  - [ ] Handle draft preview and publication workflows
 
 ### 🎫 Priority 4: Public Event Pages & Ticket Purchase (4-5 days)
 **Goal**: Complete customer-facing event pages and purchase flow
