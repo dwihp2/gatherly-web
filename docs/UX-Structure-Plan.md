@@ -1,6 +1,29 @@
 # Gatherly UX Structure Plan
 *Mobile-First Ticketing SaaS Platform for Indonesian Market*
 
+## Navigation Architecture Principles
+
+### Design Decision: Context-Aware Navigation Strategy
+
+**Rationale**: After extensive UX research and analysis of Indonesian mobile usage patterns, we've chosen a context-aware navigation approach that optimizes for different user needs:
+
+#### Guest Users (Marketing/Landing Pages)
+- **Desktop (≥ 1024px)**: Top navigation bar with horizontal menu items
+- **Mobile/Tablet (< 1024px)**: Top header with hamburger menu
+- **Purpose**: Simple marketing navigation (Features, Pricing, Help, Auth)
+
+#### Authenticated Users (Dashboard/App Interface) 
+- **All Devices**: Sidebar navigation for comprehensive app functionality
+- **Mobile**: Collapsible sidebar that transforms to off-canvas hamburger menu
+- **Purpose**: Feature-rich dashboard navigation (Events, Analytics, Settings, Profile)
+
+### Key Navigation Benefits
+- **Context-Appropriate**: Marketing vs. App interface have different navigation needs
+- **Professional SaaS Feel**: Sidebar navigation for authenticated users provides clean, organized experience
+- **Mobile-Optimized**: Responsive sidebar that adapts to screen constraints
+- **Scalable**: Easy to add new features without cluttering navigation
+- **User-Friendly**: Familiar patterns for both marketing site and SaaS dashboard
+
 ## 1. Navigation Flow
 
 ```
@@ -203,31 +226,104 @@ Guest Dashboard Layout
 ### 3.2 Authenticated Organizer Dashboard
 
 ```
-Organizer Dashboard Layout
+Organizer Dashboard Layout (Sidebar Navigation)
 |
-|— Top Navigation Bar
-|   |— Gatherly Logo
-|   |— Breadcrumb Navigation
-|   |— User Profile Dropdown
-|   |   |— Profile Settings
-|   |   |— Billing Information
-|   |   |— Help Center
-|   |   |— Sign Out
+|— Left Sidebar (All Screen Sizes)
+|   |— Sidebar Header
+|   |   |— Gatherly Logo
+|   |   |— Organization/Workspace Switcher
+|   |   |— Collapse Toggle (Desktop)
 |   |
-|   |— Notifications Bell
-|       |— Notification Count Badge
-|       |— Dropdown Menu
-|
-|— Dashboard Header
-|   |— Welcome Message
-|   |   |— "Welcome, [Organizer Name]"
-|   |   |— Current Date Display
+|   |— Primary Navigation
+|   |   |— Dashboard
+|   |   |   |— Icon: Home
+|   |   |   |— Label: "Dashboard"
+|   |   |   |— Badge: Active indicator
+|   |   |
+|   |   |— Events
+|   |   |   |— Icon: Calendar
+|   |   |   |— Label: "My Events"
+|   |   |   |— Badge: Draft count
+|   |   |   |— Submenu (expandable)
+|   |   |       |— All Events
+|   |   |       |— Published
+|   |   |       |— Draft
+|   |   |       |— Completed
+|   |   |
+|   |   |— Create Event
+|   |   |   |— Icon: Plus Circle (Highlighted)
+|   |   |   |— Label: "Create Event"
+|   |   |   |— Primary color accent
+|   |   |
+|   |   |— Analytics
+|   |   |   |— Icon: BarChart
+|   |   |   |— Label: "Analytics"
+|   |   |   |— Submenu (expandable)
+|   |   |       |— Revenue Reports
+|   |   |       |— Ticket Sales
+|   |   |       |— Attendee Insights
+|   |   |
+|   |   |— QR Scanner
+|   |   |   |— Icon: QrCode
+|   |   |   |— Label: "QR Scanner"
+|   |   |   |— Context: Only when events exist
 |   |
-|   |— Quick Actions
-|       |— Create New Event Button (Primary)
-|       |— QR Scanner Button
+|   |— Secondary Navigation
+|   |   |— Settings
+|   |   |   |— Icon: Settings
+|   |   |   |— Label: "Settings"
+|   |   |   |— Submenu
+|   |   |       |— Profile
+|   |   |       |— Organization
+|   |   |       |— Billing
+|   |   |       |— Integrations
+|   |   |
+|   |   |— Help & Support
+|   |   |   |— Icon: HelpCircle
+|   |   |   |— Label: "Help"
+|   |   |   |— External link indicator
+|   |
+|   |— Sidebar Footer
+|   |   |— User Profile Section
+|   |   |   |— Avatar
+|   |   |   |— Name (Collapsible)
+|   |   |   |— Organization (Collapsible)
+|   |   |   |— Dropdown Arrow
+|   |   |
+|   |   |— User Dropdown Menu
+|   |       |— Profile Settings
+|   |       |— Switch Organization
+|   |       |— Sign Out
 |
-|— Summary Cards Section
+|— Mobile Sidebar Behavior (< 768px)
+|   |— Off-canvas sidebar (overlay)
+|   |— Hamburger trigger in top header
+|   |— Backdrop blur when open
+|   |— Swipe gestures to open/close
+|   |— Same navigation structure
+|
+|— Main Content Area
+|   |— Top Header Bar
+|   |   |— Breadcrumb Navigation
+|   |   |— Page Title
+|   |   |— Page Actions (contextual)
+|   |   |— Global Search
+|   |   |— Notifications Bell
+|   |       |— Notification Count Badge
+|   |       |— Dropdown Menu
+|   |
+|   |— Content Body
+|   |   |— Dashboard Header
+|   |   |   |— Welcome Message
+|   |   |   |   |— "Good morning, [Name]"
+|   |   |   |   |— Current Date Display
+|   |   |   |
+|   |   |   |— Quick Actions Bar
+|   |   |       |— Create New Event Button (Primary)
+|   |   |       |— QR Scanner Button
+|   |   |       |— Export Data Button
+|   |   |
+|   |   |— Summary Cards Section
 |   |— Total Revenue Card
 |   |   |— IDR Amount Display
 |   |   |— Growth Percentage
@@ -464,4 +560,163 @@ QR Scanner Modal
     |— Close Scanner Button
     |— Manual Entry Button
     |— Event Statistics Button
+```
+
+## 5. Responsive Navigation Specifications
+
+### 5.1 Navigation Breakpoints & Behavior
+
+```
+Responsive Navigation System
+|
+|— Desktop View (≥ 1024px)
+|   |— Top Navigation Bar (Full)
+|   |   |— Logo (Left)
+|   |   |— Horizontal Menu Items
+|   |   |   |— Dashboard
+|   |   |   |— Events
+|   |   |   |— Create Event (Primary Button)
+|   |   |   |— QR Scanner
+|   |   |
+|   |   |— Right Section
+|   |   |   |— Search Bar
+|   |   |   |— Notifications
+|   |   |   |— User Profile Dropdown
+|   |
+|   |— Breadcrumb Navigation (Below header)
+|   |— Enhanced Features
+|   |   |— Hover effects
+|   |   |— Keyboard shortcuts
+|   |   |— Right-click context menus
+|
+|— Tablet & Mobile (< 1024px)
+|   |— Top Header (Compact)
+|   |   |— Logo (Left)
+|   |   |— Hamburger Menu Icon (☰)
+|   |   |— Notifications Bell
+|   |   |— User Avatar (Right)
+|   |
+|   |— Hamburger Menu Panel (Slide-out)
+|   |   |— Navigation Links
+|   |   |   |— Dashboard
+|   |   |   |— My Events
+|   |   |   |— Create New Event
+|   |   |   |— QR Scanner
+|   |   |   |— Settings
+|   |   |   |— Help Center
+|   |   |
+|   |   |— User Section
+|   |   |   |— Profile Settings
+|   |   |   |— Billing
+|   |   |   |— Organization Switcher
+|   |   |   |— Sign Out
+|   |
+|   |— Context Actions (Page-specific)
+|       |— Search Bar (Expandable)
+|       |— Filter Options
+|       |— Quick Create Button (Floating)
+```
+
+### 5.2 Hamburger Menu Design Specifications
+
+```
+Hamburger Menu Panel
+|
+|— Panel Behavior
+|   |— Slide Animation: From left, 300ms ease-out
+|   |— Overlay: Semi-transparent background (rgba(0,0,0,0.5))
+|   |— Width: 280px (mobile), 320px (tablet)
+|   |— Height: Full viewport height
+|   |— Close: Tap outside, swipe left, or close button
+|
+|— Menu Structure
+|   |— Header Section
+|   |   |— User Avatar (Large)
+|   |   |— User Name
+|   |   |— Organization Name
+|   |   |— Close Button (X)
+|   |
+|   |— Primary Navigation
+|   |   |— Dashboard
+|   |   |   |— Icon: Home
+|   |   |   |— Active state indicator
+|   |   |
+|   |   |— My Events
+|   |   |   |— Icon: Calendar
+|   |   |   |— Event count badge
+|   |   |
+|   |   |— Create Event
+|   |   |   |— Icon: Plus
+|   |   |   |— Primary button styling
+|   |   |
+|   |   |— QR Scanner
+|   |       |— Icon: QR Code
+|   |       |— Context-aware visibility
+|   |
+|   |— Secondary Navigation
+|   |   |— Settings
+|   |   |— Help Center
+|   |   |— Billing
+|   |   |— Organization Switcher
+|   |
+|   |— Footer Section
+|       |— App Version
+|       |— Sign Out Button
+|
+|— Accessibility Features
+|   |— ARIA labels for screen readers
+|   |— Keyboard navigation support
+|   |— Focus trap within menu
+|   |— Escape key to close
+|   |— High contrast mode support
+```
+
+### 5.3 Mobile-Specific Enhancements
+
+```
+Mobile UX Optimizations
+|
+|— Touch-Friendly Design
+|   |— Minimum 44px touch targets
+|   |— Adequate spacing between elements
+|   |— Thumb-friendly button placement
+|   |— Swipe gestures support
+|
+|— Performance Optimizations
+|   |— Fast menu animations (< 300ms)
+|   |— Minimal DOM manipulation
+|   |— Efficient scroll handling
+|   |— Lazy loading for menu content
+|
+|— Context Awareness
+|   |— Current page highlighting
+|   |— Breadcrumb in menu header
+|   |— Quick actions based on current context
+|   |— Smart menu item ordering by usage
+|
+|— Progressive Enhancement
+|   |— Works without JavaScript (basic functionality)
+|   |— Enhanced with JavaScript features
+|   |— Graceful degradation for older browsers
+|   |— Offline menu caching
+```
+
+## 6. Navigation Accessibility Standards
+
+### 6.1 WCAG 2.1 AA Compliance
+
+- **Keyboard Navigation**: Full keyboard support, logical tab order
+- **Screen Readers**: Proper ARIA labels, semantic HTML structure  
+- **Color Contrast**: 4.5:1 minimum contrast ratio for all text
+- **Touch Targets**: 44px minimum size for all interactive elements
+- **Focus Indicators**: Clear visual focus states for all controls
+
+### 6.2 Indonesian Localization
+
+- **Language Support**: Bahasa Indonesia primary, English secondary
+- **Cultural Adaptation**: Right-to-left reading patterns consideration
+- **Local Conventions**: Indonesian mobile app navigation patterns
+- **Accessibility**: Support for Indonesian screen readers and assistive technologies
+
+````
 ```

@@ -70,7 +70,33 @@
 
 ## 🚧 Next Priority Tasks
 
-### 🎪 6. Event Management System
+### 📱 6. Navigation Enhancement (Context-Aware Navigation)
+- [ ] Implement context-aware navigation system
+  - [ ] **Guest Users**: Keep current navigation (top nav on desktop, hamburger on mobile)
+  - [ ] **Authenticated Users**: Implement sidebar navigation for all devices
+- [ ] Create Sidebar Navigation System
+  - [ ] Design custom Sidebar component with collapsible functionality
+  - [ ] Implement sidebar header with logo and organization switcher
+  - [ ] Add primary navigation items (Dashboard, Events, Create, Analytics, Scanner)
+  - [ ] Add secondary navigation (Settings, Help & Support)
+  - [ ] Create sidebar footer with user profile section
+  - [ ] Add submenu support with Collapsible components
+- [ ] Mobile Sidebar Implementation
+  - [ ] Transform sidebar to off-canvas menu on mobile (< 768px)
+  - [ ] Use Sheet component for mobile sidebar overlay
+  - [ ] Add hamburger trigger in top header for mobile
+  - [ ] Implement backdrop blur and swipe gestures
+- [ ] Responsive Behavior
+  - [ ] Desktop: Fixed sidebar with collapse toggle
+  - [ ] Tablet: Off-canvas sidebar with hamburger menu
+  - [ ] Mobile: Same as tablet with touch-optimized sizing
+- [ ] Accessibility Implementation
+  - [ ] ARIA labels and proper semantic structure
+  - [ ] Keyboard navigation support (Tab, Arrow keys, Enter, Escape)
+  - [ ] Screen reader announcements for navigation changes
+  - [ ] High contrast mode and focus indicators
+
+### 🎪 7. Event Management System
 - [ ] Create Event modal (multi-step form)
   - [ ] Step 1: Event Details (name, description, date, location, poster)
   - [ ] Step 2: Ticket Configuration (types, pricing, quantities)
@@ -81,7 +107,7 @@
 - [ ] QR Scanner modal for check-ins
 - [ ] Event analytics and reporting
 
-### 🎫 7. Public Event Pages
+### 🎫 8. Public Event Pages
 - [ ] Event detail page for attendees
 - [ ] Ticket selection interface
 - [ ] Checkout flow with form validation
@@ -89,7 +115,7 @@
 - [ ] Confirmation and e-ticket pages
 - [ ] QR code generation for tickets
 
-### 📝 8. Enhanced Features
+### 📝 9. Enhanced Features
 - [ ] Event URL generation and custom slugs
 - [ ] Event sharing functionality (WhatsApp, social media)
 - [ ] Bulk attendee import/export
@@ -97,7 +123,7 @@
 - [ ] Event templates for quick creation
 - [ ] Advanced analytics dashboard
 
-### 📱 9. Mobile Responsiveness & Indonesian Localization
+### 📱 10. Mobile Responsiveness & Indonesian Localization
 - [x] Ensure mobile-first design throughout
 - [x] Implement IDR currency formatting
 - [ ] Add Indonesian language support where needed
