@@ -25,6 +25,7 @@ import { Switch } from '@/components/ui/switch'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Calendar } from '@/components/ui/calendar'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { generateSlug } from '@/lib/utils/slug'
 import {
   Globe,
   Link as LinkIcon,
@@ -109,13 +110,7 @@ export function PublicationSettingsForm() {
   // Generate initial slug from event name
   useEffect(() => {
     if (!watchedSlug && eventDetails.name) {
-      const slug = eventDetails.name
-        .toLowerCase()
-        .replace(/[^a-z0-9\s-]/g, '')
-        .replace(/\s+/g, '-')
-        .replace(/-+/g, '-')
-        .replace(/^-+|-+$/g, '')
-        .substring(0, 50)
+      const slug = generateSlug(eventDetails.name)
 
       if (slug) {
         setValue('slug', slug)
@@ -199,7 +194,7 @@ export function PublicationSettingsForm() {
                 name="slug"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>URL Slug *</FormLabel>
+                    <FormLabel required>URL Slug</FormLabel>
                     <div className="flex items-center space-x-2">
                       <div className="flex-1">
                         <div className="flex items-center border rounded-md">
@@ -394,8 +389,8 @@ export function PublicationSettingsForm() {
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel className="text-sm">
-                        I agree to the Terms & Conditions *
+                      <FormLabel className="text-sm" required>
+                        I agree to the Terms & Conditions
                       </FormLabel>
                       <FormDescription>
                         By creating this event, you agree to our{' '}

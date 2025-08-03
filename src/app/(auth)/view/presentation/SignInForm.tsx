@@ -27,7 +27,7 @@ export function SignInForm({ form, onSubmit, isLoading }: SignInFormProps) {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel required>Email</FormLabel>
               <FormControl>
                 <Input
                   {...field}
@@ -47,7 +47,7 @@ export function SignInForm({ form, onSubmit, isLoading }: SignInFormProps) {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel required>Password</FormLabel>
               <FormControl>
                 <div className="relative">
                   <Input
@@ -82,8 +82,8 @@ export function SignInForm({ form, onSubmit, isLoading }: SignInFormProps) {
 
         {/* Forgot Password */}
         <div className="flex items-center justify-end">
-          <Link 
-            href="/forgot-password" 
+          <Link
+            href="/forgot-password"
             className="text-sm text-primary hover:text-primary/80"
           >
             Forgot password?

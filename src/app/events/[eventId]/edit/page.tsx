@@ -10,6 +10,7 @@ import { useEventFormStore } from '../../stores/eventFormStore'
 import { CreateEventPageContainer } from '../../view/container/CreateEventPageContainer'
 import { useEventById } from '../../usecases/useEventById'
 import { useAuth } from '../../../(auth)/hooks/useAuth'
+import { generateSlug } from '@/lib/utils/slug'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export default function EditEventPage() {
@@ -75,7 +76,7 @@ export default function EditEventPage() {
 
       // Update publication settings
       updatePublicationSettings({
-        slug: `${editingEvent.name.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`,
+        slug: generateSlug(editingEvent.name),
         isPublished: editingEvent.status === 'published',
         publishDate: undefined,
         termsAccepted: true,

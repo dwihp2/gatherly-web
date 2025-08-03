@@ -184,7 +184,7 @@ export function TicketConfigurationForm() {
                       name={`ticketTypes.${index}.name`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className='mb-0.5'>Ticket Name *</FormLabel>
+                          <FormLabel className='mb-0.5' required>Ticket Name</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="e.g. General Admission, VIP, Early Bird"
@@ -202,9 +202,9 @@ export function TicketConfigurationForm() {
                       name={`ticketTypes.${index}.price`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="flex items-center gap-2">
+                          <FormLabel className="flex items-center gap-2" required>
                             <DollarSign className="h-4 w-4" />
-                            Price (IDR) *
+                            Price (IDR)
                           </FormLabel>
                           <FormControl>
                             <Input
@@ -232,9 +232,9 @@ export function TicketConfigurationForm() {
                       name={`ticketTypes.${index}.quantity`}
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="flex items-center gap-2">
+                          <FormLabel className="flex items-center gap-2" required>
                             <Users className="h-4 w-4" />
-                            Available Quantity *
+                            Available Quantity
                           </FormLabel>
                           <FormControl>
                             <Input

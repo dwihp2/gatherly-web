@@ -119,9 +119,9 @@ export function EventDetailsForm() {
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="flex items-center gap-2">
+                <FormLabel className="flex items-center gap-2" required>
                   <FileText className="h-4 w-4" />
-                  Event Name *
+                  Event Name
                 </FormLabel>
                 <FormControl>
                   <Input
@@ -167,9 +167,9 @@ export function EventDetailsForm() {
               name="dateTime"
               render={() => (
                 <FormItem>
-                  <FormLabel className="flex items-center gap-2">
+                  <FormLabel className="flex items-center gap-2" required>
                     <CalendarIcon className="h-4 w-4" />
-                    Event Date *
+                    Event Date
                   </FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -205,9 +205,9 @@ export function EventDetailsForm() {
             />
 
             <FormItem>
-              <FormLabel className="flex items-center gap-2">
+              <FormLabel className="flex items-center gap-2" required>
                 <Clock className="h-4 w-4" />
-                Event Time *
+                Event Time
               </FormLabel>
               <FormControl>
                 <Input
@@ -225,9 +225,9 @@ export function EventDetailsForm() {
             name="location"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="flex items-center gap-2">
+                <FormLabel className="flex items-center gap-2" required>
                   <MapPin className="h-4 w-4" />
-                  Event Location *
+                  Event Location
                 </FormLabel>
                 <FormControl>
                   <Input

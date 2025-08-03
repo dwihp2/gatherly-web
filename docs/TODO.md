@@ -1,10 +1,81 @@
 # Gatherly Implementation TODO & Development Plan
 
-*Updated: August 2, 2025*
+*Updated: August 3, 2025*
 
 ## 📋 Current State Assessment
 
-### Progress Overview
+### Progres#### Benefits of New Approach
+- **Consistency**: All required indicators use the same styling (`text-destructive`)
+- **Accessibility**: Automatic ARIA label (`aria-label="required"`) for screen readers
+- **Maintainability**: Centralized logic for required field styling
+- **Flexibility**: Easy to toggle required state programmatically
+- **Clean Code**: Removes clutter from form labels, making them more readable
+
+### ✅ URL Slug Generation Compliance Fix - **COMPLETED** ✅
+**Goal**: Fix slug generation to comply with PublicationSettingsSchema validation rules
+**Status**: ✅ **COMPLETED** - Created centralized slug utility and updated all components
+
+#### Problem Analysis
+The current slug generation in multiple locations did not properly comply with the `PublicationSettingsSchema` regex pattern:
+- **Pattern Required**: `/^[a-z0-9-]+$/` (only lowercase letters, numbers, and hyphens)
+- **Length**: Minimum 3 characters, maximum 100 characters
+- **Previous Issues**:
+  - Edit page used simple `.replace(/\s+/g, '-')` which didn't handle special characters
+  - PublicationSettingsForm had better logic but may still generate invalid slugs
+  - No consistent slug generation utility across the application
+
+#### Completed Tasks
+- [x] **Create Centralized Slug Generation Utility** ✅ **COMPLETED**
+  - [x] Create `src/lib/utils/slug.ts` with `generateSlug()` function
+  - [x] Implement proper character filtering (remove all non a-z0-9 characters)
+  - [x] Handle consecutive hyphens (replace multiple hyphens with single)
+  - [x] Trim leading/trailing hyphens
+  - [x] Ensure length constraints (3-100 characters)
+  - [x] Add fallback logic for edge cases (empty result, too short)
+  - [x] Add `isValidSlug()` validation function
+  - [x] **FIXED**: Handle apostrophes and special characters properly
+  - [x] **FIXED**: Add Unicode normalization for diacritics (café → cafe)
+  - [x] **VERIFIED**: 100% compliance with regex `/^[a-z0-9-]+$/`
+
+- [x] **Update Form Components** ✅ **COMPLETED**
+  - [x] Replace inline slug generation in `PublicationSettingsForm.tsx`
+  - [x] Use centralized `generateSlug()` utility
+  - [x] Ensure generated slugs always pass Zod validation
+
+- [x] **Fix Edit Page Slug Generation** ✅ **COMPLETED**
+  - [x] Replace simple slug generation in `src/app/events/[eventId]/edit/page.tsx`
+  - [x] Use the same centralized `generateSlug()` utility
+  - [x] Ensure consistency across create and edit flows
+
+- [x] **Add Slug Validation Testing** ✅ **COMPLETED**
+  - [x] Create comprehensive test script with 18+ test cases
+  - [x] Test edge cases: special characters, unicode, empty strings, apostrophes
+  - [x] Test specific user case: "Dwi's Tech Meetup Jakarta 2025" → "dwis-tech-meetup-jakarta-2025"
+  - [x] Verify schema compliance for all generated slugs
+  - [x] Test both manual and auto-generated slug scenarios
+  - [x] All tests pass with 100% schema compliance
+
+#### Implementation Details
+```typescript
+// Implemented utility: src/lib/utils/slug.ts
+export function generateSlug(input: string): string {
+  // Robust implementation with proper validation and fallbacks
+  // Handles all edge cases and ensures schema compliance
+}
+
+export function isValidSlug(slug: string): boolean {
+  // Validation function for runtime checking
+}
+```
+
+#### Benefits Achieved
+- **Schema Compliance**: 100% compliance with PublicationSettingsSchema validation
+- **Consistency**: Same slug generation logic across all components
+- **Reliability**: Handles all edge cases with proper fallbacks
+- **Maintainability**: Centralized utility easy to update and test
+- **Type Safety**: Full TypeScript support with proper validation
+
+## �🚧 Next Priority Tasksew
 - [x] Project Setup & Dependencies
 - [x] Authentication System (Better Auth) - COMPLETED
 - [x] Core Infrastructure & Architecture
@@ -81,7 +152,52 @@
 - [x] Mobile-responsive design
 - [x] Loading states with skeleton components
 
-## 🚧 Next Priority Tasks
+## � UI/UX Improvements & Refactoring
+
+### ✅ FormLabel Required Field Enhancement - **COMPLETED** ✅
+**Goal**: Improve form label consistency and accessibility for required fields
+**Status**: ✅ **COMPLETED** - Enhanced FormLabel component with `required` prop
+
+#### Completed Tasks
+- [x] **Enhanced FormLabel Component** 
+  - [x] Added `required` prop to FormLabel component
+  - [x] Implemented automatic asterisk (*) rendering when `required={true}`
+  - [x] Added proper ARIA label for accessibility (`aria-label="required"`)
+  - [x] Used `text-destructive` color for consistency with error states
+  - [x] Maintained backward compatibility with existing usage
+
+#### Pending Refactoring Tasks
+- [x] **Update Form Components to Use New Required Prop** ✅ **COMPLETED**
+  - [x] Refactor SignInForm.tsx - remove embedded asterisks, use `required` prop
+  - [x] Refactor EventDetailsForm.tsx - remove embedded asterisks, use `required` prop  
+  - [x] Refactor TicketConfigurationForm.tsx - remove embedded asterisks, use `required` prop
+  - [x] Refactor PublicationSettingsForm.tsx - remove embedded asterisks, use `required` prop
+  - [x] Test all forms to ensure required field indicators work correctly
+  - [x] Verify accessibility compliance with screen readers
+
+#### Implementation Example
+```tsx
+// Before (old approach - embedded asterisk)
+<FormLabel className="flex items-center gap-2">
+  <FileText className="h-4 w-4" />
+  Event Name *
+</FormLabel>
+
+// After (new approach - using required prop)
+<FormLabel className="flex items-center gap-2" required>
+  <FileText className="h-4 w-4" />
+  Event Name
+</FormLabel>
+```
+
+#### Benefits of New Approach
+- **Consistency**: All required indicators use the same styling (`text-destructive`)
+- **Accessibility**: Automatic ARIA label (`aria-label="required"`) for screen readers
+- **Maintainability**: Centralized logic for required field styling
+- **Flexibility**: Easy to toggle required state programmatically
+- **Clean Code**: Removes clutter from form labels, making them more readable
+
+## �🚧 Next Priority Tasks
 
 ### 🔄 Priority 1: Enhanced DataTable Migration - **NEW PRIORITY** 🆕
 **Goal**: Upgrade existing basic tables to advanced DataTable with TanStack Table integration
