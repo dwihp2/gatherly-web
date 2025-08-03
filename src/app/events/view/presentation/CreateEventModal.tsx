@@ -11,13 +11,12 @@ import {
   DialogHeader,
   DialogTitle
 } from '@/components/ui/dialog'
-import { Progress } from '@/components/ui/progress'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { X, ArrowLeft, ArrowRight, Save, Send, Expand } from 'lucide-react'
 import { useEventFormStore } from '../../stores/eventFormStore'
 import { EventFormStep } from '../../models/interfaces/eventForm'
-import { cn } from '@/lib/utils'
+import { Stepper, StepperItem, StepperTrigger, StepperIndicator, StepperTitle, StepperSeparator } from '@/components/ui/stepper'
 
 interface CreateEventModalProps {
   isOpen: boolean
@@ -30,17 +29,23 @@ interface CreateEventModalProps {
   children: React.ReactNode
 }
 
-const STEP_TITLES = {
-  [EventFormStep.DETAILS]: 'Event Details',
-  [EventFormStep.TICKETS]: 'Ticket Configuration',
-  [EventFormStep.PUBLICATION]: 'Publication Settings'
-}
-
-const STEP_DESCRIPTIONS = {
-  [EventFormStep.DETAILS]: 'Basic information about your event',
-  [EventFormStep.TICKETS]: 'Set up ticket types and pricing',
-  [EventFormStep.PUBLICATION]: 'Choose how to publish your event'
-}
+const steps = [
+  {
+    id: EventFormStep.DETAILS,
+    title: 'Event Details',
+    description: 'Basic information about your event'
+  },
+  {
+    id: EventFormStep.TICKETS,
+    title: 'Ticket Configuration',
+    description: 'Set up ticket types and pricing'
+  },
+  {
+    id: EventFormStep.PUBLICATION,
+    title: 'Publication Settings',
+    description: 'Choose how to publish your event'
+  }
+]
 
 export function CreateEventModal({
   isOpen,
@@ -59,9 +64,6 @@ export function CreateEventModal({
     canGoToPreviousStep,
     publicationSettings
   } = useEventFormStore()
-
-  // Calculate progress percentage
-  const progressPercentage = (currentStep / 3) * 100
 
   // Handle next step
   const handleNext = () => {
@@ -112,7 +114,7 @@ export function CreateEventModal({
                 {isEditMode ? 'Edit Event' : 'Create New Event'}
               </DialogTitle>
               <p className="text-sm text-muted-foreground mt-1">
-                {STEP_DESCRIPTIONS[currentStep]}
+                {steps.find(step => step.id === currentStep)?.description}
               </p>
             </div>
             <div className="flex items-center gap-2">
@@ -141,40 +143,27 @@ export function CreateEventModal({
             </div>
           </div>
 
-          {/* Progress Indicator */}
+          {/* Modern Stepper */}
           <div className="mt-6">
-            <div className="flex items-center justify-between mb-2">
-              {Object.entries(STEP_TITLES).map(([step, title]) => {
-                const stepNumber = parseInt(step) as EventFormStep
-                const isActive = stepNumber === currentStep
-                const isCompleted = stepNumber < currentStep
-
-                return (
-                  <div
-                    key={step}
-                    className={cn(
-                      "flex items-center gap-2 text-sm",
-                      isActive && "text-primary font-medium",
-                      isCompleted && "text-muted-foreground",
-                      !isActive && !isCompleted && "text-muted-foreground/60"
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        "w-6 h-6 rounded-full flex items-center justify-center text-xs",
-                        isActive && "bg-primary text-primary-foreground",
-                        isCompleted && "bg-primary/20 text-primary",
-                        !isActive && !isCompleted && "bg-muted text-muted-foreground"
-                      )}
-                    >
-                      {stepNumber}
+            <Stepper value={currentStep}>
+              {steps.map((step, index) => (
+                <StepperItem
+                  key={step.id}
+                  step={step.id}
+                  completed={step.id < currentStep}
+                >
+                  <StepperTrigger className="flex items-center gap-2">
+                    <StepperIndicator />
+                    <div className="hidden sm:block text-left">
+                      <StepperTitle>{step.title}</StepperTitle>
                     </div>
-                    <span className="hidden sm:inline">{title}</span>
-                  </div>
-                )
-              })}
-            </div>
-            <Progress value={progressPercentage} className="h-2" />
+                  </StepperTrigger>
+                  {index < steps.length - 1 && (
+                    <StepperSeparator />
+                  )}
+                </StepperItem>
+              ))}
+            </Stepper>
           </div>
         </DialogHeader>
 

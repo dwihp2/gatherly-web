@@ -8,28 +8,41 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowLeft, ArrowRight, Save, Send } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Progress } from '@/components/ui/progress'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Stepper,
+  StepperDescription,
+  StepperIndicator,
+  StepperItem,
+  StepperSeparator,
+  StepperTitle,
+  StepperTrigger,
+} from '@/components/ui/stepper'
 import { useEventFormStore } from '../../stores/eventFormStore'
 import { EventDetailsForm } from '../presentation/EventDetailsForm'
 import { TicketConfigurationForm } from '../presentation/TicketConfigurationForm'
 import { PublicationSettingsForm } from '../presentation/PublicationSettingsForm'
 import { EventFormStep } from '../../models/interfaces/eventForm'
 import { useAuth } from '../../../(auth)/hooks/useAuth'
-import { cn } from '@/lib/utils'
 
-const STEP_TITLES = {
-  [EventFormStep.DETAILS]: 'Event Details',
-  [EventFormStep.TICKETS]: 'Ticket Configuration',
-  [EventFormStep.PUBLICATION]: 'Publication Settings'
-}
-
-const STEP_DESCRIPTIONS = {
-  [EventFormStep.DETAILS]: 'Basic information about your event',
-  [EventFormStep.TICKETS]: 'Set up ticket types and pricing',
-  [EventFormStep.PUBLICATION]: 'Choose how to publish your event'
-}
+const steps = [
+  {
+    step: EventFormStep.DETAILS,
+    title: "Event Details",
+    description: "Basic information about your event",
+  },
+  {
+    step: EventFormStep.TICKETS,
+    title: "Ticket Configuration",
+    description: "Set up ticket types and pricing",
+  },
+  {
+    step: EventFormStep.PUBLICATION,
+    title: "Publication Settings",
+    description: "Choose how to publish your event",
+  },
+]
 
 export function CreateEventPageContainer({ isEditMode = false }: { isEditMode?: boolean }) {
   const router = useRouter()
@@ -123,9 +136,6 @@ export function CreateEventPageContainer({ isEditMode = false }: { isEditMode?: 
     return ArrowRight
   }
 
-  // Calculate progress percentage
-  const progressPercentage = (currentStep / 3) * 100
-
   // Render step content
   const renderStepContent = () => {
     switch (currentStep) {
@@ -164,51 +174,42 @@ export function CreateEventPageContainer({ isEditMode = false }: { isEditMode?: 
               {isEditMode || storeIsEditMode ? 'Edit Event' : 'Create New Event'}
             </h1>
             <p className="text-muted-foreground">
-              {STEP_DESCRIPTIONS[currentStep]}
+              {steps.find(s => s.step === currentStep)?.description}
             </p>
           </div>
 
-          {/* Progress Indicator */}
+          {/* Stepper Progress Indicator */}
           <div className="mt-8">
-            <div className="flex items-center justify-between mb-4">
-              {Object.entries(STEP_TITLES).map(([step, title]) => {
-                const stepNumber = parseInt(step) as EventFormStep
-                const isActive = stepNumber === currentStep
-                const isCompleted = stepNumber < currentStep
-
-                return (
-                  <div
-                    key={step}
-                    className={cn(
-                      "flex items-center gap-3 text-sm",
-                      isActive && "text-primary font-medium",
-                      isCompleted && "text-muted-foreground",
-                      !isActive && !isCompleted && "text-muted-foreground/60"
-                    )}
-                  >
-                    <div
-                      className={cn(
-                        "w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium",
-                        isActive && "bg-primary text-primary-foreground",
-                        isCompleted && "bg-primary/20 text-primary",
-                        !isActive && !isCompleted && "bg-muted text-muted-foreground"
-                      )}
-                    >
-                      {stepNumber}
+            <Stepper value={currentStep} className="w-full">
+              {steps.map(({ step, title, description }) => (
+                <StepperItem
+                  key={step}
+                  step={step}
+                  completed={step < currentStep}
+                  className="relative flex-1 flex-col!"
+                >
+                  <StepperTrigger className="flex-col gap-3 rounded">
+                    <StepperIndicator />
+                    <div className="space-y-0.5 px-2">
+                      <StepperTitle>{title}</StepperTitle>
+                      <StepperDescription className="max-sm:hidden">
+                        {description}
+                      </StepperDescription>
                     </div>
-                    <span>{title}</span>
-                  </div>
-                )
-              })}
-            </div>
-            <Progress value={progressPercentage} className="h-3" />
+                  </StepperTrigger>
+                  {step < steps.length && (
+                    <StepperSeparator className="absolute inset-x-0 top-3 left-[calc(50%+0.75rem+0.125rem)] -order-1 m-0 -translate-y-1/2 group-data-[orientation=horizontal]/stepper:w-[calc(100%-1.5rem-0.25rem)] group-data-[orientation=horizontal]/stepper:flex-none" />
+                  )}
+                </StepperItem>
+              ))}
+            </Stepper>
           </div>
         </div>
 
         {/* Content */}
         <Card className="mb-8">
           <CardHeader>
-            <CardTitle>{STEP_TITLES[currentStep]}</CardTitle>
+            <CardTitle>{steps.find(s => s.step === currentStep)?.title}</CardTitle>
           </CardHeader>
           <CardContent>
             {renderStepContent()}
