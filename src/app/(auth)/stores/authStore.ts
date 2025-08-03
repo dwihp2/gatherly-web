@@ -13,7 +13,7 @@ import type {
   User
 } from '../models/interfaces/auth'
 
-interface AuthStore extends AuthState, AuthActions {}
+interface AuthStore extends AuthState, AuthActions { }
 
 export const useAuthStore = create<AuthStore>()(
   persist(
@@ -42,12 +42,33 @@ export const useAuthStore = create<AuthStore>()(
           if (data?.user) {
             // Get current session to check for active organization
             const sessionData = await authClient.getSession()
-            
+
+            // Get organization info from active organization ID
+            let organizationName = null
+            const tenantId = sessionData.data?.session?.activeOrganizationId || null
+
+            if (tenantId) {
+              try {
+                const orgData = await authClient.organization.getFullOrganization({
+                  query: {
+                    organizationId: tenantId,
+                  }
+                })
+
+                if (orgData.data) {
+                  organizationName = orgData.data.name
+                }
+              } catch (error) {
+                console.error('Failed to fetch organization details:', error)
+                // Continue without organization name if fetch fails
+              }
+            }
+
             const user: User = {
               id: data.user.id,
               name: data.user.name || null,
-              tenantId: sessionData.data?.session?.activeOrganizationId || null,
-              organizationName: null, // Will be loaded separately
+              tenantId,
+              organizationName,
               email: data.user.email,
               isEmailVerified: data.user.emailVerified || false,
               createdAt: data.user.createdAt,
@@ -99,6 +120,13 @@ export const useAuthStore = create<AuthStore>()(
           if (orgError) {
             set({ isLoading: false })
             throw new Error(orgError.message || 'Failed to create organization')
+          }
+
+          // Set the newly created organization as active
+          if (orgData?.id) {
+            await authClient.organization.setActive({
+              organizationId: orgData.id
+            })
           }
 
           // Get the updated session with organization
@@ -202,20 +230,24 @@ export const useAuthStore = create<AuthStore>()(
           const sessionData = await authClient.getSession()
 
           if (sessionData.data?.user && sessionData.data?.session) {
-            // Get active organization info
+            // Get organization info from active organization ID
             let organizationName = null
-            let tenantId = null
+            const tenantId = sessionData.data.session.activeOrganizationId || null
 
-            if (sessionData.data.session.activeOrganizationId) {
-              const orgData = await authClient.organization.getFullOrganization({
-                query: {
-                  organizationId: sessionData.data.session.activeOrganizationId,
+            if (tenantId) {
+              try {
+                const orgData = await authClient.organization.getFullOrganization({
+                  query: {
+                    organizationId: tenantId,
+                  }
+                })
+
+                if (orgData.data) {
+                  organizationName = orgData.data.name
                 }
-              })
-              
-              if (orgData.data) {
-                organizationName = orgData.data.name
-                tenantId = orgData.data.id
+              } catch (error) {
+                console.error('Failed to fetch organization details:', error)
+                // Continue without organization name if fetch fails
               }
             }
 

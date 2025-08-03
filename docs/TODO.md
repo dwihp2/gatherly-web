@@ -182,7 +182,6 @@
 - [ ] Ticket type selection interface
 - [ ] Real-time availability updates
 - [ ] Social sharing functionality
-
 #### 3.2 Checkout Flow
 - [ ] Customer information form
   - [ ] Full name, email, WhatsApp number

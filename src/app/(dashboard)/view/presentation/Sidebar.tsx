@@ -11,15 +11,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { Badge } from '@/components/ui/badge'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Separator } from '@/components/ui/separator'
@@ -36,7 +27,6 @@ import {
   Building,
   User,
   CreditCard,
-  LogOut,
   ChevronRight
 } from 'lucide-react'
 import { useAuth } from '../../../(auth)/hooks/useAuth'
@@ -46,6 +36,7 @@ import { cn } from '@/lib/utils'
 
 interface SidebarProps {
   className?: string
+  hideCollapseBtn?: boolean
 }
 
 interface NavItem {
@@ -59,9 +50,9 @@ interface NavItem {
   submenu?: NavItem[]
 }
 
-export function Sidebar({ className }: SidebarProps) {
+export function Sidebar({ className, hideCollapseBtn = false }: SidebarProps) {
   const pathname = usePathname()
-  const { user, organizationName, signOut } = useAuth()
+  const { organizationName } = useAuth()
   const {
     isCollapsed,
     expandedMenus,
@@ -87,15 +78,6 @@ export function Sidebar({ className }: SidebarProps) {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [toggleCollapsed])
-
-  const handleSignOut = async () => {
-    try {
-      await signOut()
-      window.location.href = '/'
-    } catch (error) {
-      console.error('Sign out error:', error)
-    }
-  }
 
   // Navigation items
   const navigationItems: NavItem[] = [
@@ -307,7 +289,7 @@ export function Sidebar({ className }: SidebarProps) {
             )}
           </div>
 
-          {!isCollapsed && (
+          {!isCollapsed && !hideCollapseBtn && (
             <Button
               variant="ghost"
               size="sm"
@@ -338,100 +320,12 @@ export function Sidebar({ className }: SidebarProps) {
             {navigationItems.map(item => renderNavItem(item))}
           </div>
 
-          <Separator className="my-4 mx-3" />
+          <Separator className="my-3" />
 
           <div className="px-3 space-y-1">
             {secondaryItems.map(item => renderNavItem(item))}
           </div>
         </div>
-      </div>
-
-      {/* Footer - User Profile */}
-      <div className="flex-shrink-0 p-3 border-t border-border">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className={cn(
-                "w-full justify-start h-auto py-2 px-2",
-                isCollapsed && "justify-center px-0"
-              )}
-            >
-              <div className="flex items-center gap-3">
-                <Avatar className="h-8 w-8 shrink-0">
-                  <AvatarFallback className="text-sm">
-                    {user?.name?.charAt(0)?.toUpperCase() || 'U'}
-                  </AvatarFallback>
-                </Avatar>
-                {!isCollapsed && (
-                  <div className="flex flex-col items-start min-w-0">
-                    <span className="text-sm font-medium text-foreground truncate max-w-32">
-                      {user?.name || 'User'}
-                    </span>
-                    <span className="text-xs text-muted-foreground truncate max-w-32">
-                      {user?.email}
-                    </span>
-                  </div>
-                )}
-              </div>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-64"
-            align="end"
-            side={isCollapsed ? "right" : "top"}
-            sideOffset={isCollapsed ? 8 : 4}
-          >
-            <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">
-                  {user?.name || 'User'}
-                </p>
-                <p className="text-xs leading-none text-muted-foreground">
-                  {user?.email}
-                </p>
-                {organizationName && (
-                  <div className="flex items-center gap-1 mt-2">
-                    <Building className="h-3 w-3 text-muted-foreground" />
-                    <p className="text-xs text-muted-foreground">
-                      {organizationName}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <Link href="/dashboard/settings/profile">
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile Settings</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/dashboard/settings/billing">
-                <CreditCard className="mr-2 h-4 w-4" />
-                <span>Billing</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/dashboard/settings">
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/dashboard/help">
-                <HelpCircle className="mr-2 h-4 w-4" />
-                <span>Help Center</span>
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleSignOut}>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Sign Out</span>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
     </nav>
   )

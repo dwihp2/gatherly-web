@@ -1,6 +1,7 @@
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import { organization } from 'better-auth/plugins'
+import { eq } from 'drizzle-orm'
 import { db } from './db'
 import {
   userTable,
@@ -13,6 +14,39 @@ import {
   teamTable,
   teamMemberTable
 } from './db/schema'
+
+/**
+ * Get the user's first organization (or the one they should be active in)
+ * In a SaaS app, users typically have one primary organization they work in
+ */
+async function getUserActiveOrganization(userId: string) {
+  try {
+    // Get the user's membership in organizations (first one they're a member of)
+    const membershipResult = await db
+      .select({
+        organizationId: memberTable.organizationId,
+        organizationName: organizationTable.name,
+        role: memberTable.role
+      })
+      .from(memberTable)
+      .innerJoin(organizationTable, eq(memberTable.organizationId, organizationTable.id))
+      .where(eq(memberTable.userId, userId))
+      .limit(1)
+
+    if (membershipResult.length > 0) {
+      return {
+        id: membershipResult[0].organizationId,
+        name: membershipResult[0].organizationName,
+        role: membershipResult[0].role
+      }
+    }
+
+    return null
+  } catch (error) {
+    console.error('Error getting user active organization:', error)
+    return null
+  }
+}
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -29,6 +63,25 @@ export const auth = betterAuth({
       teamMember: teamMemberTable,
     },
   }),
+
+  // Database hooks to automatically set active organization
+  databaseHooks: {
+    session: {
+      create: {
+        before: async (session) => {
+          // Automatically set the active organization when creating a session
+          const activeOrg = await getUserActiveOrganization(session.userId)
+
+          return {
+            data: {
+              ...session,
+              activeOrganizationId: activeOrg?.id || null,
+            }
+          }
+        }
+      }
+    }
+  },
 
   // Email/Password authentication
   emailAndPassword: {

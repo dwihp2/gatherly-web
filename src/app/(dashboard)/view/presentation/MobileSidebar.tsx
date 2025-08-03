@@ -51,7 +51,7 @@ export function MobileSidebar() {
         className="p-0 w-64"
         onInteractOutside={() => setMobileOpen(false)}
       >
-        <Sidebar className="border-r-0" />
+        <Sidebar className="border-r-0" hideCollapseBtn={true} />
       </SheetContent>
     </Sheet>
   )
