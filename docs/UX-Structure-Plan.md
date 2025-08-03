@@ -348,40 +348,83 @@ Organizer Dashboard Layout (Sidebar Navigation)
 |   |— Section Header
 |   |   |— "My Events" Title
 |   |   |— View All Events Link
-|   |   |— Filter Dropdown
-|   |       |— All Status
-|   |       |— Draft
-|   |       |— Published
-|   |       |— Completed
 |   |
-|   |— Events Table
-|   |   |— Table Headers
-|   |   |   |— Event Name
-|   |   |   |— Date & Time
-|   |   |   |— Status
-|   |   |   |— Tickets Sold
-|   |   |   |— Revenue
-|   |   |   |— Actions
+|   |— Events DataTable (Enhanced Table with Advanced Features)
+|   |   |— DataTable Toolbar
+|   |   |   |— Global Search Input
+|   |   |   |   |— Search by name, location, or description
+|   |   |   |   |— Clear search button
+|   |   |   |   |— Search icon indicator
+|   |   |   |
+|   |   |   |— Status Filter Dropdown
+|   |   |   |   |— Multi-select checkbox filters
+|   |   |   |   |— All Status / Draft / Published / Completed
+|   |   |   |   |— Filter count indicator
+|   |   |   |   |— Clear filters option
+|   |   |   |
+|   |   |   |— Column Visibility Toggle
+|   |   |   |   |— Show/Hide columns dropdown
+|   |   |   |   |— Checkbox for each column
+|   |   |   |   |— Reset to default view
+|   |   |   |
+|   |   |   |— Bulk Actions (when rows selected)
+|   |   |   |   |— Delete selected events
+|   |   |   |   |— Bulk status change
+|   |   |   |   |— Export selected data
+|   |   |   |   |— Selection count indicator
+|   |   |   |
+|   |   |   |— Quick Actions
+|   |   |       |— Add Event Button (Primary CTA)
+|   |   |       |— Export All Data
+|   |   |       |— Refresh Data
 |   |   |
-|   |   |— Event Rows
-|   |   |   |— Event Poster Thumbnail
-|   |   |   |— Event Name Link
-|   |   |   |— Formatted Date
-|   |   |   |— Location
-|   |   |   |— Status Badge
-|   |   |   |— Progress Bar (Sold/Total)
-|   |   |   |— IDR Revenue
-|   |   |   |— Action Buttons
-|   |   |       |— View Details
-|   |   |       |— Edit Event
-|   |   |       |— Share Link
-|   |   |       |— Scanner QR
-|   |   |       |— Download Attendees
+|   |   |— DataTable Content
+|   |   |   |— Sortable Column Headers
+|   |   |   |   |— Row Selection (Checkbox column)
+|   |   |   |   |— Event Name (Sortable, with poster thumbnail)
+|   |   |   |   |— Date & Time (Sortable)
+|   |   |   |   |— Location (Optional visibility)
+|   |   |   |   |— Status (Filterable badges)
+|   |   |   |   |— Tickets Sold (Sortable with progress)
+|   |   |   |   |— Revenue (Sortable, IDR formatted)
+|   |   |   |   |— Actions (Row-level dropdown menu)
+|   |   |   |
+|   |   |   |— Selectable Data Rows
+|   |   |   |   |— Row selection checkbox
+|   |   |   |   |— Event poster thumbnail (Avatar component)
+|   |   |   |   |— Event name as clickable link
+|   |   |   |   |— Formatted date and time (Indonesian locale)
+|   |   |   |   |— Location text (truncated if long)
+|   |   |   |   |— Status badge with color coding
+|   |   |   |   |— Progress bar showing tickets sold/total
+|   |   |   |   |— IDR-formatted revenue amount
+|   |   |   |   |— Action dropdown menu
+|   |   |   |       |— View Event Details
+|   |   |   |       |— Edit Event
+|   |   |   |       |— Duplicate Event
+|   |   |   |       |— Share Event Link
+|   |   |   |       |— Open QR Scanner
+|   |   |   |       |— Download Attendee List
+|   |   |   |       |— Archive/Delete Event
+|   |   |   |
+|   |   |   |— Row Hover & Selection States
+|   |   |   |   |— Hover highlighting
+|   |   |   |   |— Selected row indication
+|   |   |   |   |— Loading state skeleton
+|   |   |   |
+|   |   |   |— Empty State
+|   |   |       |— No events illustration
+|   |   |       |— "No events found" message
+|   |   |       |— "Create First Event" CTA button
+|   |   |       |— Clear filters suggestion (when filtered)
 |   |   |
-|   |   |— Empty State
-|   |       |— Illustration
-|   |       |— "No events yet" Message
-|   |       |— "Create First Event" Button
+|   |   |— DataTable Pagination
+|   |       |— Rows per page selector (10, 25, 50, 100)
+|   |       |— Current page / total pages display
+|   |       |— First/Previous/Next/Last navigation
+|   |       |— Jump to page input
+|   |       |— Total records count
+|   |       |— Selected rows count display
 |
 |— Recent Activity Section
 |   |— Section Title: "Recent Activity"

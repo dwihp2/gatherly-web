@@ -20,7 +20,7 @@
   - [x] Add event status management (Draft/Published transitions)
   - [x] Add confirmation dialogs for destructive actions
   - [x] Test edit flow end-to-end
-- [ ] **CURRENT PRIORITY**: Public Event Pages & Ticket Purchase
+- [ ] **CURRENT PRIORITY**: Enhanced DataTable Migration & Public Event Pages
 - [ ] QR Scanner & Check-in System
 
 ## Detailed Task List
@@ -83,175 +83,341 @@
 
 ## 🚧 Next Priority Tasks
 
-### 🎨 Priority 1: Guest Dashboard UI/UX Enhancement - **COMPLETED** ✅
-**Goal**: Transform the landing page into a modern, professional SaaS landing page
-**Status**: ✅ **FULLY COMPLETED** - Successfully transformed the landing page with modern styling and excellent mobile responsiveness.
+### 🔄 Priority 1: Enhanced DataTable Migration - **NEW PRIORITY** 🆕
+**Goal**: Upgrade existing basic tables to advanced DataTable with TanStack Table integration
+**Status**: 🆕 **NEWLY PRIORITIZED** - Documentation updated, ready for implementation
 
-#### ✅ What Has Been Enhanced:
-- [x] **COMPLETED**: Current State Assessment - Basic functionality exists but styling needs major improvement
-- [x] **COMPLETED**: Hero Section Enhancement - Modern visual hierarchy, gradient text, better CTAs, background effects
-- [x] **COMPLETED**: Features Section Redesign - Improved card styling with hover animations, better icons, modern shadows
-- [x] **COMPLETED**: Social Proof Enhancement - More prominent statistics display with gradient colors, enhanced testimonial cards
-- [x] **COMPLETED**: Pricing Section Polish - Better visual hierarchy, enhanced feature list, improved badge design
-- [x] **COMPLETED**: SiteHeader Enhancement - Mobile navigation with hamburger menu, gradient brand text
-- [x] **COMPLETED**: Professional Hamburger Menu - Enhanced with animations, better layout, proper styling
-- [x] **COMPLETED**: SiteFooter Enhancement - Better styling, improved content organization, mobile optimization
-- [x] **COMPLETED**: Smooth Scroll Behavior - Added to CSS globals for anchor links
-- [x] **COMPLETED**: Mobile Touch Targets - All buttons meet 48px minimum requirement
-- [x] **COMPLETED**: Build & Compile Testing - Project builds successfully with zero errors
+#### 1.1 DataTable Infrastructure Setup (1-2 days)
+- [ ] **Install TanStack Table Dependencies**
+  - [ ] Add @tanstack/react-table package
+  - [ ] Update package.json with latest version
+  - [ ] Verify compatibility with existing Shadcn/UI components
+  
+- [ ] **Create Base DataTable Components**
+  - [ ] Implement reusable DataTable wrapper component
+  - [ ] Create DataTableColumnHeader component with sorting
+  - [ ] Implement DataTablePagination component  
+  - [ ] Build DataTableViewOptions for column visibility
+  - [ ] Add DataTableToolbar for search and filters
 
-#### 🎯 **Key Improvements Delivered**:
-1. **Modern Hero Section** ✅ - Enhanced visual hierarchy with gradient text effects, background patterns, improved CTAs
-2. **Interactive Feature Cards** ✅ - Hover animations, modern shadows, improved layout with proper spacing
-3. **Professional Testimonials** ✅ - Better card design, improved rating display, enhanced profile sections
-4. **Polished Pricing Section** ✅ - Enhanced visual hierarchy, better feature highlighting, improved badges
-5. **Mobile-First Navigation** ✅ - Responsive header with hamburger menu, optimized mobile experience
-6. **Consistent Design System** ✅ - Unified spacing, typography, and color scheme throughout
+#### 1.2 Events DataTable Implementation (2-3 days)
+- [ ] **Replace Basic Events Table**
+  - [ ] Convert existing events table to DataTable
+  - [ ] Implement column definitions with proper typing
+  - [ ] Add sortable columns (name, date, revenue, tickets sold)
+  - [ ] Implement status filtering with multi-select
+  - [ ] Add global search across event name, location, description
+  
+- [ ] **Advanced DataTable Features**
+  - [ ] Row selection with bulk actions (delete, export, status change)
+  - [ ] Column visibility controls (show/hide columns)
+  - [ ] Advanced pagination with customizable page sizes
+  - [ ] Loading states with skeleton components
+  - [ ] Empty states with proper CTAs
+  
+- [ ] **Mobile DataTable Optimization**
+  - [ ] Responsive table design for mobile devices
+  - [ ] Essential columns prioritization on small screens
+  - [ ] Touch-friendly action menus
+  - [ ] Horizontal scroll for wide tables
 
-#### 📱 Mobile Responsiveness Results:
-- [x] **Hero Section**: Perfectly responsive with proper text scaling and button sizing
-- [x] **Feature Cards**: Responsive grid layout that adapts to mobile/tablet/desktop
-- [x] **Navigation**: Mobile hamburger menu with smooth transitions
-- [x] **Touch Targets**: All interactive elements meet 48px minimum requirement
-- [x] **Typography**: Responsive text scaling across all screen sizes
-- [x] **Layout**: Proper spacing and padding for all device sizes
+#### 1.3 DataTable Enhancement Features (1-2 days)
+- [ ] **Indonesian Localization**
+  - [ ] IDR currency formatting in revenue columns
+  - [ ] Indonesian date/time formatting
+  - [ ] Localized pagination labels and messages
+  - [ ] Bahasa Indonesia filter and search labels
+  
+- [ ] **Performance Optimization**
+  - [ ] Implement virtual scrolling for large datasets
+  - [ ] Optimize re-rendering with React.memo
+  - [ ] Add debounced search functionality
+  - [ ] Implement efficient filtering algorithms
+  
+- [ ] **Accessibility Compliance**
+  - [ ] ARIA labels for all interactive elements
+  - [ ] Keyboard navigation support
+  - [ ] Screen reader compatibility
+  - [ ] High contrast mode support
 
-#### 🚀 Performance & Quality Results:
-- [x] **Build Success**: ✅ Project compiles with zero TypeScript errors
-- [x] **Code Quality**: ✅ All components follow Clean Architecture principles
-- [x] **Accessibility**: ✅ Proper semantic HTML, ARIA labels, keyboard navigation
-- [x] **SEO Ready**: ✅ Proper heading hierarchy, meta descriptions, structured content
-- [x] **Mobile Performance**: ✅ Optimized for mobile-first Indonesian market
+#### 1.4 DataTable Integration & Testing (1 day)
+- [ ] **Integration with Existing Features**
+  - [ ] Connect DataTable to existing event repositories
+  - [ ] Integrate with current event creation/edit flows
+  - [ ] Ensure compatibility with existing state management
+  - [ ] Update TypeScript types and interfaces
+  
+- [ ] **Comprehensive Testing**
+  - [ ] Test all sorting functionality
+  - [ ] Verify filtering and search operations
+  - [ ] Test bulk actions and row selection
+  - [ ] Mobile responsiveness testing
+  - [ ] Accessibility testing with screen readers
 
-### ✅ Priority 2: Context-Aware Navigation System - **COMPLETED** ✅
-**Goal**: Implement professional SaaS navigation that adapts to user context
-**Status**: ✅ **FULLY COMPLETED** - All core features implemented and working.
-
-### ✅ Priority 3: Event Management System - **DATA LAYER & EDIT FUNCTIONALITY COMPLETED** ✅
-**Goal**: Complete event creation, editing, and management system
-**Status**: ✅ **FULLY COMPLETED** - All core event management features implemented and tested.
-
-#### What's Completed:
-- [x] Event Form Schemas - Complete Zod validation schemas for all 3 steps
-- [x] Event Form Store - Zustand store for multi-step form state management  
-- [x] Create Event Modal - Complete 3-step modal with progress indicators
-- [x] Event Details Form - Step 1: Basic event information (name, description, date, location, poster)
-- [x] Ticket Configuration Form - Step 2: Dynamic ticket types, pricing, revenue calculations
-- [x] Publication Settings Form - Step 3: URL slug generation, publication scheduling, terms
-- [x] Dashboard Integration - Connected all "Create Event" buttons to open modal
-- [x] TypeScript Compilation - All forms compile without errors
-- [x] Build Success - Complete application builds successfully
-- [x] **COMPLETED**: Complete Data Layer Implementation - All repository functions, use cases, and server actions
-- [x] **COMPLETED**: Event Repository Layer - Complete CRUD operations with database integration
-- [x] **COMPLETED**: Event Use Cases - Business logic hooks with TanStack Query optimization
-- [x] **COMPLETED**: Event Listing Integration - Real data integration throughout dashboard
-- [x] **COMPLETED**: Server Actions & Client/Server Boundary - Production-ready implementation
-- [x] **NEW**: Event Edit Modal Integration - Pre-populate form fields with existing event data
-- [x] **NEW**: Event Status Management - Draft/Published state transitions with UI controls
-- [x] **NEW**: Confirmation Dialogs - Destructive action protection for status changes
-- [x] **NEW**: Event Data Loading - Automatic form population when editing existing events
-- [x] **NEW**: Optimistic Updates - Immediate UI feedback for status changes
-- [x] **NEW**: End-to-End Testing - Full edit flow tested and working
-
-#### 🎯 **Major Features Delivered**:
-1. **Complete Event Edit Flow** ✅ - Click edit button → Modal opens → Form pre-populated → Save changes
-2. **Event Status Management** ✅ - Publish/Unpublish events with confirmation dialogs  
-3. **Form Data Pre-population** ✅ - Existing event data automatically loads into edit forms
-4. **Status Change Controls** ✅ - Context-aware menu items based on current event status
-5. **Confirmation Dialogs** ✅ - Prevent accidental status changes with clear descriptions
-6. **Type Safety** ✅ - Complete TypeScript integration with proper type conversion
-7. **Production Build** ✅ - All functionality builds successfully for production
-
-#### 🚀 **Technical Implementation Highlights**:
-- **Clean Architecture**: Edit functionality follows established patterns
-- **Type Safety**: Custom schemas for edit operations with proper validation
-- **Optimistic Updates**: Immediate UI feedback with TanStack Query integration
-- **Error Handling**: Comprehensive error states and user feedback
-- **Accessibility**: Proper ARIA labels and keyboard navigation support
-- **Mobile Responsive**: Edit functionality works seamlessly on all device sizes
-
-#### 📱 **User Experience Features**:
-- **Contextual Actions**: Edit/Publish/Unpublish buttons appear based on event status
-- **Clear Confirmations**: Descriptive dialogs explain consequences of status changes
-- **Loading States**: Visual feedback during status change operations
-- **Success Feedback**: Toast notifications confirm successful operations
-- **Error Recovery**: Clear error messages guide users when operations fail
-
-The event management system is now feature-complete with full CRUD operations, status management, and an excellent user experience. Users can create, edit, publish, and manage events seamlessly through the dashboard interface.
-
-### 🎫 Priority 4: Public Event Pages & Ticket Purchase (4-5 days)
+### 🎫 Priority 2: Public Event Pages & Ticket Purchase (4-5 days) - **UPDATED**
 **Goal**: Complete customer-facing event pages and purchase flow
 
-#### 3.1 Event Detail Page
+#### 2.1 Event Detail Page - **ENHANCED WITH DATATABLE**
 - [ ] Mobile-first event detail page design
 - [ ] Event information display (poster, description, date, location)
-- [ ] Ticket type selection interface
+- [ ] **Enhanced Ticket Selection DataTable**
+  - [ ] Ticket types displayed in sortable DataTable format
+  - [ ] Quantity selection with real-time availability
+  - [ ] Price comparison and filtering options
+  - [ ] Mobile-optimized ticket selection interface
 - [ ] Real-time availability updates
 - [ ] Social sharing functionality
-#### 3.2 Checkout Flow
+
+#### 2.2 Checkout Flow
 - [ ] Customer information form
   - [ ] Full name, email, WhatsApp number
   - [ ] Form validation with Indonesian phone number format
-- [ ] Order summary with IDR pricing
+- [ ] **Order Summary DataTable**
+  - [ ] Selected tickets displayed in table format
+  - [ ] Quantity adjustments with live total calculation
+  - [ ] Remove items functionality
 - [ ] Terms and conditions acceptance
 - [ ] Responsive design optimization
 
-#### 3.3 Payment Integration Structure
+#### 2.3 Payment Integration Structure  
 - [ ] Payment gateway abstraction interface
 - [ ] Mock payment implementation for development
 - [ ] Midtrans/Xendit integration planning
 - [ ] QRIS payment method support
 - [ ] E-wallet integration (GoPay, OVO, DANA)
 
-#### 3.4 E-Ticket System
+#### 2.4 E-Ticket System
 - [ ] QR code generation for tickets
 - [ ] PDF ticket generation
 - [ ] Email delivery system
 - [ ] Ticket validation system
 - [ ] Anti-fraud measures
 
-### 📱 Priority 5: QR Scanner & Check-in System (3-4 days)
-**Goal**: Complete event day check-in functionality
+### 📱 Priority 3: QR Scanner & Check-in System (3-4 days) - **ENHANCED WITH DATATABLE**
+**Goal**: Complete event day check-in functionality with advanced data management
 
-#### 4.1 Scanner Interface
+#### 3.1 Scanner Interface
 - [ ] Camera access and QR code scanning
 - [ ] Real-time scan feedback
 - [ ] Manual ticket entry backup
 - [ ] Offline capability planning
 
-#### 4.2 Check-in States
+#### 3.2 Check-in States
 - [ ] Success state (green) with attendee info
-- [ ] Already checked state (yellow) with timestamp
+- [ ] Already checked state (yellow) with timestamp  
 - [ ] Invalid ticket state (red) with error reason
 - [ ] Scan history and statistics
 
-#### 4.3 Event Staff Management  
-- [ ] Staff access controls
-- [ ] Multiple scanner support
-- [ ] Check-in analytics
-- [ ] Export attendee reports
+#### 3.3 **Enhanced Event Staff Management with DataTable**
+- [ ] **Staff Management DataTable**
+  - [ ] Staff list with sortable columns (name, role, permissions)
+  - [ ] Bulk staff operations (add, remove, update permissions)
+  - [ ] Search and filter staff members
+  - [ ] Role-based access control interface
+  
+- [ ] **Check-in Analytics DataTable**
+  - [ ] Real-time check-in data in sortable table format
+  - [ ] Attendee search and filtering capabilities
+  - [ ] Check-in status tracking with timestamps
+  - [ ] Export attendee reports in multiple formats
+  
+- [ ] **Multiple Scanner Support**
+  - [ ] Scanner device management in DataTable format
+  - [ ] Performance metrics per scanner
+  - [ ] Real-time synchronization status
 
-### ✨ Priority 6: Enhanced Features & Polish (3-4 days)
-**Goal**: Additional features and final optimizations
+### ✨ Priority 4: Enhanced Features & Polish (3-4 days) - **UPDATED WITH DATATABLE**
+**Goal**: Additional features and final optimizations with advanced data management
 
-#### 5.1 Indonesian Market Features
-- [ ] Complete IDR currency formatting
-- [ ] Indonesian date/time formatting
+#### 4.1 Indonesian Market Features
+- [ ] Complete IDR currency formatting in all DataTables
+- [ ] Indonesian date/time formatting across tables
 - [ ] WhatsApp integration for customer support
 - [ ] Local payment method prioritization
+- [ ] **Enhanced Localization DataTables**
+  - [ ] Localized table headers and pagination
+  - [ ] Indonesian number formatting in all data displays
+  - [ ] Cultural date format preferences in tables
 
-#### 5.2 Performance & SEO
+#### 4.2 Performance & SEO
 - [ ] Image optimization (Next.js Image component)
 - [ ] Bundle size optimization
 - [ ] SEO optimization for event pages
 - [ ] Performance monitoring setup
+- [ ] **DataTable Performance Optimization**
+  - [ ] Virtual scrolling for large datasets
+  - [ ] Optimized sorting and filtering algorithms
+  - [ ] Debounced search functionality
+  - [ ] Efficient re-rendering strategies
 
-#### 5.3 Accessibility & Testing
+#### 4.3 Accessibility & Testing
 - [ ] WCAG 2.1 AA compliance verification
 - [ ] Screen reader testing
 - [ ] Mobile device testing
 - [ ] Cross-browser compatibility
 - [ ] Performance testing
+- [ ] **DataTable Accessibility Enhancement**
+  - [ ] Complete ARIA label implementation
+  - [ ] Keyboard navigation for all table functions  
+  - [ ] Screen reader compatibility testing
+  - [ ] High contrast mode support
+  - [ ] Voice navigation support testing
+
+## Architecture Notes
+
+### 📐 Clean Architecture Implementation
+```
+src/app/
+├── (auth)/              # Route group for authentication
+│   ├── sign-in/         # Next.js route
+│   ├── sign-up/         # Next.js route
+│   ├── models/          # Auth types & schemas
+│   ├── stores/          # Auth-specific Zustand store
+│   └── view/            # Auth UI components
+├── (dashboard)/         # Route group for authenticated users
+│   ├── dashboard/       # Main dashboard route
+│   ├── view/            # Dashboard UI components
+│   └── layout.tsx       # Dashboard layout with navigation
+├── events/              # Public events + Event management feature
+│   ├── [eventId]/       # Dynamic route for event details
+│   ├── models/          # Event types & schemas
+│   ├── repositories/    # Event data access
+│   ├── usecases/        # Event business logic
+│   ├── stores/          # Event-specific state
+│   └── view/            # Event UI components
+└── api/                 # API routes (MVP only)
+```
+
+### 🛠️ Technology Stack - **UPDATED WITH DATATABLE**
+- **Framework**: Next.js 15 with App Router
+- **Language**: TypeScript (strict mode, NO `any` types)
+- **Database**: PostgreSQL + Drizzle ORM
+- **Authentication**: Better-auth with Organization plugin
+- **UI**: Shadcn/UI + Tailwind CSS
+- **State Management**: TanStack Query + Zustand
+- **Tables**: **TanStack Table + Shadcn/UI DataTable** 🆕
+- **Forms**: React Hook Form + Zod validation
+- **Payment**: Abstracted interface (Midtrans/Xendit for Indonesia)
+
+### ✅ Current Implementation Status
+✅ **COMPLETED**: Authentication system with Better Auth and organization plugin
+✅ **COMPLETED**: Clean Architecture structure with proper folder organization
+✅ **COMPLETED**: Landing page with all sections from UX Structure Plan
+✅ **COMPLETED**: Full organizer dashboard matching UX Structure Plan exactly
+✅ **COMPLETED**: Dashboard navigation with user profile management
+✅ **COMPLETED**: All TypeScript compilation errors resolved
+✅ **COMPLETED**: Suspense boundaries for Next.js 15 compatibility
+✅ **COMPLETED**: Event Management System with full CRUD operations
+🆕 **NEW PRIORITY**: DataTable migration for enhanced data management
+
+### 🏗️ Folder Structure
+- **Features**: Located under `/src/app/[feature-name]/` following Next.js App Router
+- **Global Utilities**: Located under `/src/lib/`, `/src/components/ui/`, `/src/stores/`
+- **Clean Architecture Layers** (within each feature):
+  - `view/` - UI components (Container + Presentation)
+  - `usecases/` - Business logic hooks
+  - `repositories/` - Data access layer
+  - `models/` - Types, interfaces, and schemas
+
+### 🔒 Multi-tenancy Implementation
+- Every data table includes `organizationId` for tenant isolation
+- Session management includes organization context
+- All queries automatically filter by organization
+- User creation automatically creates organization
+- Ready for SaaS scaling
+
+## 🎯 Success Metrics & Validation
+
+### MVP Success Criteria
+- **Activation Rate**: >40% of sign-ups create and publish their first event
+- **Transaction Volume**: 500+ paid tickets processed monthly by Month 3
+- **Organizer Retention**: >25% create a second event within 2 months
+- **Mobile Performance**: <3 second page load times on mobile
+
+### Technical Success Criteria
+- **Code Quality**: Zero TypeScript `any` types, comprehensive error handling
+- **Accessibility**: WCAG 2.1 AA compliance
+- **Performance**: 90+ Lighthouse scores across all pages
+- **Security**: Multi-tenant data isolation, secure authentication
+- 🆕 **DataTable Performance**: <200ms sorting/filtering on 1000+ records
+
+## 🚀 Immediate Next Steps
+
+### Today's Action Plan - **DataTable Migration Priority** 🆕
+1. 🆕 **[NEW PRIORITY]** Install TanStack Table dependencies
+2. 🆕 **[NEW PRIORITY]** Create reusable DataTable components following OriginUI design
+3. 🆕 **[NEW PRIORITY]** Replace basic Events table with enhanced DataTable
+4. 🆕 **[NEW PRIORITY]** Implement advanced features (search, filtering, sorting, selection)
+5. 🆕 **[NEW PRIORITY]** Add mobile-responsive DataTable optimization
+6. 🆕 **[NEW PRIORITY]** Test DataTable functionality with existing event data
+7. 🆕 **[NEW PRIORITY]** Implement Indonesian localization for DataTable elements
+
+### Next Priority - **Public Event Pages & Ticket Purchase** - **ENHANCED**
+**Goal**: Complete customer-facing event pages with advanced DataTable functionality
+
+#### Next Implementation Tasks:
+1. **Public Event Detail Pages** - Create customer-facing event view pages with DataTable ticket selection
+2. **Enhanced Ticket Selection Interface** - DataTable format for comparing and selecting tickets
+3. **Checkout Flow** - Order summary in DataTable format with live calculations
+4. **Payment Integration** - Implement payment gateway abstraction
+5. **E-Ticket Generation** - QR codes and PDF ticket delivery system with tracking tables
+
+### Weekly Milestones - **UPDATED**
+- **Week 1**: ✅ Navigation complete → ✅ Event Management complete → 🆕 **DataTable Migration**
+- **Week 2**: Complete public pages with DataTable enhancements and begin QR scanner system  
+- **Week 3**: Complete QR scanner with DataTable analytics and ticket validation system
+- **Week 4**: Final polish, testing, and MVP launch preparation
+
+### Code Quality Standards
+- **TypeScript**: Strict mode, no `any` types, comprehensive interfaces
+- **Component Architecture**: Container/Presentation pattern within Clean Architecture
+- **Validation**: All external data validated with Zod schemas
+- **Accessibility**: Semantic HTML first, ARIA only when necessary
+- **Mobile-First**: All components designed and tested mobile-first
+- **Multi-tenancy**: Every database operation includes organization filtering
+- 🆕 **DataTable Standards**: TanStack Table best practices, optimized performance
+
+## Next Steps
+**Current Status**: DataTable Migration - NEWLY PRIORITIZED 🆕
+
+The application now has:
+✅ **COMPLETED**: Modern, professional SaaS landing page with excellent mobile responsiveness
+✅ **COMPLETED**: Fully functional authentication system with multi-tenancy 
+✅ **COMPLETED**: Complete organizer dashboard matching UX Structure Plan
+✅ **COMPLETED**: Professional SaaS navigation system with context-aware routing
+✅ **COMPLETED**: Event Management System - Complete UI Layer (3-step modal system)
+✅ **COMPLETED**: Event Management System - Complete Data Layer (repositories, use cases, server actions)
+✅ **COMPLETED**: Event Edit Modal & Status Management - Full CRUD with status transitions
+
+🆕 **NEXT ACTION**: Begin DataTable Migration - Replace basic tables with advanced TanStack Table implementation featuring search, filtering, sorting, column visibility, row selection, and mobile optimization.
+
+**MAJOR ENHANCEMENT PLANNED**: Upgrade to DataTable system will provide:
+
+🎨 **Enhanced Data Management**:
+- Advanced search and filtering across all data columns
+- Multi-column sorting with visual indicators
+- Column visibility controls for customized views
+- Row selection with bulk operations
+
+📊 **Professional Data Display**:
+- Real-time data updates with optimistic UI
+- Loading states and skeleton placeholders
+- Empty states with actionable CTAs
+- Mobile-responsive table design
+
+🔧 **Advanced Functionality**:
+- Pagination with customizable page sizes
+- Export functionality for data analysis
+- Accessibility compliance with keyboard navigation
+- Indonesian localization throughout
+
+🏗️ **Technical Excellence**:
+- TypeScript-strict implementation with proper typing
+- Performance optimized for large datasets
+- Clean Architecture integration maintained
+- Production-ready build compatibility
+
+The DataTable migration will transform Gatherly into a professional SaaS platform with enterprise-level data management capabilities, providing organizers with powerful tools to analyze and manage their events effectively.
 
 ## Architecture Notes
 

@@ -167,27 +167,99 @@ Summary Cards Section
 My Events Section
 |
 |— Card (Section container)
-|   |— CardHeader (Section title and filters)
-|   |   |— Select (Filter dropdown)
+|   |— CardHeader (Section title and actions)
+|   |   |— Typography (Section heading)
+|   |   |— Button (View all events link)
 |   |
-|   |— Events Table
-|   |   |— Table (Events data display)
-|   |   |— TableHeader (Column headers)
-|   |   |— TableBody (Data rows)
-|   |   |— TableRow (Individual event rows)
-|   |   |— TableCell (Data cells)
-|   |   |— Avatar (Event poster thumbnails)
-|   |   |— Badge (Status badges)
-|   |   |— Progress (Ticket sales progress)
-|   |   |— Button (Action buttons)
-|   |   |— DropdownMenu (Action menu)
-|   |   |   |— DropdownMenuContent (Action options)
-|   |   |   |— DropdownMenuItem (Individual actions)
+|   |— Events DataTable System (TanStack Table Implementation)
+|   |   |— DataTable Toolbar Components
+|   |   |   |— Input (Global search with search icon)
+|   |   |   |— Popover (Status filter dropdown)
+|   |   |   |   |— PopoverTrigger (Filter button with badge count)
+|   |   |   |   |— PopoverContent (Filter options)
+|   |   |   |   |— Checkbox (Multi-select status filters)
+|   |   |   |   |— Label (Filter labels with counts)
+|   |   |   |
+|   |   |   |— DropdownMenu (Column visibility toggle)
+|   |   |   |   |— DropdownMenuTrigger (Columns button)
+|   |   |   |   |— DropdownMenuContent (Column options)
+|   |   |   |   |— DropdownMenuCheckboxItem (Show/hide columns)
+|   |   |   |
+|   |   |   |— AlertDialog (Bulk delete confirmation)
+|   |   |   |   |— AlertDialogTrigger (Delete selected button)
+|   |   |   |   |— AlertDialogContent (Confirmation dialog)
+|   |   |   |   |— AlertDialogAction (Confirm delete)
+|   |   |   |
+|   |   |   |— Button (Add event, Export data, Refresh)
+|   |   |   |— Badge (Selection count indicator)
 |   |   |
-|   |   |— Empty State
-|   |       |— Card (Empty state container)
-|   |       |— Typography (Empty message)
-|   |       |— Button (Create first event CTA)
+|   |   |— Enhanced DataTable Components
+|   |   |   |— Table (Core table with fixed layout)
+|   |   |   |— TableHeader (Sortable column headers)
+|   |   |   |   |— TableHead (Column header cells with sorting)
+|   |   |   |   |— Button (Sort toggle with chevron icons)
+|   |   |   |   |— Checkbox (Select all checkbox)
+|   |   |   |
+|   |   |   |— TableBody (Data rows container)
+|   |   |   |— TableRow (Individual event rows with selection state)
+|   |   |   |— TableCell (Data cells with proper alignment)
+|   |   |   |   |— Checkbox (Row selection)
+|   |   |   |   |— Avatar (Event poster thumbnails)
+|   |   |   |   |— Link (Event name as clickable link)
+|   |   |   |   |— Typography (Formatted date, location, revenue)
+|   |   |   |   |— Badge (Status badges with color variants)
+|   |   |   |   |— Progress (Ticket sales progress bar)
+|   |   |   |   |— DropdownMenu (Row action menu)
+|   |   |   |       |— DropdownMenuTrigger (Three dots menu button)
+|   |   |   |       |— DropdownMenuContent (Action options)
+|   |   |   |       |— DropdownMenuItem (Individual actions)
+|   |   |   |       |— DropdownMenuSeparator (Visual separation)
+|   |   |   |
+|   |   |   |— Empty State Components
+|   |   |   |   |— TableRow (Empty state row)
+|   |   |   |   |— TableCell (Centered empty message)
+|   |   |   |   |— Typography ("No results" message)
+|   |   |   |   |— Button (Create first event CTA)
+|   |   |   |
+|   |   |   |— Loading State Components
+|   |   |       |— Skeleton (Loading placeholder rows)
+|   |   |       |— TableRow (Skeleton row containers)
+|   |   |       |— TableCell (Skeleton cell content)
+|   |   |
+|   |   |— Advanced DataTable Pagination  
+|   |       |— Pagination Container
+|   |       |   |— Label (Rows per page label)
+|   |       |   |— Select (Page size selector)
+|   |       |   |   |— SelectTrigger (Dropdown trigger)
+|   |       |   |   |— SelectContent (Size options)
+|   |       |   |   |— SelectItem (10, 25, 50, 100 options)
+|   |       |   |
+|   |       |   |— Typography (Page info display)
+|   |       |   |— Button (First/Previous/Next/Last navigation)
+|   |       |   |— ChevronFirstIcon, ChevronLeftIcon, ChevronRightIcon, ChevronLastIcon
+|   |       |
+|   |       |— Selection Status Display
+|   |           |— Typography (Selected rows count)
+|   |           |— Typography (Total rows count)
+|   |           |— Button (Clear selection)
+
+DataTable Dependencies & Requirements
+|
+|— Required Packages
+|   |— @tanstack/react-table (Core table functionality)
+|   |— Existing Shadcn/UI components
+|   |
+|— Enhanced Features Implementation
+|   |— Multi-column filtering with custom filter functions
+|   |— Global search across multiple columns
+|   |— Column sorting with multiple sort states
+|   |— Row selection with bulk actions
+|   |— Column visibility controls
+|   |— Pagination with customizable page sizes
+|   |— Loading and empty states
+|   |— Mobile-responsive table design
+|   |— Accessibility compliance (ARIA labels, keyboard navigation)
+|   |— Indonesian localization (IDR formatting, date formats)
 
 Recent Activity Section
 |
@@ -348,16 +420,92 @@ Validation & Feedback
 ## 8. Data Display Components
 
 ```
-Tables & Lists Structure
+Enhanced DataTable System (TanStack Table + Shadcn/UI)
 |
-|— Table (Data tables)
-|   |— TableHeader (Table headers)
-|   |— TableBody (Table content)
-|   |— TableRow (Table rows)
-|   |— TableHead (Column headers)
-|   |— TableCell (Data cells)
-|   |— DataTable (Enhanced table with sorting/filtering)
-|   |— Pagination (Table pagination)
+|— DataTable Core Components
+|   |— useReactTable (TanStack Table hook for state management)
+|   |— Table (Shadcn base table component)
+|   |— TableHeader (Column headers with sorting capabilities)
+|   |— TableBody (Data rows container)
+|   |— TableRow (Individual rows with selection state)
+|   |— TableHead (Sortable column headers)
+|   |— TableCell (Data cells with proper content alignment)
+|
+|— DataTable Enhanced Features
+|   |— Column Sorting
+|   |   |— Button (Sort toggle with visual indicators)
+|   |   |— ChevronUpIcon, ChevronDownIcon (Sort direction icons)
+|   |   |— Multi-column sorting support
+|   |
+|   |— Column Filtering & Search
+|   |   |— Input (Global search with search icon)
+|   |   |— Popover (Advanced filter dropdown)
+|   |   |— Checkbox (Multi-select filters)
+|   |   |— Custom filter functions for complex data
+|   |
+|   |— Column Visibility
+|   |   |— DropdownMenu (Column toggle menu)
+|   |   |— DropdownMenuCheckboxItem (Show/hide individual columns)
+|   |   |— Persistent column preferences
+|   |
+|   |— Row Selection
+|   |   |— Checkbox (Row and header selection checkboxes)
+|   |   |— Bulk action support
+|   |   |— Selection state management
+|   |
+|   |— Advanced Pagination
+|   |   |— Pagination (Enhanced pagination component)
+|   |   |— Select (Rows per page selector)
+|   |   |— Button (First, Previous, Next, Last navigation)
+|   |   |— Typography (Page information display)
+|   |   |— Custom page size options (5, 10, 25, 50, 100)
+|
+|— DataTable Action Components  
+|   |— Row Actions
+|   |   |— DropdownMenu (Three dots menu for each row)
+|   |   |— DropdownMenuTrigger (EllipsisIcon button)
+|   |   |— DropdownMenuContent (Action options)
+|   |   |— DropdownMenuItem (Edit, View, Delete, etc.)
+|   |   |— DropdownMenuSeparator (Visual grouping)
+|   |
+|   |— Bulk Actions
+|   |   |— AlertDialog (Bulk delete confirmation)
+|   |   |— Button (Bulk operation triggers)
+|   |   |— Badge (Selection count indicator)
+|   |
+|   |— Data Export
+|   |   |— Button (Export selected/all data)
+|   |   |— Select (Export format options)
+|   |   |— Progress (Export progress indicator)
+|
+|— DataTable State Management
+|   |— Sorting State (SortingState from TanStack Table)
+|   |— Filter State (ColumnFiltersState)
+|   |— Visibility State (VisibilityState) 
+|   |— Selection State (RowSelectionState)
+|   |— Pagination State (PaginationState)
+|
+|— DataTable Responsive Design
+|   |— Mobile Table Adaptation
+|   |   |— Horizontal scroll for wide tables
+|   |   |— Essential columns prioritized
+|   |   |— Action menu accessible on mobile
+|   |
+|   |— Loading & Empty States
+|   |   |— Skeleton (Loading state placeholders)
+|   |   |— EmptyState (No data illustration)
+|   |   |— Typography (Helper messages)
+|   |   |— Button (Call-to-action for empty states)
+
+Basic Table Components (for simple displays)
+|
+|— Table (Simple data display without advanced features)
+|   |— TableHeader (Basic column headers)
+|   |— TableBody (Simple data rows)
+|   |— TableRow (Basic table rows)
+|   |— TableHead (Simple column headers)
+|   |— TableCell (Basic data cells)
+|   |— Simple pagination with Pagination component
 
 Cards & Content Structure
 |
