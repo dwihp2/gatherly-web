@@ -31,7 +31,7 @@ const STEP_DESCRIPTIONS = {
   [EventFormStep.PUBLICATION]: 'Choose how to publish your event'
 }
 
-export function CreateEventPageContainer() {
+export function CreateEventPageContainer({ isEditMode = false }: { isEditMode?: boolean }) {
   const router = useRouter()
   const { user } = useAuth()
   const {
@@ -44,13 +44,16 @@ export function CreateEventPageContainer() {
     publicationSettings,
     resetForm,
     getFormData,
-    setLoading
+    setLoading,
+    isEditMode: storeIsEditMode
   } = useEventFormStore()
 
-  // Initialize form state
+  // Initialize form state only for create mode
   useEffect(() => {
-    resetForm()
-  }, [resetForm])
+    if (!isEditMode && !storeIsEditMode) {
+      resetForm()
+    }
+  }, [resetForm, isEditMode, storeIsEditMode])
 
   // Handle form submission
   const handleSubmit = async () => {
@@ -104,6 +107,9 @@ export function CreateEventPageContainer() {
   // Get button text based on current step and publication settings
   const getNextButtonText = () => {
     if (currentStep === EventFormStep.PUBLICATION) {
+      if (isEditMode || storeIsEditMode) {
+        return 'Update Event'
+      }
       return publicationSettings.isPublished ? 'Publish Event' : 'Save Draft'
     }
     return 'Continue'
@@ -154,7 +160,9 @@ export function CreateEventPageContainer() {
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">Create New Event</h1>
+            <h1 className="text-3xl font-bold tracking-tight">
+              {isEditMode || storeIsEditMode ? 'Edit Event' : 'Create New Event'}
+            </h1>
             <p className="text-muted-foreground">
               {STEP_DESCRIPTIONS[currentStep]}
             </p>

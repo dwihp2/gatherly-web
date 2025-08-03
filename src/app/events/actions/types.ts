@@ -5,5 +5,5 @@
  * Types for client-side imports from event actions
  */
 
-export type { UpdateEventInput } from '../repositories/updateEvent'
-export type { CreateEventInput, Event } from '../models/interfaces/event'
+export type { UpdateEventRepositoryInput } from '../repositories/updateEvent'
+export type { CreateEventInput, Event, UpdateEventInput, UpdateEventWithIdInput } from '../models/interfaces/event'

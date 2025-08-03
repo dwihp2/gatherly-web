@@ -1,13 +1,10 @@
 /**
  * Event Details Form - Step 1 of Create Event Modal
- * Location: app/events/view/present          <FormField
-            control={form.control}
-            name="dateTime"
-            render={() => (n/EventDetailsForm.tsx
+ * Location: app/events/view/presentation/EventDetailsForm.tsx
  */
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -44,6 +41,8 @@ export function EventDetailsForm() {
     clearErrors
   } = useEventFormStore()
 
+  const isUpdatingFromStore = useRef(false)
+
   const form = useForm<EventDetailsFormData>({
     resolver: zodResolver(EventDetailsSchema),
     defaultValues: eventDetails,
@@ -52,10 +51,24 @@ export function EventDetailsForm() {
 
   const { formState: { isValid } } = form
 
+  // Sync form with store data when editing (prevent circular updates)
+  useEffect(() => {
+    isUpdatingFromStore.current = true
+    form.reset(eventDetails)
+    // Trigger validation after reset to ensure form state is properly updated
+    setTimeout(() => {
+      form.trigger() // Trigger validation for all fields
+      isUpdatingFromStore.current = false
+    }, 0)
+  }, [eventDetails, form])
+
   // Watch form changes and update store - use subscription to avoid infinite loops
   useEffect(() => {
     const subscription = form.watch((formValues) => {
-      updateEventDetails(formValues as EventDetailsFormData)
+      // Only update store if we're not currently syncing from store
+      if (!isUpdatingFromStore.current) {
+        updateEventDetails(formValues as EventDetailsFormData)
+      }
     })
     return () => subscription.unsubscribe()
   }, [form, updateEventDetails])

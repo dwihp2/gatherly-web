@@ -9,6 +9,21 @@ export const CreateEventSchema = z.object({
   posterUrl: z.string().url().optional(),
 })
 
+export const UpdateEventSchema = CreateEventSchema.extend({
+  status: z.enum(['draft', 'published', 'cancelled']).optional(),
+}).partial().extend({
+  tenantId: z.string().uuid(), // Keep tenantId required
+})
+
+// Schema for repository validation (without tenantId since it's extracted separately)
+export const UpdateEventDataSchema = CreateEventSchema.extend({
+  status: z.enum(['draft', 'published', 'cancelled']).optional(),
+}).partial()
+
+export const UpdateEventWithIdSchema = UpdateEventSchema.extend({
+  id: z.string().uuid(), // Add id for use case input
+})
+
 export const EventSchema = CreateEventSchema.extend({
   id: z.string().uuid(),
   status: z.enum(['draft', 'published', 'cancelled']),
@@ -30,5 +45,7 @@ export const TicketTypeSchema = z.object({
 })
 
 export type CreateEventInput = z.infer<typeof CreateEventSchema>
+export type UpdateEventInput = z.infer<typeof UpdateEventSchema>
+export type UpdateEventWithIdInput = z.infer<typeof UpdateEventWithIdSchema>
 export type Event = z.infer<typeof EventSchema>
 export type TicketType = z.infer<typeof TicketTypeSchema>

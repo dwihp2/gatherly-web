@@ -4,7 +4,7 @@
  */
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -60,6 +60,7 @@ export function PublicationSettingsForm() {
   const [isCheckingSlug, setIsCheckingSlug] = useState(false)
   const [slugAvailable, setSlugAvailable] = useState<boolean | null>(null)
   const [copied, setCopied] = useState(false)
+  const isUpdatingFromStore = useRef(false)
 
   const form = useForm<PublicationSettingsFormData>({
     resolver: zodResolver(PublicationSettingsSchema),
@@ -69,10 +70,23 @@ export function PublicationSettingsForm() {
 
   const { formState: { isValid }, setValue } = form
 
+  // Sync form with store data when editing (prevent circular updates)
+  useEffect(() => {
+    isUpdatingFromStore.current = true
+    form.reset(publicationSettings)
+    setTimeout(() => {
+      form.trigger() // Trigger validation for all fields
+      isUpdatingFromStore.current = false
+    }, 0)
+  }, [publicationSettings, form])
+
   // Watch form changes and update store - use subscription to avoid infinite loops
   useEffect(() => {
     const subscription = form.watch((formValues) => {
-      updatePublicationSettings(formValues as PublicationSettingsFormData)
+      // Only update store if we're not currently syncing from store
+      if (!isUpdatingFromStore.current) {
+        updatePublicationSettings(formValues as PublicationSettingsFormData)
+      }
     })
     return () => subscription.unsubscribe()
   }, [form, updatePublicationSettings])

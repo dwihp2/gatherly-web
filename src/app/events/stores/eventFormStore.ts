@@ -104,9 +104,15 @@ export const useEventFormStore = create<EventFormStore>()((set, get) => ({
   },
 
   closeModal: () => {
-    const { resetForm } = get()
-    set({ isModalOpen: false })
-    resetForm()
+    set({
+      isModalOpen: false,
+      isEditMode: false,
+      editingEventId: null
+    })
+    // Reset form data after a brief delay to prevent race conditions
+    setTimeout(() => {
+      get().resetForm()
+    }, 100)
   },
 
   // Step navigation
@@ -226,7 +232,9 @@ export const useEventFormStore = create<EventFormStore>()((set, get) => ({
       ticketConfiguration: {
         ticketTypes: [defaultTicketTypeValues]
       },
-      publicationSettings: defaultPublicationValues
+      publicationSettings: defaultPublicationValues,
+      isEditMode: false,
+      editingEventId: null
     })
   }
 }))

@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { useEventFormStore } from '../../stores/eventFormStore'
 import { useCreateEvent } from '../../usecases/useCreateEvent'
 import { useUpdateEvent } from '../../usecases/useUpdateEvent'
+import { useEventById } from '../../usecases/useEventById'
 import { CreateEventModal } from '../presentation/CreateEventModal'
 import { EventDetailsForm } from '../presentation/EventDetailsForm'
 import { TicketConfigurationForm } from '../presentation/TicketConfigurationForm'
@@ -22,25 +23,87 @@ export function CreateEventModalContainer() {
   const router = useRouter()
   const { user } = useAuth()
   const {
+    // Modal state
     isModalOpen,
     isEditMode,
     editingEventId,
     currentStep,
+
+    // Actions
     closeModal,
-    resetForm,
-    getFormData,
+    updateEventDetails,
+    updateTicketConfiguration,
+    updatePublicationSettings,
+    getFormData
   } = useEventFormStore()
 
   // Mutations for creating and updating events
   const createEventMutation = useCreateEvent()
   const updateEventMutation = useUpdateEvent()
 
+  // Fetch event data when in edit mode
+  const { data: editingEvent, isLoading: isLoadingEvent } = useEventById(
+    editingEventId || undefined,
+    user?.tenantId || undefined
+  )
+
+  // Load existing event data into form when editing
+  useEffect(() => {
+    if (isEditMode && editingEvent && !isLoadingEvent) {
+      console.log('Loading event data for editing:', editingEvent)
+
+      // Convert ISO datetime to datetime-local format (YYYY-MM-DDTHH:mm)
+      const formatDateTimeForInput = (isoString: string) => {
+        const date = new Date(isoString)
+        // Format as YYYY-MM-DDTHH:mm (datetime-local format)
+        const year = date.getFullYear()
+        const month = String(date.getMonth() + 1).padStart(2, '0')
+        const day = String(date.getDate()).padStart(2, '0')
+        const hours = String(date.getHours()).padStart(2, '0')
+        const minutes = String(date.getMinutes()).padStart(2, '0')
+        return `${year}-${month}-${day}T${hours}:${minutes}`
+      }
+
+      // Update event details
+      updateEventDetails({
+        name: editingEvent.name,
+        description: editingEvent.description || '',
+        dateTime: formatDateTimeForInput(editingEvent.dateTime),
+        location: editingEvent.location,
+        posterUrl: editingEvent.posterUrl || '',
+      })
+
+      // For now, populate with default ticket data
+      // TODO: Load actual ticket types from event
+      updateTicketConfiguration({
+        ticketTypes: [{
+          name: 'General Admission',
+          price: 50000,
+          quantity: 100,
+          description: 'Standard event access'
+        }]
+      })
+
+      // Update publication settings
+      updatePublicationSettings({
+        slug: `${editingEvent.name.toLowerCase().replace(/\s+/g, '-')}-${Date.now()}`,
+        isPublished: editingEvent.status === 'published',
+        publishDate: undefined,
+        termsAccepted: true,
+      })
+    }
+  }, [isEditMode, editingEvent, isLoadingEvent, updateEventDetails, updateTicketConfiguration, updatePublicationSettings])
+
   // Handle expand to full page
   const handleExpand = () => {
     // Save current form state and close modal
     closeModal()
-    // Navigate to full page
-    router.push('/events/create')
+    // Navigate to appropriate full page
+    if (isEditMode && editingEventId) {
+      router.push(`/events/${editingEventId}/edit`)
+    } else {
+      router.push('/events/create')
+    }
   }
 
   // Handle form submission
@@ -54,7 +117,7 @@ export function CreateEventModalContainer() {
 
     try {
       const formData = getFormData()
-      
+
       // Prepare data for API
       const eventData: CreateEventInput = {
         tenantId: user.tenantId,
@@ -82,7 +145,7 @@ export function CreateEventModalContainer() {
 
     } catch (error) {
       console.error('Error submitting event:', error)
-      
+
       // Show error toast if mutations didn't handle it
       toast.error('Submission failed', {
         description: error instanceof Error ? error.message : 'Please try again'
@@ -93,21 +156,16 @@ export function CreateEventModalContainer() {
   // Handle modal close
   const handleClose = () => {
     const isSubmitting = createEventMutation.isPending || updateEventMutation.isPending
-    
+
     if (!isSubmitting) {
       closeModal()
     }
   }
 
-  // Reset form when modal closes
-  useEffect(() => {
-    if (!isModalOpen) {
-      resetForm()
-    }
-  }, [isModalOpen, resetForm])
+  // Note: Form reset is now handled by the store's closeModal function
 
   // Loading state
-  const isLoading = createEventMutation.isPending || updateEventMutation.isPending
+  const isLoading = createEventMutation.isPending || updateEventMutation.isPending || (isEditMode && isLoadingEvent)
 
   // Render step content
   const renderStepContent = () => {

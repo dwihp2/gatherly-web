@@ -1,15 +1,10 @@
 /**
- * Ticket Configuration Form -import { 
-  TicketConfigurationSchema, 
-  TicketConfigurationFormData,
-  TicketTypeFormData,
-  EventFormStep 
-} from '../../models/interfaces/eventForm' 2 of Create Event Modal
+ * Ticket Configuration Form - Step 2 of Create Event Modal
  * Location: app/events/view/presentation/TicketConfigurationForm.tsx
  */
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
@@ -55,6 +50,8 @@ export function TicketConfigurationForm() {
     clearErrors
   } = useEventFormStore()
 
+  const isUpdatingFromStore = useRef(false)
+
   const form = useForm<TicketConfigurationFormData>({
     resolver: zodResolver(TicketConfigurationSchema),
     defaultValues: ticketConfiguration,
@@ -63,10 +60,23 @@ export function TicketConfigurationForm() {
 
   const { formState: { isValid }, setValue, control } = form
 
+  // Sync form with store data when editing (prevent circular updates)
+  useEffect(() => {
+    isUpdatingFromStore.current = true
+    form.reset(ticketConfiguration)
+    setTimeout(() => {
+      form.trigger() // Trigger validation for all fields
+      isUpdatingFromStore.current = false
+    }, 0)
+  }, [ticketConfiguration, form])
+
   // Watch form changes and update store - use subscription to avoid infinite loops
   useEffect(() => {
     const subscription = form.watch((formValues) => {
-      updateTicketConfiguration(formValues as TicketConfigurationFormData)
+      // Only update store if we're not currently syncing from store
+      if (!isUpdatingFromStore.current) {
+        updateTicketConfiguration(formValues as TicketConfigurationFormData)
+      }
     })
     return () => subscription.unsubscribe()
   }, [form, updateTicketConfiguration])
