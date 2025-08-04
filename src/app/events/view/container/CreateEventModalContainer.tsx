@@ -16,6 +16,7 @@ import { TicketConfigurationForm } from '../presentation/TicketConfigurationForm
 import { PublicationSettingsForm } from '../presentation/PublicationSettingsForm'
 import { EventFormStep } from '../../models/interfaces/eventForm'
 import { useAuth } from '../../../(auth)/hooks/useAuth'
+import { generateSlug } from '@/lib/utils/slug'
 import { toast } from 'sonner'
 import type { CreateEventInput } from '../../models/interfaces/event'
 
@@ -122,6 +123,7 @@ export function CreateEventModalContainer() {
       const eventData: CreateEventInput = {
         tenantId: user.tenantId,
         name: formData.name,
+        slug: generateSlug(formData.name), // Generate slug from event name
         description: formData.description,
         dateTime: formData.dateTime,
         location: formData.location,

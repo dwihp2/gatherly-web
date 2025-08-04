@@ -38,6 +38,7 @@ export async function updateEvent(input: UpdateEventRepositoryInput): Promise<Ev
     const updateValues: Record<string, unknown> = {}
 
     if (validatedData.name) updateValues.name = validatedData.name
+    if (validatedData.slug) updateValues.slug = validatedData.slug
     if (validatedData.description !== undefined) updateValues.description = validatedData.description
     if (validatedData.dateTime) updateValues.dateTime = new Date(validatedData.dateTime)
     if (validatedData.location) updateValues.location = validatedData.location
@@ -67,6 +68,7 @@ export async function updateEvent(input: UpdateEventRepositoryInput): Promise<Ev
       id: updatedEvent.id,
       tenantId: updatedEvent.organizationId, // Map organizationId back to tenantId
       name: updatedEvent.name,
+      slug: updatedEvent.slug, // Include slug from database
       description: updatedEvent.description || '',
       dateTime: updatedEvent.dateTime.toISOString(),
       location: updatedEvent.location,

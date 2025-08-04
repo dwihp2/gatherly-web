@@ -1,3 +1,4 @@
+import { generateSlug } from '@/lib/utils/slug'
 import type { Event } from '../interfaces/event'
 
 export const dummyEvents: Event[] = [
@@ -14,6 +15,7 @@ export const dummyEvents: Event[] = [
     totalRevenue: 25000000,
     createdAt: new Date("2025-01-01"),
     updatedAt: new Date("2025-01-01"),
+    slug: generateSlug("Jakarta Music Festival")
   },
   {
     id: "2",
@@ -28,6 +30,7 @@ export const dummyEvents: Event[] = [
     totalRevenue: 0,
     createdAt: new Date("2025-07-01"),
     updatedAt: new Date("2025-07-01"),
+    slug: generateSlug("Tech Workshop: AI in 2025")
   },
   {
     id: "3",
@@ -42,5 +45,6 @@ export const dummyEvents: Event[] = [
     totalRevenue: 9000000,
     createdAt: new Date("2025-06-01"),
     updatedAt: new Date("2025-06-01"),
+    slug: generateSlug("Campus Cultural Night")
   },
 ]

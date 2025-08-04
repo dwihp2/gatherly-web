@@ -10,11 +10,11 @@ import type { Event } from '../models/interfaces/event'
 
 export async function getEventById(eventId: string, organizationId: string): Promise<Event | null> {
   console.log('Repository: Fetching event by ID:', eventId, 'for organization:', organizationId)
-  
+
   if (!eventId || !organizationId) {
     throw new Error('Event ID and Organization ID are required')
   }
-  
+
   try {
     const [event] = await db.select()
       .from(eventsTable)
@@ -23,19 +23,20 @@ export async function getEventById(eventId: string, organizationId: string): Pro
         eq(eventsTable.organizationId, organizationId) // Ensure tenant isolation
       ))
       .limit(1)
-    
+
     if (!event) {
       console.log('Repository: Event not found')
       return null
     }
-    
+
     console.log('Repository: Found event:', event.name)
-    
+
     // Transform database result to match Event interface
     const transformedEvent: Event = {
       id: event.id,
       tenantId: event.organizationId, // Map organizationId back to tenantId
       name: event.name,
+      slug: event.slug, // Include slug from database
       description: event.description || '',
       dateTime: event.dateTime.toISOString(),
       location: event.location,
@@ -47,9 +48,9 @@ export async function getEventById(eventId: string, organizationId: string): Pro
       createdAt: event.createdAt!,
       updatedAt: event.updatedAt!,
     }
-    
+
     return transformedEvent
-    
+
   } catch (error) {
     console.error('Repository: Failed to fetch event:', error)
     throw new Error('Failed to fetch event. Please try again.')
