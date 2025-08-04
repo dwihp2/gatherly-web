@@ -104,6 +104,7 @@ export const eventsTable = pgTable('events', {
   // Multi-tenancy: Every event belongs to an organization
   organizationId: uuid('organization_id').notNull().references(() => organizationTable.id, { onDelete: 'cascade' }),
   name: varchar('name', { length: 255 }).notNull(),
+  slug: varchar('slug', { length: 100 }).notNull().unique(), // URL-friendly identifier
   description: text('description'),
   dateTime: timestamp('date_time').notNull(),
   location: varchar('location', { length: 500 }).notNull(),

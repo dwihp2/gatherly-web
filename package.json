@@ -15,7 +15,10 @@
     "seed:clean": "dotenv -e .env.local -- tsx scripts/drizzle-seed.ts clean",
     "seed:reset": "dotenv -e .env.local -- tsx scripts/drizzle-seed.ts reset",
     "seed:summary": "dotenv -e .env.local -- tsx scripts/drizzle-seed.ts summary",
-    "seed:user": "dotenv -e .env.local -- tsx scripts/create-test-user.ts"
+    "seed:user": "dotenv -e .env.local -- tsx scripts/create-test-user.ts",
+    "test:db": "dotenv -e .env.local -- tsx scripts/test-db.ts",
+    "test:db:advanced": "dotenv -e .env.local -- tsx scripts/test-db-advanced.ts",
+    "test:db:health": "dotenv -e .env.local -- tsx scripts/test-db-health.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",

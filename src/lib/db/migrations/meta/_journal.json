@@ -8,6 +8,13 @@
       "when": 1754069157890,
       "tag": "0000_bouncy_stephen_strange",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1754295164700,
+      "tag": "0001_careless_namor",
+      "breakpoints": true
     }
   ]
 }

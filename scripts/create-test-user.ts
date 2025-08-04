@@ -13,6 +13,11 @@
 import { db } from '../src/lib/db/index'
 import { eq } from 'drizzle-orm'
 import * as schema from '../src/lib/db/schema'
+import { generateSlug } from '../src/lib/utils/slug'
+import { config } from 'dotenv'
+
+// Load environment variables from .env.local
+config({ path: '.env.local' })
 
 // Ensure environment variables are loaded
 if (!process.env.DATABASE_URL) {
@@ -25,14 +30,14 @@ const BETTER_AUTH_URL = process.env.BETTER_AUTH_URL || 'http://localhost:3000'
 
 async function createTestUser() {
   console.log('👤 Creating test user via Better Auth API...')
-  
+
   try {
     // Check if user already exists
     const existingUser = await db.select()
       .from(schema.userTable)
       .where(eq(schema.userTable.email, 'dwihp.165@gmail.com'))
       .limit(1)
-    
+
     if (existingUser.length > 0) {
       console.log('⚠️  Test user already exists')
       console.log(`   📧 Email: ${existingUser[0].email}`)
@@ -41,7 +46,7 @@ async function createTestUser() {
       console.log('   ✅ You can sign in at http://localhost:3000/sign-in')
       return
     }
-    
+
     // Create user via Better Auth signup API
     console.log('📡 Calling Better Auth signup API...')
     const response = await fetch(`${BETTER_AUTH_URL}/api/auth/sign-up/email`, {
@@ -55,7 +60,7 @@ async function createTestUser() {
         password: 'Test@123456',
       }),
     })
-    
+
     if (!response.ok) {
       const errorText = await response.text()
       console.error('❌ Failed to create user via Better Auth API:')
@@ -65,23 +70,23 @@ async function createTestUser() {
       console.log('   npm run dev')
       return
     }
-    
+
     await response.json() // Consume the response
     console.log('✅ Test user created via Better Auth API')
-    
+
     // Get the created user from database
     const [testUser] = await db.select()
       .from(schema.userTable)
       .where(eq(schema.userTable.email, 'dwihp.165@gmail.com'))
       .limit(1)
-    
+
     if (!testUser) {
       console.error('❌ Failed to find created test user in database')
       return
     }
-    
+
     console.log('🏢 Creating test organization...')
-    
+
     // Create a test organization for the user
     const [testOrg] = await db.insert(schema.organizationTable).values({
       name: 'Dwi Test Organization',
@@ -94,7 +99,7 @@ async function createTestUser() {
       }),
       createdAt: new Date()
     }).returning()
-    
+
     // Make the user an admin member of the organization
     await db.insert(schema.memberTable).values({
       userId: testUser.id,
@@ -102,14 +107,15 @@ async function createTestUser() {
       role: 'admin', // Give admin privileges
       createdAt: new Date()
     })
-    
+
     console.log('🎪 Creating test events...')
-    
+
     // Create some test events for this organization
     const testEvents = [
       {
         organizationId: testOrg.id,
         name: 'Dwi\'s Tech Meetup Jakarta 2025',
+        slug: generateSlug('Dwi\'s Tech Meetup Jakarta 2025'),
         description: 'A test event for demonstrating Gatherly platform capabilities. Join us for networking and tech discussions.',
         dateTime: new Date('2025-03-15T19:00:00Z'),
         location: 'Jakarta Convention Center',
@@ -124,6 +130,7 @@ async function createTestUser() {
       {
         organizationId: testOrg.id,
         name: 'Dwi\'s Startup Pitch Night',
+        slug: generateSlug('Dwi\'s Startup Pitch Night'),
         description: 'Monthly startup pitch event. Present your ideas and get feedback from investors.',
         dateTime: new Date('2025-04-20T18:00:00Z'),
         location: 'SCBD Suites',
@@ -136,9 +143,9 @@ async function createTestUser() {
         updatedAt: new Date()
       }
     ]
-    
+
     await db.insert(schema.eventsTable).values(testEvents)
-    
+
     console.log('\n✅ Test user setup completed successfully!')
     console.log('')
     console.log('👤 USER DETAILS:')
@@ -163,7 +170,7 @@ async function createTestUser() {
     console.log('   3. Use password: Test@123456')
     console.log('   4. Access dashboard at http://localhost:3000/dashboard')
     console.log('   5. Manage events and organization settings')
-    
+
   } catch (error) {
     console.error('❌ Failed to create test user:', error)
     console.log('\n💡 Troubleshooting:')
@@ -175,8 +182,8 @@ async function createTestUser() {
 
 async function main() {
   console.log('🔧 GATHERLY TEST USER CREATOR')
-  console.log('=' .repeat(50))
-  
+  console.log('='.repeat(50))
+
   await createTestUser()
 }
 

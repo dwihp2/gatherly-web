@@ -3,6 +3,7 @@ import { z } from 'zod'
 export const CreateEventSchema = z.object({
   tenantId: z.string().uuid(),
   name: z.string().min(1, 'Event name is required').max(255),
+  slug: z.string().min(3, 'Slug must be at least 3 characters').max(100).regex(/^[a-z0-9-]+$/, 'Slug can only contain lowercase letters, numbers, and hyphens'),
   description: z.string().optional(),
   dateTime: z.string().datetime(),
   location: z.string().min(1, 'Location is required'),

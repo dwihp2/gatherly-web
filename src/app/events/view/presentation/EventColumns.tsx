@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, MoreHorizontal, Eye, Edit, Share2, QrCode, Download } from "lucide-react"
+import { ArrowUpDown, MoreHorizontal, Eye, Edit, Share2, QrCode, Download, Unlock, Lock } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -262,12 +262,14 @@ export function createEventColumns({
 
                 {!isPublished && onPublishEvent && (
                   <DropdownMenuItem onClick={() => onPublishEvent(event.id)}>
+                    <Lock className="mr-2 h-4 w-4" />
                     Publish Event
                   </DropdownMenuItem>
                 )}
 
                 {isPublished && onUnpublishEvent && (
                   <DropdownMenuItem onClick={() => onUnpublishEvent(event.id)}>
+                    <Unlock className="mr-2 h-4 w-4" />
                     Unpublish Event
                   </DropdownMenuItem>
                 )}

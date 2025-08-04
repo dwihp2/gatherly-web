@@ -1,9 +1,15 @@
 /**
- * Database Connection Test Script for Next.js
+ * Database Connection Test Script for Gatherly
+ * 
+ * This script tests the basic database connection and performs
+ * simple CRUD operations to verify database functionality.
+ * 
+ * Usage: npm run test:db or npx tsx scripts/test-db.ts
  */
 
 import { db } from '../src/lib/db/index'
 import { eventsTable, organizationTable } from '../src/lib/db/schema'
+import { generateSlug } from '../src/lib/utils/slug'
 import { eq } from 'drizzle-orm'
 
 async function testDatabaseConnection() {
@@ -28,9 +34,11 @@ async function testDatabaseConnection() {
     
     // Step 2: Test event creation with valid organization ID
     console.log('\n🧪 Testing event creation...')
+    const eventName = 'Test Event - ' + new Date().toISOString()
     const testEvent = {
       organizationId: createdOrg.id, // Use the created organization ID
-      name: 'Test Event - ' + new Date().toISOString(),
+      name: eventName,
+      slug: generateSlug(eventName),
       dateTime: new Date('2025-12-01T19:00:00Z'),
       location: 'Test Location',
       status: 'draft' as const,
