@@ -32,6 +32,7 @@ import {
 import { useAuth } from '../../../(auth)/hooks/useAuth'
 import { useSidebarStore } from '../../stores/sidebarStore'
 import { useEventFormStore } from '../../../events/stores/eventFormStore'
+import { useEventsByOrganization } from '../../../events/usecases/useEventsByOrganization'
 import { cn } from '@/lib/utils'
 
 interface SidebarProps {
@@ -52,7 +53,7 @@ interface NavItem {
 
 export function Sidebar({ className, hideCollapseBtn = false }: SidebarProps) {
   const pathname = usePathname()
-  const { organizationName } = useAuth()
+  const { organizationName, user } = useAuth()
   const {
     isCollapsed,
     expandedMenus,
@@ -60,6 +61,9 @@ export function Sidebar({ className, hideCollapseBtn = false }: SidebarProps) {
     toggleSubmenu
   } = useSidebarStore()
   const { openCreateModal } = useEventFormStore()
+
+  // Fetch real event data for counts
+  const { data: events = [] } = useEventsByOrganization(user?.tenantId || undefined)
 
   const handleCreateEvent = () => {
     openCreateModal()
@@ -79,6 +83,12 @@ export function Sidebar({ className, hideCollapseBtn = false }: SidebarProps) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [toggleCollapsed])
 
+  // Calculate event counts
+  const totalEvents = events.length
+  const publishedEvents = events.filter(e => e.status === 'published').length
+  const draftEvents = events.filter(e => e.status === 'draft').length
+  const cancelledEvents = events.filter(e => e.status === 'cancelled').length
+
   // Navigation items
   const navigationItems: NavItem[] = [
     {
@@ -91,13 +101,37 @@ export function Sidebar({ className, hideCollapseBtn = false }: SidebarProps) {
       id: 'events',
       label: 'My Events',
       icon: Calendar,
-      href: '/dashboard/events',
-      badge: '3', // TODO: Get from actual event count
+      href: '/events',
+      badge: totalEvents > 0 ? totalEvents.toString() : undefined,
       submenu: [
-        { id: 'all-events', label: 'All Events', icon: Calendar, href: '/dashboard/events' },
-        { id: 'published', label: 'Published', icon: Calendar, href: '/dashboard/events?status=published' },
-        { id: 'draft', label: 'Draft', icon: Calendar, href: '/dashboard/events?status=draft' },
-        { id: 'completed', label: 'Completed', icon: Calendar, href: '/dashboard/events?status=completed' }
+        {
+          id: 'all-events',
+          label: 'All Events',
+          icon: Calendar,
+          href: '/events',
+          badge: totalEvents > 0 ? totalEvents.toString() : undefined
+        },
+        {
+          id: 'published',
+          label: 'Published',
+          icon: Calendar,
+          href: '/events?status=published',
+          badge: publishedEvents > 0 ? publishedEvents.toString() : undefined
+        },
+        {
+          id: 'draft',
+          label: 'Draft',
+          icon: Calendar,
+          href: '/events?status=draft',
+          badge: draftEvents > 0 ? draftEvents.toString() : undefined
+        },
+        {
+          id: 'completed',
+          label: 'Cancelled',
+          icon: Calendar,
+          href: '/events?status=cancelled',
+          badge: cancelledEvents > 0 ? cancelledEvents.toString() : undefined
+        }
       ]
     },
     {
@@ -111,18 +145,18 @@ export function Sidebar({ className, hideCollapseBtn = false }: SidebarProps) {
       id: 'analytics',
       label: 'Analytics',
       icon: BarChart,
-      href: '/dashboard/analytics',
+      href: '/analytics',
       submenu: [
-        { id: 'revenue', label: 'Revenue Reports', icon: BarChart, href: '/dashboard/analytics/revenue' },
-        { id: 'tickets', label: 'Ticket Sales', icon: BarChart, href: '/dashboard/analytics/tickets' },
-        { id: 'attendees', label: 'Attendee Insights', icon: BarChart, href: '/dashboard/analytics/attendees' }
+        { id: 'revenue', label: 'Revenue Reports', icon: BarChart, href: '/analytics/revenue' },
+        { id: 'tickets', label: 'Ticket Sales', icon: BarChart, href: '/analytics/tickets' },
+        { id: 'attendees', label: 'Attendee Insights', icon: BarChart, href: '/analytics/attendees' }
       ]
     },
     {
       id: 'scanner',
       label: 'QR Scanner',
       icon: QrCode,
-      href: '/dashboard/scanner'
+      href: '/scanner'
     }
   ]
 
@@ -131,18 +165,18 @@ export function Sidebar({ className, hideCollapseBtn = false }: SidebarProps) {
       id: 'settings',
       label: 'Settings',
       icon: Settings,
-      href: '/dashboard/settings',
+      href: '/settings',
       submenu: [
-        { id: 'profile', label: 'Profile', icon: User, href: '/dashboard/settings/profile' },
-        { id: 'organization', label: 'Organization', icon: Building, href: '/dashboard/settings/organization' },
-        { id: 'billing', label: 'Billing', icon: CreditCard, href: '/dashboard/settings/billing' }
+        { id: 'profile', label: 'Profile', icon: User, href: '/settings/profile' },
+        { id: 'organization', label: 'Organization', icon: Building, href: '/settings/organization' },
+        { id: 'billing', label: 'Billing', icon: CreditCard, href: '/settings/billing' }
       ]
     },
     {
       id: 'help',
       label: 'Help & Support',
       icon: HelpCircle,
-      href: '/dashboard/help'
+      href: '/help'
     }
   ]
 

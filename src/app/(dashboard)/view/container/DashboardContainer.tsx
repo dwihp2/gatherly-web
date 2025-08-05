@@ -17,13 +17,7 @@ import { RecentActivitySection } from '../presentation/RecentActivitySection'
 import { SummaryCards } from '../presentation/SummaryCards'
 
 export function DashboardContainer() {
-  const { user, organizationName, isLoading, organizationId } = useAuth()
-  console.log("🚀 ~ DashboardContainer ~ user:", {
-    user,
-    organizationName,
-    isLoading,
-    organizationId
-  })
+  const { user, organizationName, isLoading } = useAuth()
   const router = useRouter()
 
   // Redirect to sign-in if not authenticated
@@ -34,7 +28,7 @@ export function DashboardContainer() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto py-8 space-y-8">
+      <div className="container mx-auto py-4 space-y-8">
         <div className="space-y-4">
           <Skeleton className="h-8 w-64" />
           <Skeleton className="h-4 w-32" />
@@ -50,7 +44,7 @@ export function DashboardContainer() {
   }
 
   return (
-    <div className="container mx-auto py-8 space-y-8">
+    <div className="container mx-auto py-4 space-y-8">
       {/* Dashboard Header */}
       <DashboardHeader
         organizerName={user?.name || 'Organizer'}

@@ -88,7 +88,7 @@ export default function EditEventPage() {
   if (isLoadingEvent) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="container max-w-4xl mx-auto py-8">
+        <div className="container max-w-4xl mx-auto py-4">
           <div className="space-y-6">
             <Skeleton className="h-8 w-64" />
             <Skeleton className="h-4 w-96" />
@@ -103,7 +103,7 @@ export default function EditEventPage() {
   if (error) {
     return (
       <div className="min-h-screen bg-background">
-        <div className="container max-w-4xl mx-auto py-8">
+        <div className="container max-w-4xl mx-auto py-4">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-destructive mb-2">Event Not Found</h1>
             <p className="text-muted-foreground">The event you&apos;re trying to edit doesn&apos;t exist or you don&apos;t have permission to edit it.</p>

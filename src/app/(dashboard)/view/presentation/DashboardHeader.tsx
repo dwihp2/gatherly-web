@@ -31,8 +31,6 @@ export function DashboardHeader({ organizerName, organizationName }: DashboardHe
 
   const handleQRScanner = async () => {
     // TODO: Open QR scanner modal
-    const res = await getEventsByOrganizationAction('5aac6e90-ca71-4553-88db-aad8465e237d');
-    console.log('Open QR scanner modal', res);
   }
 
   return (

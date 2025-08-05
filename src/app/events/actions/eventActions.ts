@@ -12,6 +12,7 @@ import { revalidatePath } from 'next/cache'
 import { createEvent } from '../repositories/createEvent'
 import { getEventsByOrganization } from '../repositories/getEventsByOrganization'
 import { getEventById } from '../repositories/getEventById'
+import { getPublicEventById } from '../repositories/getPublicEventById'
 import { updateEvent, type UpdateEventRepositoryInput } from '../repositories/updateEvent'
 import { deleteEvent } from '../repositories/deleteEvent'
 import type { CreateEventInput, Event, UpdateEventWithIdInput } from '../models/interfaces/event'
@@ -46,6 +47,15 @@ export async function getEventByIdAction(eventId: string, organizationId: string
     return await getEventById(eventId, organizationId)
   } catch (error) {
     console.error('Server Action: getEventById failed:', error)
+    throw error
+  }
+}
+
+export async function getPublicEventByIdAction(eventId: string): Promise<Event | null> {
+  try {
+    return await getPublicEventById(eventId)
+  } catch (error) {
+    console.error('Server Action: getPublicEventById failed:', error)
     throw error
   }
 }

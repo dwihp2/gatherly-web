@@ -3,11 +3,13 @@ import type { NextRequest } from 'next/server'
 
 // Define protected routes that require authentication
 const protectedRoutes = [
-  '/dashboard',
-  '/events/create',
-  '/events/edit',
-  '/analytics',
-  '/settings',
+  '/dashboard',     // Dashboard home page
+  '/events',        // Events management page (requires auth)
+  '/analytics',     // Analytics pages (independent but auth-required)
+  '/settings',      // Settings pages (independent but auth-required) 
+  '/scanner',       // QR Scanner page (independent but auth-required)
+  '/events/create', // Create event page (requires auth)
+  '/events/edit',   // Edit event pages (requires auth)
 ]
 
 // Define auth routes that should redirect to dashboard if already logged in
@@ -32,15 +34,25 @@ export async function middleware(request: NextRequest) {
   const sessionToken = request.cookies.get('better-auth.session_token')
   const isAuthenticated = !!sessionToken?.value
   
-  const isProtectedRoute = protectedRoutes.some(route => 
-    pathname.startsWith(route)
-  )
+  // Check route types
   const isAuthRoute = authRoutes.some(route => 
     pathname.startsWith(route)
   )
+  
+  // Check if it's a protected route
+  const isProtectedRoute = protectedRoutes.some(route => 
+    pathname.startsWith(route)
+  )
+  
+  // Special handling for public event detail routes
+  const isPublicEventDetailRoute = pathname.startsWith('/events/') && 
+    !pathname.startsWith('/events/create') && 
+    !pathname.includes('/edit')
+  
+  // Check if it's a public route
   const isPublicRoute = publicRoutes.some(route => 
     pathname === route || pathname.startsWith(route)
-  )
+  ) || isPublicEventDetailRoute
   
   // Redirect authenticated users away from auth pages
   if (isAuthenticated && isAuthRoute) {
@@ -48,7 +60,7 @@ export async function middleware(request: NextRequest) {
   }
   
   // Redirect unauthenticated users away from protected pages
-  if (!isAuthenticated && isProtectedRoute) {
+  if (!isAuthenticated && isProtectedRoute && !isPublicEventDetailRoute) {
     // Store the attempted URL to redirect back after login
     const redirectUrl = new URL('/sign-in', request.url)
     redirectUrl.searchParams.set('callbackUrl', pathname)

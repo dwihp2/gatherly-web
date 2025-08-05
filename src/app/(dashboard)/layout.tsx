@@ -52,7 +52,7 @@ export default function DashboardLayout({
 
         {/* Main Content */}
         <main className={cn(
-          "flex-1 overflow-auto p-4 md:p-6 lg:p-8",
+          "flex-1 overflow-auto p-4 md:p-6 lg:px-8 lg:py-2",
           "transition-all duration-300"
         )}>
           {children}

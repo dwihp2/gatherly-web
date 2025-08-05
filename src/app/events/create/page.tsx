@@ -19,7 +19,7 @@ export default function CreateEventPage() {
 function CreateEventPageSkeleton() {
   return (
     <div className="min-h-screen bg-background">
-      <div className="container max-w-4xl mx-auto py-8">
+      <div className="container max-w-4xl mx-auto py-4">
         <div className="space-y-6">
           <Skeleton className="h-8 w-64" />
           <Skeleton className="h-4 w-96" />
