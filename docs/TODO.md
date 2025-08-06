@@ -1,26 +1,5 @@
-# Gatherly Implement### ✅ Recent Completions
-
-### ✅ Next.js Image Configuration Fix - **COMPLETED** ✅
-**Goal**: Fix external image loading errors by configuring remotePatterns in next.config.ts
-**Status**: ✅ **COMPLETED** - External images from placehold.co and other services now load correctly
-
-#### Image Configuration Updates
-- [x] **Next.js remotePatterns Configuration** ✅ **COMPLETED**
-  - [x] Added support for placehold.co (fixing the original error)
-  - [x] Added support for images.unsplash.com
-  - [x] Added support for via.placeholder.com
-  - [x] Proper protocol, hostname, and pathname patterns configured
-
-- [x] **Application Testing** ✅ **COMPLETED**  
-  - [x] Development server restart successful
-  - [x] Production build compiles without errors
-  - [x] Image loading now works for all configured external domains
-
-### ✅ Critical Dashboard Route Fixes - **COMPLETED** ✅
-**Goal**: Fix all broken dashboard navigation routes and complete event integration functionality
-**Status**: ✅ **COMPLETED** - All previously broken routes now functional TODO & Development Plan
-
-*Updated: August 4, 2025*
+# Gatherly Development Plan & TODO
+*Updated: August 06, 2025*
 
 ## 📋 Current State Assessment
 
@@ -38,331 +17,352 @@
 **Impact**: All sidebar navigation items now work correctly
 **Validation**: Build passes with all routes properly generated
 
-### Recent Completions
+## 🎯 NEW PRIORITY STRATEGY: PUBLIC-FIRST APPROACH
 
-### ✅ Critical Dashboard Route Fixes - **COMPLETED** ✅
-**Goal**: Fix all broken dashboard navigation routes and complete event integration functionality
-**Status**: ✅ **COMPLETED** - All previously broken routes now functional
+### Strategic Shift Based on Competitive Analysis
+After analyzing competitors like Megatix, we've identified that **public event discovery and customer purchase flow** are critical missing pieces that prevent our MVP from being truly functional. While organizers can create events, there's currently no way for customers to discover and purchase tickets.
 
-#### Fixed Dashboard Routes
-- [x] **Dashboard Events Page** (`/dashboard/events`) ✅ **COMPLETED**
-  - [x] Complete events listing with DataTable integration
-  - [x] Real-time filtering by status, search, and date ranges
-  - [x] Event actions (Edit, View, Delete, Duplicate)
-  - [x] Connected to useEventsByOrganization hook
-  - [x] Proper error handling and loading states
+### Updated MVP Completion Assessment
+- **Organizer Side**: 85% complete (dashboard, event management, analytics)
+- **Customer Side**: 5% complete (basic structure only) **← CRITICAL GAP**
+- **Payment & Tickets**: 0% complete **← BLOCKING ISSUE**
+- **Overall MVP**: 45% complete (needs customer-facing features to be functional)
 
-- [x] **Public Event Detail Page** (`/events/[eventId]`) ✅ **COMPLETED**
-  - [x] Public event viewing without authentication
-  - [x] Complete event information display
-  - [x] Event sharing functionality
-  - [x] Status badge and availability indicators
-  - [x] Responsive design for mobile users
-  - [x] Connected to usePublicEventById hook
+## 🚀 PHASE 1: PUBLIC EVENT DISCOVERY & CUSTOMER EXPERIENCE (Priority 1)
 
-- [x] **Analytics Dashboard** (`/dashboard/analytics`) ✅ **COMPLETED**
-  - [x] Main analytics overview with key metrics
-  - [x] Revenue, tickets, and attendee statistics
-  - [x] Navigation to detailed analytics sub-pages
-  - [x] Performance metrics and growth indicators
-  - [x] Mobile-responsive card layout
+### 🎯 Goal: Create Complete Customer Journey
+**Timeline**: 1-2 weeks
+**Impact**: Transform Gatherly from organizer-only tool to complete ticketing platform
 
-- [x] **Analytics Sub-Pages** ✅ **COMPLETED**
-  - [x] Revenue Analytics (`/dashboard/analytics/revenue`) - Detailed revenue reports and trends
-  - [x] Ticket Analytics (`/dashboard/analytics/tickets`) - Ticket sales performance and metrics
-  - [x] Attendee Analytics (`/dashboard/analytics/attendees`) - Attendee insights and demographics
+### Epic 1: Public Event Discovery System (Week 1)
 
-- [x] **QR Scanner Dashboard** (`/dashboard/scanner`) ✅ **COMPLETED**
-  - [x] QR code scanner interface for event check-ins
-  - [x] Recent scans activity feed
-  - [x] Active events overview with check-in status
-  - [x] Scanner status and configuration options
+#### 1.1 Public Event Listing Page (/events) - **NEW PRIORITY 1**
+**Timeline**: 2-3 days
+**Goal**: Allow customers to discover and browse events
 
-- [x] **Settings Pages** ✅ **COMPLETED**
-  - [x] Main Settings (`/dashboard/settings`) - Overview with quick access to all settings
-  - [x] Profile Settings (`/dashboard/settings/profile`) - Personal information and preferences
-  - [x] Organization Settings (`/dashboard/settings/organization`) - Team and organization management
-  - [x] Billing Settings (`/dashboard/settings/billing`) - Subscription and payment management
+- [ ] **Create Event Discovery Page** (`/app/events/page.tsx`)
+  - [ ] Server Component with static generation for SEO
+  - [ ] Event grid display with poster images
+  - [ ] Search functionality (by name, location, category)
+  - [ ] Filter system (date range, price range, category)
+  - [ ] Pagination with server-side processing
+  - [ ] Mobile-first responsive design
 
-#### Integration Fixes
-- [x] **Sidebar Event Counts** ✅ **COMPLETED**
-  - [x] Real-time event count badges instead of hardcoded values
-  - [x] Connected to useEventsByOrganization hook
-  - [x] Dynamic filtering by event status
-  - [x] Proper loading and error states
+- [ ] **Search & Filter Implementation**
+  - [ ] Server Actions for search processing (`searchEventsAction`)
+  - [ ] URL-based filtering with search params
+  - [ ] Category-based browsing (music, workshop, conference, business)
+  - [ ] Location filtering (Jakarta, Bandung, Surabaya, etc.)
+  - [ ] Date range picker with Indonesian locale
+  - [ ] Price range slider (IDR formatting)
 
-- [x] **Repository Layer Updates** ✅ **COMPLETED**
-  - [x] Created getPublicEventById repository for public event access
-  - [x] Fixed field mapping between database and interfaces
-  - [x] Proper handling of organizationId vs tenantId consistency
-  - [x] Enhanced error handling and type safety
+- [ ] **Event Card Component Enhancement**
+  - [ ] Event poster with Next.js Image optimization
+  - [ ] Event title, date, location display
+  - [ ] Price range and availability indicators
+  - [ ] Quick buy button (opens modal)
+  - [ ] Social sharing integration
+  - [ ] Organizer information display
 
-- [x] **Use Case Layer Enhancements** ✅ **COMPLETED**
-  - [x] Created usePublicEventById hook for public event fetching
-  - [x] Proper TanStack Query integration with caching
-  - [x] Enhanced error handling and loading states
-  - [x] Optimized cache times for public content
+#### 1.2 Enhanced Event Detail Page (/events/[slug]) - **PRIORITY 2**
+**Timeline**: 2-3 days
+**Goal**: Comprehensive event information with social sharing
 
-#### Build Verification
-- [x] **Production Build**: ✅ All routes compile successfully with 0 TypeScript errors
-- [x] **Route Generation**: All new routes appear in Next.js build output
-- [x] **Type Safety**: Strict TypeScript compliance maintained
-- [x] **Architecture**: Clean Architecture patterns followed throughout
+- [ ] **Server-Side Generation Setup**
+  - [ ] Static generation for published events (SEO optimization)
+  - [ ] Dynamic metadata generation (Open Graph, Twitter Cards)
+  - [ ] Breadcrumb navigation with schema markup
+  - [ ] Social sharing buttons (WhatsApp, Facebook, Instagram, Twitter)
 
-### ✅ Database Testing Scripts - **COMPLETED** ✅
-**Goal**: Create comprehensive database connection and testing scripts for development and maintenance
-**Status**: ✅ **COMPLETED** - Created full suite of database testing tools
-
-#### Created Testing Scripts
-- [x] **Basic Database Connection Test** (`scripts/test-db.ts`) ✅ **COMPLETED**
-  - [x] Tests basic database connectivity and response time
-  - [x] Performs simple CRUD operations (Create, Read, Update, Delete)
-  - [x] Validates multi-tenant organization structure
-  - [x] Includes comprehensive error handling with helpful troubleshooting tips
-  - [x] Provides clear success/failure feedback with detailed logging
-
-- [x] **Advanced Database Testing** (`scripts/test-db-advanced.ts`) ✅ **COMPLETED**
-  - [x] Comprehensive test suite with 12 different test categories
-  - [x] Multi-tenancy isolation testing
-  - [x] Foreign key constraint validation
-  - [x] Cascade deletion testing
-  - [x] Bulk operations performance testing
-  - [x] Session management testing
-  - [x] Data integrity validation
-  - [x] Relationship testing between all major tables
-  - [x] Automated cleanup with proper error handling
-
-- [x] **Database Health Check** (`scripts/test-db-health.ts`) ✅ **COMPLETED**
-  - [x] Quick health monitoring for production environments
-  - [x] Connection status with response time metrics
-  - [x] Table accessibility verification (6 core tables)
-  - [x] Data integrity checks with relationship validation
-  - [x] Performance benchmarking (query response times)
-  - [x] Recent activity monitoring (7-day window)
-  - [x] Colored status indicators (HEALTHY/WARNING/CRITICAL)
-  - [x] Comprehensive reporting with actionable recommendations
-
-#### NPM Scripts Integration
-- [x] **Added NPM Scripts** ✅ **COMPLETED**
-  - [x] `npm run test:db` - Basic database connection test
-  - [x] `npm run test:db:advanced` - Comprehensive database testing
-  - [x] `npm run test:db:health` - Quick health check monitoring
-  - [x] All scripts use proper environment loading via dotenv
-  - [x] Consistent error handling and exit codes
-
-#### Testing Results
-- [x] **Database Schema Compatibility** ✅ **VERIFIED**
-  - [x] Successfully migrated to include `slug` field in events table
-  - [x] All foreign key relationships working correctly
-  - [x] Multi-tenant isolation functioning properly
-  - [x] Cascade deletions working as expected
-
-- [x] **Performance Benchmarks** ✅ **ESTABLISHED**
-  - [x] Average query time: 1ms (excellent performance)
-  - [x] Connection time: 43ms (healthy)
-  - [x] All 6 core tables accessible
-  - [x] 101 events, 20 organizations, 50 users in test dataset
-
-#### Benefits Achieved
-- **Developer Experience**: Easy-to-use testing tools for database validation
-- **Production Monitoring**: Health check script suitable for automated monitoring
-- **Debugging Support**: Comprehensive error messages with troubleshooting guidance
-- **CI/CD Integration**: Scripts can be integrated into automated testing pipelines
-- **Performance Tracking**: Baseline metrics for database performance monitoring
-- **Multi-tenant Validation**: Ensures data isolation works correctly across organizations
-
-### ✅ Application Status Verification - **COMPLETED** ✅
-**Goal**: Verify current build status and production readiness
-**Status**: ✅ **COMPLETED** - Application builds successfully with zero errors
-
-#### Verification Results
-- [x] **Production Build**: ✅ Next.js build compiles with 0 TypeScript errors
-- [x] **Route Analysis**: All current routes are properly structured and functional:
-  - Landing page: `/` (3.03 kB, static)
-  - Authentication: `/sign-in`, `/sign-up` (functional with Better Auth)
-  - Dashboard: `/dashboard` (32.4 kB, complete organizer interface)
-  - Event Management: `/events/create`, `/events/[eventId]/edit` (full CRUD)
-  - API Routes: `/api/auth/[...all]` (Better Auth integration)
-- [x] **Bundle Analysis**: Optimized bundles with proper code splitting
-- [x] **Type Safety**: Strict TypeScript mode with zero `any` types
-- [x] **Architecture Compliance**: Clean Architecture principles maintained throughout
-
-#### Current Functionality Status
-✅ **Working Perfectly**:
-- Complete organizer authentication flow (sign-up, sign-in, session management)
-- Full dashboard with metrics, event management, and sidebar navigation
-- Comprehensive event CRUD operations (create, read, update, delete)
-- Multi-step event creation modal with validation
-- Database integration with Drizzle ORM and PostgreSQL
-- Multi-tenant architecture with organization isolation
-- Mobile-responsive design throughout organizer interface
-
-🚧 **Missing for MVP**:
-- Public event detail pages for customers
-- Ticket selection and purchase flow
-- Payment processing integration
-- E-ticket generation and delivery system
-- QR code scanning for event check-in
-
-### ✅ URL Slug Generation Compliance Fix - **COMPLETED** ✅
-**Goal**: Fix slug generation to comply with PublicationSettingsSchema validation rules
-**Status**: ✅ **COMPLETED** - Created centralized slug utility and updated all components
-
-#### Problem Analysis
-The current slug generation in multiple locations did not properly comply with the `PublicationSettingsSchema` regex pattern:
-- **Pattern Required**: `/^[a-z0-9-]+$/` (only lowercase letters, numbers, and hyphens)
-- **Length**: Minimum 3 characters, maximum 100 characters
-- **Previous Issues**:
-  - Edit page used simple `.replace(/\s+/g, '-')` which didn't handle special characters
-  - PublicationSettingsForm had better logic but may still generate invalid slugs
-  - No consistent slug generation utility across the application
-
-#### Completed Tasks
-- [x] **Create Centralized Slug Generation Utility** ✅ **COMPLETED**
-  - [x] Create `src/lib/utils/slug.ts` with `generateSlug()` function
-  - [x] Implement proper character filtering (remove all non a-z0-9 characters)
-  - [x] Handle consecutive hyphens (replace multiple hyphens with single)
-  - [x] Trim leading/trailing hyphens
-  - [x] Ensure length constraints (3-100 characters)
-  - [x] Add fallback logic for edge cases (empty result, too short)
-  - [x] Add `isValidSlug()` validation function
-  - [x] **FIXED**: Handle apostrophes and special characters properly
-  - [x] **FIXED**: Add Unicode normalization for diacritics (café → cafe)
-  - [x] **VERIFIED**: 100% compliance with regex `/^[a-z0-9-]+$/`
-
-- [x] **Update Form Components** ✅ **COMPLETED**
-  - [x] Replace inline slug generation in `PublicationSettingsForm.tsx`
-  - [x] Use centralized `generateSlug()` utility
-  - [x] Ensure generated slugs always pass Zod validation
-
-- [x] **Fix Edit Page Slug Generation** ✅ **COMPLETED**
-  - [x] Replace simple slug generation in `src/app/events/[eventId]/edit/page.tsx`
-  - [x] Use the same centralized `generateSlug()` utility
-  - [x] Ensure consistency across create and edit flows
-
-- [x] **Add Slug Validation Testing** ✅ **COMPLETED**
-  - [x] Create comprehensive test script with 18+ test cases
-  - [x] Test edge cases: special characters, unicode, empty strings, apostrophes
-  - [x] Test specific user case: "Dwi's Tech Meetup Jakarta 2025" → "dwis-tech-meetup-jakarta-2025"
-  - [x] Verify schema compliance for all generated slugs
-  - [x] Test both manual and auto-generated slug scenarios
-  - [x] All tests pass with 100% schema compliance
-
-### ✅ FormLabel Required Field Enhancement - **COMPLETED** ✅
-**Goal**: Improve form label consistency and accessibility for required fields
-**Status**: ✅ **COMPLETED** - Enhanced FormLabel component with `required` prop
-
-#### Benefits Achieved
-- **Consistency**: All required indicators use the same styling (`text-destructive`)
-- **Accessibility**: Automatic ARIA label (`aria-label="required"`) for screen readers
-- **Maintainability**: Centralized logic for required field styling
-- **Flexibility**: Easy to toggle required state programmatically
-- **Clean Code**: Removes clutter from form labels, making them more readable
-
-## 🚧 CURRENT STATUS: Most Critical Issues Resolved ✅
-
-### ✅ **CRITICAL FIXES COMPLETED** ✅ 
-**Previous Status**: Multiple broken dashboard navigation routes causing 404 errors and external image loading failures
-**Resolution**: **ALL MAJOR ISSUES FIXED** - Complete dashboard navigation and image loading now functional
-**Impact**: All sidebar navigation items work correctly, external images load properly
-**Validation**: Build passes with all routes properly generated, development server runs without errors
-
-### Recently Completed Critical Fixes
-
-#### ✅ Next.js Image Configuration (LATEST)
-- [x] **Fixed External Image Loading Error** ✅ **COMPLETED**
-  - [x] Configured remotePatterns in next.config.ts for placehold.co
-  - [x] Added support for other image services (Unsplash, placeholder services)
-  - [x] Development server automatically restarted with new configuration
-  - [x] Production build verified working correctly
-
-#### ✅ Middleware Routing System  
-- [x] **Fixed Route Protection Logic** ✅ **COMPLETED**
-  - [x] Resolved Next.js duplicate route compilation error
-  - [x] Fixed middleware to distinguish between public and protected event routes
-  - [x] Properly configured authentication flow for all routes
-
-#### ✅ Dashboard Navigation Routes
-- [x] **All Dashboard Routes Working** ✅ **COMPLETED**
-  - [x] `/events` - Dashboard events management (protected)
-  - [x] `/events/[eventId]` - Public event viewing
-  - [x] `/analytics`, `/settings`, `/scanner` - All routes functional
-  - [x] Sidebar navigation links correctly updated
-
-## 🎯 NEXT PRIORITIES: Expanding Functionality
-
-### 🎯 Priority 1: Enhanced Analytics Dashboard (2-3 days)
-**Goal**: Complete the analytics section with detailed insights and reporting
-**Status**: 🚧 **IN PROGRESS** - Basic structure exists, needs detailed implementation
-
-#### Analytics Enhancement Tasks
-- [ ] **Revenue Analytics Deep Dive**
-  - [ ] Add revenue trend charts with time period filtering
-  - [ ] Implement revenue breakdown by event and ticket type
-  - [ ] Add comparative analytics (month-over-month, year-over-year)
-
-- [ ] **Attendee Analytics & Demographics** 
-  - [ ] Create attendee registration trends visualization
-  - [ ] Add demographic insights (age groups, location data)
-  - [ ] Implement attendee engagement metrics
-
-- [ ] **Ticket Sales Analytics**
-  - [ ] Add conversion funnel analysis (views → purchases)
-  - [ ] Implement sales velocity tracking
-  - [ ] Create early bird vs regular sales comparison
-
-### 🎯 Priority 2: Public Event Pages & Customer Purchase Flow (3-4 days)
-**Goal**: Complete the customer-facing side of the platform - allow attendees to discover and purchase tickets
-
-This is the critical missing piece to make Gatherly a complete MVP. While organizers can create and manage events, there's currently no way for customers to discover and purchase tickets.
-
-```markdown
-- [ ] Step 1: Create Public Event Detail Page (Day 1)
-- [ ] Step 2: Add Ticket Selection Interface (Day 2) 
-- [ ] Step 3: Build Customer Checkout Flow (Day 3)
-- [ ] Step 4: Integrate Payment & E-Tickets (Day 4)
-```
-
-#### 1.1 Public Event Detail Page - `/events/[eventSlug]` (Day 1)
-**Goal**: Create the main customer-facing event page that displays event information and allows ticket selection
-
-- [ ] **Create Event Detail Page Structure**
-  - [ ] Create `src/app/events/[eventSlug]/page.tsx` (public route)
-  - [ ] Create `getEventBySlug` repository function 
-  - [ ] Create `useEventBySlug` use case hook
-  - [ ] Set up proper SEO meta tags and Open Graph data
-  
 - [ ] **Event Information Display**
-  - [ ] Event header with poster image and title
-  - [ ] Event details (date, time, location with map integration)
+  - [ ] Hero section with event poster and key details
   - [ ] Rich text description with proper formatting
-  - [ ] Organizer information section
-  - [ ] Social sharing buttons (WhatsApp, Facebook, Twitter)
-  
-- [ ] **Technical Implementation**
-  - [ ] Update database schema to include `slug` field in events table
-  - [ ] Add slug validation and uniqueness checking
-  - [ ] Create mobile-first responsive design
-  - [ ] Add proper error handling for non-existent events
-  - [ ] Implement server-side rendering for SEO
+  - [ ] Date, time, and duration with countdown timer
+  - [ ] Venue information with Google Maps integration
+  - [ ] Organizer profile section with contact information
+  - [ ] Event category and tags display
 
-#### 1.2 Ticket Selection Interface (Day 2)
-**Goal**: Allow customers to select ticket types and quantities for purchase
+- [ ] **Repository & Data Layer**
+  - [ ] `getEventBySlug` repository function
+  - [ ] `usePublicEventBySlug` use case hook
+  - [ ] SEO-friendly slug generation and validation
+  - [ ] Event availability and status checking
+  - [ ] Related events recommendations
 
-- [ ] **Ticket Display System**
-  - [ ] Create ticket type cards with pricing in IDR
-  - [ ] Show available quantity vs. sold out status
-  - [ ] Real-time availability checking
-  - [ ] Clear pricing breakdown with any fees
-  
-- [ ] **Shopping Cart Functionality**
-  - [ ] Add/remove ticket types with quantity selection
-  - [ ] Real-time total calculation
-  - [ ] Session-based cart persistence using localStorage
-  - [ ] Mobile-optimized cart interface
-  - [ ] Inventory validation before checkout
+### Epic 2: Enhanced Ticket Purchase Flow (Week 1-2)
 
-#### 1.3 Customer Checkout Flow (Day 3)
+#### 2.1 Modal-Based Ticket Selection - **PRIORITY 3**
+**Timeline**: 2-3 days
+**Goal**: Seamless ticket selection without leaving event page
+
+- [ ] **Ticket Selection Modal** (Client Component)
+  - [ ] Modal overlay maintaining event context
+  - [ ] Ticket type cards with pricing (IDR format)
+  - [ ] Quantity selectors with availability checking
+  - [ ] Real-time price calculation and breakdown
+  - [ ] Session-based cart persistence (localStorage)
+
+- [ ] **Shopping Cart System**
+  - [ ] Add/remove ticket functionality
+  - [ ] Quantity validation against availability
+  - [ ] Total calculation with fees and taxes
+  - [ ] Cart state management (Client Component)
+  - [ ] Edit cart functionality
+
+#### 2.2 Authentication Gate & Customer Flow - **PRIORITY 4**
+**Timeline**: 2-3 days
+**Goal**: Flexible authentication with guest checkout option
+
+- [ ] **Authentication Options** (Server Actions)
+  - [ ] Google Sign-In integration (`signInWithGoogleAction`)
+  - [ ] Email/password registration (`registerUserAction`)
+  - [ ] Guest checkout option (`registerGuestAction`)
+  - [ ] Role assignment (customer by default)
+
+- [ ] **Customer Information Form**
+  - [ ] Full name, email, WhatsApp number fields
+  - [ ] Indonesian phone number validation
+  - [ ] Additional attendee information collection
+  - [ ] Terms and conditions acceptance
+  - [ ] Newsletter subscription option
+
+#### 2.3 Split-Screen Purchase Interface - **PRIORITY 5**
+**Timeline**: 1-2 days
+**Goal**: Professional checkout experience
+
+- [ ] **Split-Screen Layout** (Responsive Design)
+  - [ ] Left panel: Event details and customer form
+  - [ ] Right panel: Fixed order summary (sticky)
+  - [ ] Mobile adaptation (stacked layout)
+  - [ ] Progressive form validation
+
+- [ ] **Order Summary Component**
+  - [ ] Ticket breakdown with quantities
+  - [ ] Pricing calculation (subtotal, fees, total)
+  - [ ] IDR formatting throughout
+  - [ ] Edit cart functionality
+  - [ ] Promotional code field (future)
+
+## 🚀 PHASE 2: PAYMENT INTEGRATION & E-TICKET SYSTEM (Priority 2)
+
+### Epic 3: Payment Processing (Week 2)
+
+#### 3.1 Payment Gateway Abstraction - **PRIORITY 6**
+**Timeline**: 2-3 days
+**Goal**: Indonesian payment method support with dummy implementation
+
+- [ ] **Payment Gateway Interface**
+  - [ ] Create `PaymentGateway` interface abstraction
+  - [ ] Dummy payment implementation for development
+  - [ ] QRIS payment option (priority for Indonesian market)
+  - [ ] E-wallet integration planning (GoPay, OVO, DANA)
+  - [ ] Bank transfer/Virtual Account support
+
+- [ ] **Payment Processing Server Actions**
+  - [ ] `createOrderAction()` - Order creation with inventory reservation
+  - [ ] `processPaymentAction()` - Payment processing with gateway
+  - [ ] `trackOrderAction()` - Order status tracking
+  - [ ] Payment webhook handling for real-time updates
+
+#### 3.2 Payment Flow Implementation - **PRIORITY 7**
+**Timeline**: 2-3 days
+**Goal**: Complete payment processing workflow
+
+- [ ] **Payment Method Selection**
+  - [ ] Payment method cards with icons and descriptions
+  - [ ] Payment method validation (Server-side)
+  - [ ] Payment instructions generation
+  - [ ] QR code generation for QRIS payments
+
+- [ ] **Payment Status Tracking**
+  - [ ] Payment confirmation page with order details
+  - [ ] Real-time payment status updates
+  - [ ] Failed payment handling and retry mechanism
+  - [ ] Payment success confirmation with next steps
+
+### Epic 4: E-Ticket Generation & Delivery (Week 2-3)
+
+#### 4.1 Ticket Generation System - **PRIORITY 8**
+**Timeline**: 2-3 days
+**Goal**: Secure ticket generation with QR codes
+
+- [ ] **Ticket Creation**
+  - [ ] Unique QR code generation for each ticket
+  - [ ] Ticket validation system with security features
+  - [ ] PDF ticket template with event branding
+  - [ ] Anti-fraud measures (unique codes, timestamps)
+
+- [ ] **E-Ticket Delivery**
+  - [ ] Email delivery system with PDF attachment
+  - [ ] WhatsApp integration for ticket delivery (Indonesian preference)
+  - [ ] Download confirmation page with ticket preview
+  - [ ] Resend ticket functionality
+
+## 🚀 PHASE 3: UI/UX REVAMP & ENHANCEMENT (Priority 3)
+
+### Epic 5: Enhanced UI System (Week 3)
+
+#### 5.1 Advanced DataTable System - **PRIORITY 9**
+**Timeline**: 2-3 days
+**Goal**: Professional data management throughout platform
+
+- [ ] **DataTable Infrastructure** (Enhanced from current basic tables)
+  - [ ] TanStack Table integration with Shadcn/UI
+  - [ ] Sortable columns with Indonesian localization
+  - [ ] Multi-select filtering with search
+  - [ ] Column visibility controls
+  - [ ] Export functionality (CSV, PDF)
+
+- [ ] **Events DataTable Enhancement**
+  - [ ] Replace basic event tables in dashboard
+  - [ ] Real-time data updates with optimistic UI
+  - [ ] Bulk operations (publish, archive, delete)
+  - [ ] Enhanced loading states with skeletons
+  - [ ] Mobile-responsive table design
+
+#### 5.2 Enhanced Navigation System - **PRIORITY 10**
+**Timeline**: 1-2 days
+**Goal**: Improved navigation following UX structure plan
+
+- [ ] **Context-Aware Navigation Implementation**
+  - [ ] Guest navigation (top nav + hamburger on mobile)
+  - [ ] Authenticated navigation (sidebar + mobile adaptation)
+  - [ ] Breadcrumb navigation for context awareness
+  - [ ] Search integration in navigation
+
+- [ ] **Mobile Navigation Enhancement**
+  - [ ] Bottom navigation for mobile (optional)
+  - [ ] Improved hamburger menu with better UX
+  - [ ] Touch-friendly navigation targets (44px minimum)
+  - [ ] Swipe gestures for mobile sidebar
+
+#### 5.3 Performance & SEO Optimization - **PRIORITY 11**
+**Timeline**: 1-2 days
+**Goal**: Production-ready performance and SEO
+
+- [ ] **Performance Enhancements**
+  - [ ] Image optimization for event posters
+  - [ ] Bundle analysis and code splitting
+  - [ ] Server Component caching optimization
+  - [ ] Database query optimization
+
+- [ ] **SEO & Social Sharing**
+  - [ ] Meta tags and Open Graph for all public pages
+  - [ ] Structured data markup for events
+  - [ ] Sitemap generation for event pages
+  - [ ] Social sharing preview optimization
+
+## 🚀 PHASE 4: ADVANCED FEATURES & QR SCANNER (Priority 4)
+
+### Epic 6: Event Day Operations (Week 4)
+
+#### 6.1 QR Scanner & Check-in System - **PRIORITY 12**
+**Timeline**: 2-3 days
+**Goal**: Complete event day functionality
+
+- [ ] **Web-Based QR Scanner**
+  - [ ] Camera access and QR code scanning
+  - [ ] Real-time scan feedback with sound indicators
+  - [ ] Manual ticket entry backup
+  - [ ] Offline-capable functionality
+
+- [ ] **Check-in States & Management**
+  - [ ] Success state (green) with attendee information
+  - [ ] Already checked state (yellow) with timestamp
+  - [ ] Invalid ticket state (red) with error explanation
+  - [ ] Staff activity tracking and reporting
+
+## 📊 Updated Implementation Timeline
+
+### Week 1: Customer Discovery & Purchase Foundation
+- **Days 1-2**: Public event listing and search functionality
+- **Days 3-4**: Enhanced event detail pages with social sharing
+- **Day 5**: Modal ticket selection system
+
+### Week 2: Complete Purchase Flow & Payments
+- **Days 1-2**: Authentication flow and customer information
+- **Days 3-4**: Payment integration with dummy gateway
+- **Day 5**: E-ticket generation and delivery system
+
+### Week 3: UI Enhancement & Professional Polish
+- **Days 1-2**: DataTable system upgrade throughout platform
+- **Days 3-4**: Navigation enhancement and mobile optimization
+- **Day 5**: Performance optimization and SEO implementation
+
+### Week 4: Advanced Features & Launch Preparation
+- **Days 1-2**: QR scanner and check-in functionality
+- **Days 3-4**: Testing, bug fixes, and final polish
+- **Day 5**: MVP launch preparation and documentation
+
+## 🎯 Success Criteria for Each Phase
+
+### Phase 1 Success Metrics
+- [ ] Complete customer journey from discovery to ticket selection
+- [ ] Mobile-responsive event browsing experience
+- [ ] SEO-optimized event pages with social sharing
+- [ ] Professional UI competing with existing solutions
+
+### Phase 2 Success Metrics
+- [ ] End-to-end ticket purchase flow (dummy payments)
+- [ ] E-ticket generation and delivery via email
+- [ ] Order tracking and management system
+- [ ] Payment flow ready for real gateway integration
+
+### Phase 3 Success Metrics
+- [ ] Professional DataTable system throughout platform
+- [ ] Enhanced mobile navigation and user experience
+- [ ] Performance optimized for Indonesian mobile networks
+- [ ] SEO-ready for organic event discovery
+
+### Phase 4 Success Metrics
+- [ ] Complete event day operations with QR scanning
+- [ ] Staff management and check-in tracking
+- [ ] MVP feature-complete and demo-ready
+- [ ] Production deployment ready
+
+## 🚨 Critical Dependencies & Blockers
+
+### Resolved ✅
+- **Dashboard Navigation**: All routes now functional
+- **Image Loading**: External images working correctly
+- **Database System**: Full CRUD operations working
+- **Authentication**: Multi-tenant auth system complete
+
+### Current Blockers 🚧
+- **No Customer-Facing Pages**: Attendees cannot discover or purchase tickets
+- **Missing Payment Integration**: No transaction capability
+- **No E-Ticket System**: No ticket generation or delivery
+- **Basic UI Components**: Need professional DataTable system
+
+### Risk Mitigation
+- **Start with dummy payments**: Don't wait for real payment integration
+- **Focus on customer journey**: Complete flow before advanced features
+- **Mobile-first approach**: Optimize for Indonesian mobile usage patterns
+- **SEO optimization**: Ensure discoverability for organic growth
+
+## 📈 Updated MVP Completion Strategy
+
+### Current Status Assessment
+- **Foundation**: 90% complete (auth, database, basic organizer tools)
+- **Organizer Features**: 85% complete (dashboard, event management)
+- **Customer Features**: 5% complete **← CRITICAL GAP**
+- **Payment & E-Tickets**: 0% complete **← BLOCKING ISSUE**
+
+### Target Completion (4 weeks)
+- **Foundation**: 95% complete
+- **Organizer Features**: 95% complete (enhanced with DataTable)
+- **Customer Features**: 90% complete (discovery to purchase)
+- **Payment & E-Tickets**: 80% complete (dummy payments, real e-tickets)
+- **Overall MVP**: 90% complete and demo-ready
+
+### Success Definition
+By the end of 4 weeks, Gatherly should be a **complete ticketing platform** where:
+1. **Organizers** can create and manage events with professional tools
+2. **Customers** can discover events and purchase tickets seamlessly
+3. **Event staff** can check in attendees using QR codes
+4. **Platform** is production-ready for Indonesian market launch
+
+This represents a **strategic pivot** from organizer-first to **customer-first development**, ensuring we build a complete product that serves the entire ticketing ecosystem.
 **Goal**: Complete customer information collection and order confirmation
 
 - [ ] **Customer Information Form**

@@ -24,520 +24,520 @@
 - **Scalable**: Easy to add new features without cluttering navigation
 - **User-Friendly**: Familiar patterns for both marketing site and SaaS dashboard
 
-## 1. Navigation Flow
+### **Server-First Architecture Integration**
+- **Server Components**: All navigation rendering on server for better SEO and performance
+- **Server Actions**: Navigation state changes and user actions processed server-side
+- **Minimal Client State**: Only interactive elements (modals, dropdowns) use client components
+- **Enhanced Performance**: Reduced JavaScript bundle with server-side navigation logic
+
+## 1. Enhanced Navigation Flow
 
 ```
-Main Application Flow
+Main Application Flow (Server-First Implementation)
 |
-|— Landing Page (Guest)
-|   |— Hero Section
-|   |— Features Overview
-|   |— Pricing Information
+|— Landing Page (Guest - Server Components)
+|   |— Hero Section (Static generation)
+|   |— Features Overview (Server-rendered)
+|   |— Pricing Information (Server-rendered)
 |   |— Call-to-Action Buttons
-|       |— Sign Up Button
-|       |— Sign In Button
-|       |— Browse Events Button
+|       |— Sign Up Button → /register-organization (Organizer flow)
+|       |— Sign In Button → /sign-in (Universal auth)
+|       |— Browse Events Button → /events (Public discovery)
 |
-|— Authentication Flow
-|   |— Sign In Page
-|   |— Sign Up Page
-|   |— Em|— Scan Result Display
-|   |— Success State (Green)
-|   |   |— Check Icon
-|   |   |— "Check-in Successful!"
-|   |   |— Attendee Name
-|   |   |— Ticket Type
-|   |   |— Timestamp
+|— Public Event Discovery (New - Server Components)
+|   |— Event Listing Page (/events)
+|   |   |— Search & Filter Interface (Server Components + Client interactions)
+|   |   |— Category-based browsing (music, workshop, conference)
+|   |   |— Location filtering (Jakarta, Bandung, Surabaya)
+|   |   |— Event grid/list display
 |   |
-|   |— Already Checked State (Yellow)
-|   |   |— Warning Icon
-|   |   |— "Already Checked In"
-|   |   |— Attendee Name
-|   |   |— Previous Check-in Time
+|   |— Event Detail Pages (/events/[slug])
+|       |— Server-side rendering for SEO
+|       |— Modal-based ticket selection (Client Component)
+|       |— Social sharing integration
+|       |— Venue information with maps
+|
+|— Enhanced Authentication Flow (Server Actions)
+|   |— Sign In Page (registerUserAction)
+|   |— Sign Up Page (registerUserAction - customer role)
+|   |— Organization Registration (/register-organization)
+|   |   |— Specialized organizer onboarding
+|   |   |— registerOrganizationAction
+|   |   |— Organization creation flow
 |   |
-|   |— Invalid Ticket State (Red)
-|   |   |— Error Icon
-|   |   |— "Invalid Ticket"
-|   |   |— Error Reasonage
-|   |— Password Reset Page
+|   |— Role Management
+|       |— upgradeToOrganizerAction (customer → organizer)
+|       |— Single user table with role-based access
 |
-|— Organizer Dashboard (Authenticated)
-|   |— Dashboard Overview
-|   |— My Events Section
-|       |— Create New Event
-|       |— View Event Details
-|       |— Edit Event
-|       |— Event Analytics
-|       |— Attendee Management
-|       |— QR Code Scanner
-|   |— Account Settings
-|   |— Billing & Payments
+|— Organizer Dashboard (Protected - Server Components)
+|   |— Dashboard Overview (Server-rendered analytics)
+|   |— Events Management
+|   |   |— /dashboard/events (Server Components + Server Actions)
+|   |   |— createEventAction, updateEventAction, deleteEventAction
+|   |   |— Enhanced DataTable with server-side filtering
+|   |
+|   |— Analytics Dashboard
+|   |   |— /dashboard/analytics/* (Server Components)
+|   |   |— generateAnalyticsAction
+|   |   |— Real-time data aggregation
+|   |
+|   |— QR Scanner Interface
+|   |   |— /dashboard/scanner (Client Component for camera)
+|   |   |— scanTicketAction, validateTicketAction
+|   |   |— Offline-capable functionality
 |
-|— Public Event Pages
-|   |— Event Detail Page
-|   |— Ticket Selection
-|   |— Checkout Flow
-|   |— Payment Gateway
-|   |— Confirmation Page
-|   |— E-Ticket Download
+|— Enhanced Ticket Purchase Flow (Modal + Server Actions)
+|   |— Modal Ticket Selection (Client Component)
+|   |— Authentication Gate (Server Actions)
+|   |   |— Google Sign-In integration
+|   |   |— Guest checkout (registerGuestAction)
+|   |   |— Email/password authentication
+|   |
+|   |— Split-Screen Purchase Flow
+|   |   |— Left: Event details (Server Component)
+|   |   |— Right: Ticket summary (Client Component)
+|   |   |— createOrderAction, processPaymentAction
+|   |
+|   |— Payment Instructions (Server Components)
+|   |   |— QRIS generation (Server Action)
+|   |   |— Payment status tracking
+|   |   |— Multiple payment methods
 |
-|— Mobile Scanner (Event Staff)
-    |— QR Code Scanner Interface
-    |— Check-in Confirmation
-    |— Scan Results Display
+|— Promoter Acquisition (/sell-ticket - Server Components)
+    |— Business development landing page
+    |— Feature showcase for organizers
+    |— Referral system foundation
 ```
 
-## 2. Login Page Structure
+## 2. Login Page Structure (Enhanced)
 
 ```
-Sign In Page Layout
+Sign In Page Layout (Server Components + Server Actions)
 |
-|— Header Section
+|— Header Section (Server Component)
 |   |— Gatherly Logo
 |   |— Language Selector (ID/EN)
+|   |— Navigation breadcrumb
 |
-|— Main Content Container
+|— Main Content Container (Server Component)
 |   |— Welcome Message
 |   |   |— "Welcome back!"
-|   |   |— Subtitle: "Sign in to your Event Organizer account"
+|   |   |— Context-aware subtitle based on referrer
+|   |   |— Role-specific messaging
 |   |
-|   |— Sign In Form Card
+|   |— Sign In Form Card (Client Component + Server Action)
+|   |   |— Form (React Hook Form + Server Action)
 |   |   |— Email Input Field
 |   |   |   |— Label: "Email"
 |   |   |   |— Placeholder: "contoh@email.com"
-|   |   |   |— Validation Message Area
+|   |   |   |— Server-side validation
 |   |   |
 |   |   |— Password Input Field
 |   |   |   |— Label: "Password"
 |   |   |   |— Show/Hide Toggle Button
-|   |   |   |— Validation Message Area
+|   |   |   |— Server-side validation
 |   |   |
 |   |   |— Remember Me Checkbox
 |   |   |— Forgot Password Link
-|   |   |— Sign In Button
+|   |   |— Sign In Button (Server Action submission)
 |   |       |— Loading State Indicator
+|   |       |— Server-side authentication
 |   |
-|   |— Divider Section
-|   |   |— "or" Text
+|   |— Social Authentication (Server Actions)
+|   |   |— Google Sign-In Button
+|   |   |— LinkedIn Sign-In (future)
+|   |   |— Server-side OAuth handling
 |   |
-|   |— Alternative Actions
-|   |   |— "Don't have an account?" Text
-|   |   |— Sign Up Link
+|   |— Role-Based Navigation
+|   |   |— "New to Gatherly?" 
+|   |   |— "Sign up as Customer" → /sign-up
+|   |   |— "Sign up as Organizer" → /register-organization
 |   |
-|   |— Social Proof Section
-|       |— Success Statistics
+|   |— Social Proof Section (Server Component)
+|       |— Success Statistics (server-rendered)
 |       |— Testimonial Snippet
+|       |— Trust indicators
 |
-|— Footer Section
+|— Footer Section (Server Component)
     |— Copyright Information
     |— Privacy Policy Link
     |— Terms of Service Link
+    |— Indonesian compliance info
 ```
 
-## 3. Dashboard Page Structure
+## 3. Enhanced Dashboard Structure
 
-### 3.1 Guest Dashboard (Landing Page)
+### 3.1 Public Event Discovery (New Feature)
 
 ```
-Guest Dashboard Layout
+Public Event Discovery Layout (/events - Server Components)
 |
-|— Navigation Header
+|— Navigation Header (Server Component)
 |   |— Gatherly Logo
-|   |— Main Navigation Menu
-|   |   |— Features Link
-|   |   |— Pricing Link
-|   |   |— Help Link
+|   |— Public Navigation Menu
+|   |   |— Browse Events (active)
+|   |   |— Categories Dropdown
+|   |   |— For Organizers Link → /sell-ticket
 |   |
 |   |— Action Buttons
 |       |— Sign In Button
-|       |— Sign Up Free Button
+|       |— Start Selling Button → /register-organization
 |
-|— Hero Section
-|   |— Main Headline
-|   |   |— "Create Events & Sell Tickets in 10 Minutes"
+|— Hero Search Section (Server Component + Client interactions)
+|   |— Main Search Bar
+|   |   |— Location-based search (Jakarta, Bandung, etc.)
+|   |   |— Date range picker
+|   |   |— Category filter
+|   |   |— Server-side search processing
 |   |
-|   |— Subheadline
-|   |   |— "Trusted ticketing platform for Indonesian Event Organizers"
+|   |— Quick Filters
+|   |   |— This Weekend
+|   |   |— Free Events
+|   |   |— Popular Categories
 |   |
-|   |— CTA Buttons
-|   |   |— Start Free Button (Primary)
-|   |   |— View Demo Button (Secondary)
-|   |
-|   |— Hero Image/Video
-|       |— Event Creation Demo
+|   |— Search Results Count
+|       |— Server-rendered results summary
 |
-|— Features Overview Section
-|   |— Section Title: "Why Choose Gatherly?"
-|   |
-|   |— Feature Cards Grid
-|   |   |— Easy Setup Card
-|   |   |   |— Icon: Lightning Bolt
-|   |   |   |— Title: "Quick Setup"
-|   |   |   |— Description: "Create events in 10 minutes"
+|— Event Grid/List Display (Server Components)
+|   |— Event Cards Grid
+|   |   |— Event Card (Server Component)
+|   |   |   |— Event Poster (Next.js Image optimization)
+|   |   |   |— Event Title and Date
+|   |   |   |— Location and Organizer
+|   |   |   |— Ticket Price Range (IDR)
+|   |   |   |— Quick Buy Button → Modal
 |   |   |
-|   |   |— Indonesian Payments Card
-|   |   |   |— Icon: QRIS/Wallet
-|   |   |   |— Title: "Local Payments"
-|   |   |   |— Description: "QRIS, GoPay, OVO, DANA"
-|   |   |
-|   |   |— Mobile First Card
-|   |   |   |— Icon: Mobile Phone
-|   |   |   |— Title: "Mobile Friendly"
-|   |   |   |— Description: "Optimized for mobile"
-|   |   |
-|   |   |— QR Scanner Card
-|   |       |— Icon: QR Code
-|   |       |— Title: "Easy Check-in"
-|   |       |— Description: "Scan QR without app"
-|
-|— Social Proof Section
-|   |— Statistics Cards
-|   |   |— Events Created Counter
-|   |   |— Tickets Sold Counter
-|   |   |— Happy Organizers Counter
+|   |   |— Load More / Pagination (Server-side)
+|   |   |— Infinite scroll capability
 |   |
-|   |— Testimonials Carousel
-|       |— Organizer Testimonials
-|       |— Profile Photos
-|       |— Event Types
-|
-|— Pricing Section
-|   |— Section Title: "Transparent Pricing"
-|   |— Commission Information
-|   |   |— "Only 5% per ticket sold"
-|   |   |— "No monthly fees"
+|   |— Filter Sidebar (Client Component)
+|   |   |— Category Filters
+|   |   |— Price Range Slider
+|   |   |— Date Range Picker
+|   |   |— Location Filters
+|   |   |— Rating/Reviews Filter
 |   |
-|   |— Feature List
-|       |— Unlimited Events
-|       |— QRIS Payment
-|       |— QR Check-in
-|       |— Email Support
+|   |— Empty State (Server Component)
+|       |— No events found illustration
+|       |— Suggestion to modify search
+|       |— Featured events fallback
 |
-|— CTA Section
-|   |— Final Call-to-Action
-|   |— "Start Selling Tickets Today" Button
+|— Category Sections (Server Components)
+|   |— Music Events Section
+|   |— Workshop & Learning Section  
+|   |— Community Events Section
+|   |— Business & Networking Section
 |
-|— Footer
-    |— Company Information
-    |— Support Links
-    |— Social Media Links
+|— Footer (Server Component)
+    |— Event organizer resources
+    |— Support links
+    |— Social media links
 ```
 
-### 3.2 Authenticated Organizer Dashboard
+### 3.2 Enhanced Event Detail Page
 
 ```
-Organizer Dashboard Layout (Sidebar Navigation)
+Event Detail Page Layout (/events/[slug] - Server Components + SSG)
 |
-|— Left Sidebar (All Screen Sizes)
-|   |— Sidebar Header
-|   |   |— Gatherly Logo
-|   |   |— Organization/Workspace Switcher
-|   |   |— Collapse Toggle (Desktop)
+|— Event Header Section (Server Component)
+|   |— Breadcrumb Navigation
+|   |— Event Category Badge
+|   |— Share Buttons (WhatsApp, Facebook, Twitter)
+|
+|— Event Hero Section (Server Component)
+|   |— Event Poster (Next.js Image with optimization)
+|   |— Event Title and Subtitle
+|   |— Date, Time, and Duration
+|   |— Location with Map Preview
+|   |— Organizer Information
+|   |   |— Organizer Name and Avatar
+|   |   |— Organizer Rating/Reviews
+|   |   |— Contact Information
+|
+|— Ticket Selection Section (Client Component Modal)
+|   |— Ticket Types Display
+|   |   |— Ticket Type Cards
+|   |   |— Price in IDR
+|   |   |— Availability Status
+|   |   |— Quantity Selector
 |   |
-|   |— Primary Navigation
-|   |   |— Dashboard
-|   |   |   |— Icon: Home
-|   |   |   |— Label: "Dashboard"
-|   |   |   |— Badge: Active indicator
+|   |— Buy Tickets Button (Modal Trigger)
+|   |— Enhanced Modal Purchase Flow
+|       |— Modal Overlay (Client Component)
+|       |— Ticket Selection (Client state)
+|       |— Authentication Gate (Server Action)
+|       |— Split-Screen Design
+|           |— Left: Event Details + Customer Form
+|           |— Right: Ticket Summary + Pricing
+|       |— Payment Method Selection
+|       |— Payment Processing (Server Actions)
+|
+|— Event Details Section (Server Component)
+|   |— Event Description (Rich text)
+|   |— Event Schedule/Agenda
+|   |— Speaker/Performer Information
+|   |— Event Requirements
+|   |— Cancellation Policy
+|
+|— Venue Information (Server Component)
+|   |— Venue Details
+|   |— Interactive Map (Google Maps integration)
+|   |— Public Transportation Info
+|   |— Parking Information
+|   |— Accessibility Features
+|
+|— Social Proof Section (Server Component)
+|   |— Attendee Count
+|   |— Reviews and Ratings
+|   |— Social Media Mentions
+|   |— Previous Event Success
+|
+|— Related Events (Server Component)
+|   |— Similar Events Carousel
+|   |— Same Organizer Events
+|   |— Same Category Events
+|   |— Location-based Recommendations
+|
+|— Event Actions (Client Component)
+    |— Add to Calendar Button
+    |— Set Reminder Button
+    |— Contact Organizer Button
+    |— Report Event Button
+```
+
+### 3.3 Authenticated Organizer Dashboard (Enhanced)
+
+```
+Organizer Dashboard Layout (Server Components + Server Actions)
+|
+|— Enhanced Sidebar Navigation (Server Component)
+|   |— Organization Context
+|   |   |— Organization Avatar and Name
+|   |   |— Role Display (Admin, Member, etc.)
+|   |   |— Organization Switcher (if multiple)
+|   |
+|   |— Primary Navigation (Server-rendered)
+|   |   |— Dashboard Overview
+|   |   |— Events Management (/dashboard/events)
+|   |   |   |— All Events
+|   |   |   |— Published Events
+|   |   |   |— Draft Events  
+|   |   |   |— Archived Events
 |   |   |
-|   |   |— Events
-|   |   |   |— Icon: Calendar
-|   |   |   |— Label: "My Events"
-|   |   |   |— Badge: Draft count
-|   |   |   |— Submenu (expandable)
-|   |   |       |— All Events
-|   |   |       |— Published
-|   |   |       |— Draft
-|   |   |       |— Completed
+|   |   |— Create Event (Primary CTA)
+|   |   |— Analytics (/dashboard/analytics)
+|   |   |   |— Revenue Analytics
+|   |   |   |— Ticket Analytics
+|   |   |   |— Attendee Analytics
 |   |   |
-|   |   |— Create Event
-|   |   |   |— Icon: Plus Circle (Highlighted)
-|   |   |   |— Label: "Create Event"
-|   |   |   |— Primary color accent
-|   |   |
-|   |   |— Analytics
-|   |   |   |— Icon: BarChart
-|   |   |   |— Label: "Analytics"
-|   |   |   |— Submenu (expandable)
-|   |   |       |— Revenue Reports
-|   |   |       |— Ticket Sales
-|   |   |       |— Attendee Insights
-|   |   |
-|   |   |— QR Scanner
-|   |   |   |— Icon: QrCode
-|   |   |   |— Label: "QR Scanner"
-|   |   |   |— Context: Only when events exist
+|   |   |— QR Scanner (/dashboard/scanner)
 |   |
 |   |— Secondary Navigation
-|   |   |— Settings
-|   |   |   |— Icon: Settings
-|   |   |   |— Label: "Settings"
-|   |   |   |— Submenu
-|   |   |       |— Profile
-|   |   |       |— Organization
-|   |   |       |— Billing
-|   |   |       |— Integrations
+|   |   |— Settings (/dashboard/settings)
+|   |   |   |— Profile Settings
+|   |   |   |— Organization Settings
+|   |   |   |— Billing Settings
+|   |   |   |— Integration Settings
 |   |   |
 |   |   |— Help & Support
-|   |   |   |— Icon: HelpCircle
-|   |   |   |— Label: "Help"
-|   |   |   |— External link indicator
 |   |
-|   |— Sidebar Footer
-|   |   |— User Profile Section
-|   |   |   |— Avatar
-|   |   |   |— Name (Collapsible)
-|   |   |   |— Organization (Collapsible)
-|   |   |   |— Dropdown Arrow
+|   |— User Profile Section
+|       |— User Avatar and Info
+|       |— Quick Settings Access
+|       |— Sign Out Action (Server Action)
+|
+|— Main Dashboard Content (Server Components)
+|   |— Dashboard Header (Server Component)
+|   |   |— Welcome Message (Personalized)
+|   |   |— Quick Stats Overview
+|   |   |— Time-based Greetings
+|   |
+|   |— Action Bar (Server Component + Client interactions)
+|   |   |— Create Event Button (Primary)
+|   |   |— QR Scanner Quick Access
+|   |   |— Export Data Options
+|   |   |— Refresh Data Button
+|
+|   |— Enhanced Summary Cards (Server Components)
+|   |   |— Total Revenue Card
+|   |   |   |— IDR Amount (server-calculated)
+|   |   |   |— Growth Percentage
+|   |   |   |— Trend Visualization
 |   |   |
-|   |   |— User Dropdown Menu
-|   |       |— Profile Settings
-|   |       |— Switch Organization
-|   |       |— Sign Out
-|
-|— Mobile Sidebar Behavior (< 768px)
-|   |— Off-canvas sidebar (overlay)
-|   |— Hamburger trigger in top header
-|   |— Backdrop blur when open
-|   |— Swipe gestures to open/close
-|   |— Same navigation structure
-|
-|— Main Content Area
-|   |— Top Header Bar
-|   |   |— Breadcrumb Navigation
-|   |   |— Page Title
-|   |   |— Page Actions (contextual)
-|   |   |— Global Search
-|   |   |— Notifications Bell
-|   |       |— Notification Count Badge
-|   |       |— Dropdown Menu
-|   |
-|   |— Content Body
-|   |   |— Dashboard Header
-|   |   |   |— Welcome Message
-|   |   |   |   |— "Good morning, [Name]"
-|   |   |   |   |— Current Date Display
-|   |   |   |
-|   |   |   |— Quick Actions Bar
-|   |   |       |— Create New Event Button (Primary)
-|   |   |       |— QR Scanner Button
-|   |   |       |— Export Data Button
+|   |   |— Tickets Sold Card
+|   |   |   |— Total Count (server-calculated)
+|   |   |   |— Growth Indicator
+|   |   |   |— Active vs. Used Tickets
 |   |   |
-|   |   |— Summary Cards Section
-|   |— Total Revenue Card
-|   |   |— IDR Amount Display
-|   |   |— Growth Percentage
-|   |   |— Comparison Period
-|   |
-|   |— Total Tickets Sold Card
-|   |   |— Ticket Count
-|   |   |— Growth Indicator
-|   |   |— Active Events Count
-|   |
-|   |— Active Events Card
-|   |   |— Event Count
-|   |   |— Published Events
-|   |   |— Draft Events
-|   |
-|   |— Upcoming Events Card
-|       |— Next Event Info
-|       |— Days Until Event
-|       |— Quick Action Link
-|
-|— My Events Section
-|   |— Section Header
-|   |   |— "My Events" Title
-|   |   |— View All Events Link
-|   |
-|   |— Events DataTable (Enhanced Table with Advanced Features)
-|   |   |— DataTable Toolbar
-|   |   |   |— Global Search Input
-|   |   |   |   |— Search by name, location, or description
-|   |   |   |   |— Clear search button
-|   |   |   |   |— Search icon indicator
-|   |   |   |
-|   |   |   |— Status Filter Dropdown
-|   |   |   |   |— Multi-select checkbox filters
-|   |   |   |   |— All Status / Draft / Published / Completed
-|   |   |   |   |— Filter count indicator
-|   |   |   |   |— Clear filters option
-|   |   |   |
-|   |   |   |— Column Visibility Toggle
-|   |   |   |   |— Show/Hide columns dropdown
-|   |   |   |   |— Checkbox for each column
-|   |   |   |   |— Reset to default view
-|   |   |   |
-|   |   |   |— Bulk Actions (when rows selected)
-|   |   |   |   |— Delete selected events
-|   |   |   |   |— Bulk status change
-|   |   |   |   |— Export selected data
-|   |   |   |   |— Selection count indicator
-|   |   |   |
-|   |   |   |— Quick Actions
-|   |   |       |— Add Event Button (Primary CTA)
-|   |   |       |— Export All Data
-|   |   |       |— Refresh Data
+|   |   |— Active Events Card
+|   |   |   |— Event Count by Status
+|   |   |   |— Quick Event Actions
+|   |   |   |— Performance Metrics
 |   |   |
-|   |   |— DataTable Content
-|   |   |   |— Sortable Column Headers
-|   |   |   |   |— Row Selection (Checkbox column)
-|   |   |   |   |— Event Name (Sortable, with poster thumbnail)
-|   |   |   |   |— Date & Time (Sortable)
-|   |   |   |   |— Location (Optional visibility)
-|   |   |   |   |— Status (Filterable badges)
-|   |   |   |   |— Tickets Sold (Sortable with progress)
-|   |   |   |   |— Revenue (Sortable, IDR formatted)
-|   |   |   |   |— Actions (Row-level dropdown menu)
-|   |   |   |
-|   |   |   |— Selectable Data Rows
-|   |   |   |   |— Row selection checkbox
-|   |   |   |   |— Event poster thumbnail (Avatar component)
-|   |   |   |   |— Event name as clickable link
-|   |   |   |   |— Formatted date and time (Indonesian locale)
-|   |   |   |   |— Location text (truncated if long)
-|   |   |   |   |— Status badge with color coding
-|   |   |   |   |— Progress bar showing tickets sold/total
-|   |   |   |   |— IDR-formatted revenue amount
-|   |   |   |   |— Action dropdown menu
-|   |   |   |       |— View Event Details
-|   |   |   |       |— Edit Event
-|   |   |   |       |— Duplicate Event
-|   |   |   |       |— Share Event Link
-|   |   |   |       |— Open QR Scanner
-|   |   |   |       |— Download Attendee List
-|   |   |   |       |— Archive/Delete Event
-|   |   |   |
-|   |   |   |— Row Hover & Selection States
-|   |   |   |   |— Hover highlighting
-|   |   |   |   |— Selected row indication
-|   |   |   |   |— Loading state skeleton
-|   |   |   |
-|   |   |   |— Empty State
-|   |   |       |— No events illustration
-|   |   |       |— "No events found" message
-|   |   |       |— "Create First Event" CTA button
-|   |   |       |— Clear filters suggestion (when filtered)
-|   |   |
-|   |   |— DataTable Pagination
-|   |       |— Rows per page selector (10, 25, 50, 100)
-|   |       |— Current page / total pages display
-|   |       |— First/Previous/Next/Last navigation
-|   |       |— Jump to page input
-|   |       |— Total records count
-|   |       |— Selected rows count display
+|   |   |— Upcoming Events Card
+|   |       |— Next Event Countdown
+|   |       |— Preparation Checklist
+|   |       |— Quick Check-in Access
 |
-|— Recent Activity Section
-|   |— Section Title: "Recent Activity"
-|   |— Activity Feed
-|   |   |— Ticket Purchase Notifications
-|   |   |— Event Status Changes
-|   |   |— Check-in Activities
-|   |
-|   |— View All Activity Link
-|
-|— Quick Tips Section
-    |— Tips Card
-    |— Best Practices
-    |— Help Resources
+|   |— Advanced Events DataTable (Server Components + Client interactions)
+|       |— DataTable Toolbar (Client Component)
+|       |   |— Global Search (server-side processing)
+|       |   |— Advanced Filters
+|       |   |   |— Status Multi-select
+|       |   |   |— Date Range Filter
+|       |   |   |— Revenue Range Filter
+|       |   |   |— Location Filter
+|       |   |
+|       |   |— Column Visibility Controls
+|       |   |— Bulk Action Controls
+|       |   |— Export Options
+|       |
+|       |— Enhanced DataTable (Server Component)
+|       |   |— Server-side Sorting
+|       |   |— Server-side Pagination
+|       |   |— Real-time Data Updates
+|       |   |— Row Actions (Server Actions)
+|       |       |— Edit Event (updateEventAction)
+|       |       |— Delete Event (deleteEventAction)
+|       |       |— Duplicate Event
+|       |       |— View Analytics
+|       |       |— Open QR Scanner
+|       |
+|       |— Performance Optimizations
+|           |— Virtual scrolling for large datasets
+|           |— Optimistic updates
+|           |— Skeleton loading states
 ```
 
-## 4. "New Event" Modal Structure
+## 4. Enhanced Modal Structures
+
+### 4.1 Create Event Modal (Server Actions)
 
 ```
-Create New Event Modal
+Create New Event Modal (Client Component + Server Actions)
 |
-|— Modal Overlay
-|   |— Background Blur Effect
-|   |— Click Outside to Close
+|— Modal Container (Client Component)
+|   |— Progress Indicator (Client state)
+|   |— Step Navigation (Client state)
+|   |— Form State Management (Client + Server validation)
 |
-|— Modal Container
-|   |— Modal Header
-|   |   |— Title: "Create New Event"
-|   |   |— Close Button (X)
-|   |   |— Progress Indicator
-|   |       |— Step 1: Event Details
-|   |       |— Step 2: Tickets
-|   |       |— Step 3: Publication
+|— Step 1: Event Details (Server Action: createEventAction)
+|   |— Form Fields (Client Component)
+|   |— Server-side Validation
+|   |— Auto-save Draft Capability
+|   |— Image Upload (Server processing)
+|
+|— Step 2: Ticket Configuration (Server Action: updateEventAction)
+|   |— Dynamic Ticket Types
+|   |— Price Validation (Server-side)
+|   |— Inventory Management
+|   |— Revenue Projections (Server-calculated)
+|
+|— Step 3: Publication Settings (Server Action: publishEventAction)
+|   |— SEO-friendly Slug Generation (Server-side)
+|   |— Publication Status Management
+|   |— Preview Generation (Server-side)
+|   |— Terms Acceptance
+|
+|— Success State (Server Component)
+    |— Event URL Generation (Server-side)
+    |— Social Sharing Integration
+    |— Analytics Tracking Setup
+    |— Onboarding Next Steps
+```
+
+### 4.2 Enhanced Purchase Modal
+
+```
+Ticket Purchase Modal (Client Component + Server Actions)
+|
+|— Modal Overlay (Client Component)
+|
+|— Ticket Selection Stage (Client Component)
+|   |— Event Context Display
+|   |— Ticket Type Selection
+|   |— Quantity Controls
+|   |— Real-time Pricing (Client calculation)
+|   |— Availability Checking (Server validation)
+|
+|— Authentication Gate (Server Actions)
+|   |— Sign In Form (Server Action)
+|   |— Guest Checkout Option (registerGuestAction)
+|   |— Social Sign-In (Google OAuth - Server Action)
+|   |— Email Verification Flow
+|
+|— Split-Screen Purchase Interface
+|   |— Left Panel: Event Details (Server Component)
+|   |   |— Event Summary
+|   |   |— Customer Information Form
+|   |   |— Additional Attendee Details
+|   |   |— Terms and Conditions
 |   |
-|   |— Modal Body
-|   |   |— Step 1: Event Details Form
-|   |   |   |— Event Name Field
-|   |   |   |   |— Label: "Event Name"
-|   |   |   |   |— Input Field
-|   |   |   |   |— Character Counter (255 max)
-|   |   |   |   |— Validation Message
-|   |   |   |
-|   |   |   |— Event Description Field
-|   |   |   |   |— Label: "Event Description"
-|   |   |   |   |— Textarea
-|   |   |   |   |— Rich Text Formatting Options
-|   |   |   |   |— Character Counter
-|   |   |   |
-|   |   |   |— Date & Time Section
-|   |   |   |   |— Event Date Picker
-|   |   |   |   |— Start Time Picker
-|   |   |   |   |— End Time Picker
-|   |   |   |   |— Timezone Display
-|   |   |   |
-|   |   |   |— Location Field
-|   |   |   |   |— Label: "Event Location"
-|   |   |   |   |— Input Field with Autocomplete
-|   |   |   |   |— Google Maps Integration
-|   |   |   |
-|   |   |   |— Event Poster Upload
-|   |   |       |— Upload Area
-|   |   |       |— Drag & Drop Zone
-|   |   |       |— File Requirements Info
-|   |   |       |— Preview Image
-|   |   |       |— Remove/Replace Options
-|   |   |
-|   |   |— Step 2: Ticket Configuration
-|   |   |   |— Ticket Types Section
-|   |   |   |   |— Add Ticket Type Button
-|   |   |   |   |— Ticket Type Cards
-|   |   |   |       |— Ticket Name Field
-|   |   |   |       |— Price Field (IDR)
-|   |   |   |       |— Quantity Field
-|   |   |   |       |— Description Field
-|   |   |   |       |— Remove Ticket Type Button
-|   |   |   |
-|   |   |   |— Pricing Summary
-|   |   |       |— Total Tickets Count
-|   |   |       |— Revenue Projection
-|   |   |       |— Commission Calculation
-|   |   |
-|   |   |— Step 3: Publication Settings
-|   |       |— Event URL Preview
-|   |       |   |— Auto-generated URL
-|   |       |   |— Custom URL Option
-|   |       |   |— Availability Check
-|   |       |
-|   |       |— Visibility Settings
-|   |       |   |— Draft Radio Button
-|   |       |   |— Published Radio Button
-|   |       |   |— Publication Date Picker
-|   |       |
-|   |       |— Terms & Conditions
-|   |           |— Commission Agreement
-|   |           |— Terms Checkbox
-|   |           |— Privacy Policy Link
-|   |
-|   |— Modal Footer
-|       |— Back Button (Step 2-3 only)
-|       |— Cancel Button
-|       |— Next Button / Save Draft Button
-|       |— Publish Event Button (Step 3)
-|       |— Loading State Indicators
+|   |— Right Panel: Order Summary (Client Component)
+|   |   |— Ticket Breakdown
+|   |   |— Pricing Calculation
+|   |   |— Fees and Taxes
+|   |   |— Total Amount (IDR)
+|   |   |— Edit Cart Options
 |
-|— Success State Modal
-|   |— Success Icon
-|   |— "Event Created Successfully!" Message
-|   |— Event URL Display
-|   |— Copy Link Button
-|   |— Share Options
-|   |   |— WhatsApp Share
-|   |   |— Facebook Share
-|   |   |— Twitter Share
+|— Payment Method Selection (Server Component)
+|   |— QRIS Payment (Primary)
+|   |— E-wallet Options (GoPay, OVO, DANA)
+|   |— Bank Transfer/Virtual Account
+|   |— Credit/Debit Cards
+|   |— Payment Method Validation (Server-side)
+|
+|— Payment Processing (Server Actions)
+|   |— Payment Gateway Integration (processPaymentAction)
+|   |— Order Status Tracking
+|   |— Inventory Reservation
+|   |— Transaction Logging
+|
+|— Confirmation & E-ticket (Server Components)
+    |— Order Confirmation Page
+    |— E-ticket Generation (Server-side)
+    |— QR Code Creation
+    |— Email Delivery (Server Action)
+    |— WhatsApp Integration (Indonesian preference)
+```
+
+## 5. Server-First Performance Optimizations
+
+### 5.1 Server Component Benefits
+- **SEO Optimization**: All public content server-rendered for search engines
+- **Performance**: Reduced JavaScript bundle size (>50% reduction target)
+- **Security**: Sensitive operations (payments, user data) processed server-side
+- **Caching**: Built-in Next.js caching for Server Components
+
+### 5.2 Data Fetching Strategy
+- **Server Components**: Primary data fetching method
+- **Server Actions**: All mutations (create, update, delete)
+- **Client State**: Minimal, only for immediate UI interactions
+- **Optimistic Updates**: Enhanced UX with server validation
+
+### 5.3 Indonesian Market Optimizations
+- **Mobile-First**: 90%+ mobile usage in Indonesian market
+- **Network Optimization**: Optimized for 3G/4G networks
+- **Payment Integration**: QRIS priority, e-wallet support
+- **Language Support**: Bahasa Indonesia localization ready
+- **Cultural Adaptation**: Local event types and preferences
+
+## 6. Accessibility & Compliance
+
+### 6.1 Enhanced Accessibility Features
+- **WCAG 2.1 AA Compliance**: All components
+- **Keyboard Navigation**: Full keyboard support
+- **Screen Reader Optimization**: Proper ARIA labels and semantic HTML
+- **Touch Targets**: 44px minimum for mobile interactions
+- **Color Contrast**: 4.5:1 minimum ratio
+
+### 6.2 Indonesian Compliance
+- **Data Localization**: Indonesian data protection compliance
+- **Payment Regulations**: Bank Indonesia payment standards
+- **Tax Compliance**: Indonesian tax calculation and reporting
+- **Language Accessibility**: Indonesian screen reader support
+
+This enhanced UX structure plan incorporates the server-first architecture while maintaining the context-aware navigation strategy, ensuring optimal performance and user experience for the Indonesian ticketing market.
 |   |   |— Email Share
 |   |
 |   |— Action Buttons

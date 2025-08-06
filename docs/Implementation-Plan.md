@@ -1,561 +1,561 @@
 # Gatherly Shadcn/UI Component Mapping
-*Component recommendations for each UI element in the UX Structure Plan*
+*Server-First Component Recommendations for Enhanced UX Structure*
 
-## Navigation Implementation Strategy
+## Server-First Implementation Strategy
 
-### Context-Aware Navigation Approach  
-- **Guest Users**: Top navigation (desktop) + hamburger menu (mobile) using NavigationMenu
-- **Authenticated Users**: Sidebar navigation (all devices) using custom sidebar components
-- **Mobile Responsive**: Sidebar transforms to off-canvas hamburger menu on mobile
-- **Accessibility**: Full WCAG 2.1 AA compliance with proper ARIA labels and keyboard navigation
+### Architecture Principles
+- **Server Components**: Default for all data fetching and rendering
+- **Server Actions**: Primary method for all mutations and form submissions
+- **Client Components**: Only for interactivity requiring client-side state
+- **Hybrid Approach**: Strategic combination of server and client components
 
-## 1. Navigation & Layout Components
+### Performance Benefits
+- **Reduced Bundle Size**: 50%+ JavaScript reduction target
+- **Better SEO**: Server-side rendering for all public content
+- **Enhanced Security**: Server-side validation and processing
+- **Improved Caching**: Built-in Next.js Server Component caching
+
+## 1. Enhanced Navigation & Layout Components
 
 ```
-Guest User Navigation (Marketing Pages)
+Guest User Navigation (Marketing Pages - Server Components)
 |
-|— NavigationMenu (Desktop ≥ 1024px)
-|   |— NavigationMenuList (Horizontal menu container)
-|   |— NavigationMenuItem (Features, Pricing, Help)
-|   |— NavigationMenuLink (Direct navigation links)
-|   |— Button (Sign In, Sign Up buttons)
+|— NavigationMenu (Desktop ≥ 1024px - Server Component)
+|   |— NavigationMenuList (Server-rendered horizontal menu)
+|   |— NavigationMenuItem (Features, Pricing, Help, For Organizers)
+|   |— NavigationMenuLink (Static navigation links)
+|   |— Button (Sign In → /sign-in, Start Selling → /register-organization)
 |
-|— Mobile Navigation (< 1024px)
-|   |— Sheet (Hamburger menu)
+|— Mobile Navigation (< 1024px - Client Component)
+|   |— Sheet (Hamburger menu - requires client state)
 |   |— SheetTrigger (Menu button)
-|   |— SheetContent (Menu panel)
+|   |— SheetContent (Menu panel with navigation)
 
-Authenticated User Navigation (Dashboard/App)
+Authenticated User Navigation (Dashboard - Server + Client Components)
 |
-|— Custom Sidebar Component (All devices)
-|   |— Sidebar Header
-|   |   |— Logo (Gatherly brand)
-|   |   |— Select (Organization switcher)
-|   |   |— Button (Collapse toggle - desktop only)
+|— Enhanced Sidebar Component (Server Component base)
+|   |— Sidebar Header (Server Component)
+|   |   |— Logo (Gatherly brand - static)
+|   |   |— Select (Organization switcher - Client Component)
+|   |   |— Button (Collapse toggle - Client Component for state)
 |   |
-|   |— Navigation Section
-|   |   |— NavigationMenu (Vertical navigation)
-|   |   |— NavigationMenuItem (Dashboard, Events, Create, Analytics)
-|   |   |— NavigationMenuLink (Navigation links with icons)
-|   |   |— Badge (Status indicators, counts)
-|   |   |— Collapsible (Expandable submenus)
-|   |       |— CollapsibleTrigger (Menu item with submenu)
-|   |       |— CollapsibleContent (Submenu items)
+|   |— Navigation Section (Server Component)
+|   |   |— NavigationMenu (Vertical server-rendered navigation)
+|   |   |— NavigationMenuItem (Dashboard, Events, Analytics)
+|   |   |— NavigationMenuLink (Server-rendered with active states)
+|   |   |— Badge (Real-time counts - Server Component with revalidation)
+|   |   |— Collapsible (Submenu - Client Component for interaction)
+|   |       |— CollapsibleTrigger (Expandable items)
+|   |       |— CollapsibleContent (Submenu server-rendered)
 |   |
-|   |— Sidebar Footer
-|   |   |— DropdownMenu (User profile menu)
-|   |   |— DropdownMenuTrigger (User avatar + info)
+|   |— Enhanced User Section (Server Component)
+|   |   |— DropdownMenu (User profile - Client Component)
+|   |   |— DropdownMenuTrigger (User info server-rendered)
 |   |   |— DropdownMenuContent (Profile options)
-|   |   |— Avatar (User profile image)
-|   |   |— Typography (User name, organization)
+|   |   |— Avatar (User profile image - Server Component)
+|   |   |— Typography (User details server-rendered)
 |
-|— Main Content Area
-|   |— Top Header Bar
-|   |   |— Breadcrumb (Page navigation)
-|   |   |— Input (Global search)
-|   |   |— Button (Notifications)
-|   |   |— Badge (Notification count)
+|— Main Content Area (Server Component)
+|   |— Top Header Bar (Server Component)
+|   |   |— Breadcrumb (Server-rendered navigation context)
+|   |   |— Command (Global search - Client Component)
+|   |   |— Button (Notifications - Client Component for real-time)
+|   |   |— Badge (Notification count - Server Component)
 |
-|— Mobile Sidebar (< 768px)
-|   |— Sheet (Off-canvas sidebar)
-|   |— SheetTrigger (Hamburger in top header)
-|   |— SheetContent (Same sidebar content)
-|   |— SheetOverlay (Backdrop blur)
-```
-|   |   |
-|   |   |— Navigation Links Section
-|   |   |   |— Button (Dashboard link with Home icon)
-|   |   |   |— Button (Events link with Calendar icon)  
-|   |   |   |— Button (Create Event - Primary styling with Plus icon)
-|   |   |   |— Button (QR Scanner with QrCode icon)
-|   |   |   |— Separator (Visual division)
-|   |   |   |— Button (Settings with Settings icon)
-|   |   |   |— Button (Help Center with HelpCircle icon)
-|   |   |   |— Button (Sign Out with LogOut icon)
-|   |   |
-|   |   |— Sheet Footer (App version, additional info)
-
-Responsive Layout Structure
-|
-|— Container (Page wrapper with responsive padding)
-|— Grid (Responsive layout structure for desktop)
-|— Flex (Flexible layouts for mobile navigation)
-|— Separator (Visual dividers between sections)
-|— ScrollArea (Scrollable content areas)
+|— Mobile Sidebar Adaptation (Client Component)
+|   |— Sheet (Off-canvas behavior requires client state)
+|   |— SheetTrigger (Hamburger in header)
+|   |— SheetContent (Same server-rendered navigation)
+|   |— SheetOverlay (Backdrop with client interactions)
 ```
 
-## 2. Authentication Pages
+## 2. Public Event Discovery (New Feature Implementation)
 
 ```
-Sign In Page Layout
+Event Discovery Page (/events - Server Components)
 |
-|— Card (Main form container)
-|   |— CardHeader (Welcome message section)
-|   |— CardContent (Form fields area)
-|   |   |— Form (Form wrapper)
-|   |   |— Input (Email and password fields)
-|   |   |— Label (Field labels)
-|   |   |— Button (Sign in, social buttons)
-|   |   |— Checkbox (Remember me option)
-|   |   |— Link (Forgot password, sign up links)
-|   |   |— Alert (Validation messages)
+|— Page Layout (Server Component)
+|   |— Container (Server-rendered layout structure)
+|   |— Grid (Responsive event grid - Server Component)
+|
+|— Search & Filter Interface
+|   |— Search Bar (Client Component for immediate feedback)
+|   |   |— Input (Search input with real-time suggestions)
+|   |   |— Command (Search command palette)
+|   |   |— CommandInput (Search field)
+|   |   |— CommandList (Server Action for results)
 |   |
+|   |— Filter Sidebar (Client Component for immediate updates)
+|   |   |— Accordion (Filter categories)
+|   |   |— AccordionItem (Category sections)
+|   |   |— AccordionTrigger (Expandable filters)
+|   |   |— AccordionContent (Filter options)
+|   |   |— Checkbox (Filter selections - client state)
+|   |   |— Slider (Price range - Client Component)
+|   |   |— Calendar (Date range picker - Client Component)
+|   |   |— Badge (Active filter indicators)
+|
+|— Event Grid Display (Server Component)
+|   |— Event Cards (Server Component for SEO)
+|   |   |— Card (Event container)
+|   |   |— CardHeader (Event title and details)
+|   |   |— CardContent (Event information)
+|   |   |— AspectRatio (Event poster optimization)
+|   |   |— Badge (Category and status indicators)
+|   |   |— Button (Quick buy CTA - triggers modal)
+|   |
+|   |— Pagination (Server Component)
+|   |   |— PaginationContent (Page navigation)
+|   |   |— PaginationItem (Page numbers)
+|   |   |— PaginationLink (Server-side page changes)
+|   |   |— PaginationNext/Previous (Navigation controls)
+|
+|— Empty State (Server Component)
+|   |— EmptyState illustration
+|   |— Typography (No results messaging)
+|   |— Button (Clear filters or browse all events)
+```
+
+## 3. Enhanced Event Detail Page
+
+```
+Event Detail Page (/events/[slug] - Server Components + SSG)
+|
+|— Page Structure (Server Component with Static Generation)
+|   |— Breadcrumb (Server-rendered navigation)
+|   |— ShareButton (Social sharing - Client Component)
+|   |
+|— Event Hero Section (Server Component)
+|   |— Card (Hero container)
+|   |— AspectRatio (Event poster with Next.js Image)
+|   |— Typography (Event title, subtitle, details)
+|   |— Badge (Category and status indicators)
+|   |— Separator (Visual sections)
+|   |
+|— Enhanced Ticket Selection (Client Component Modal)
+|   |— Dialog (Modal container - Client Component)
+|   |— DialogTrigger (Buy Tickets button)
+|   |— DialogContent (Modal content)
+|   |
+|   |— Ticket Selection Interface (Client Component)
+|   |   |— Card (Ticket type containers)
+|   |   |— CardHeader (Ticket type information)
+|   |   |— CardContent (Pricing and availability)
+|   |   |— Button (Quantity controls - + and -)
+|   |   |— Input (Quantity input)
+|   |   |— Badge (Availability status)
+|   |
+|   |— Authentication Gate (Server Actions)
+|   |   |— Tabs (Sign In / Guest Checkout)
+|   |   |— TabsContent (Auth forms)
+|   |   |— Form (Authentication form - Server Action)
+|   |   |— Input (Email, password fields)
+|   |   |— Button (Google Sign-In - Server Action)
+|   |
+|   |— Split-Screen Purchase Flow
+|   |   |— Grid (Two-column layout)
+|   |   |— Left Panel (Client Component)
+|   |   |   |— Form (Customer information)
+|   |   |   |— FormField (Customer details)
+|   |   |   |— FormLabel (Field labels)
+|   |   |   |— FormControl (Input controls)
+|   |   |   |— Checkbox (Terms acceptance)
+|   |   |
+|   |   |— Right Panel (Client Component)
+|   |   |   |— Card (Order summary - sticky)
+|   |   |   |— CardHeader (Summary title)
+|   |   |   |— CardContent (Ticket breakdown)
+|   |   |   |— Separator (Price breakdown)
+|   |   |   |— Typography (Total pricing in IDR)
+|   |   |   |— Button (Continue to payment)
+|   |
+|   |— Payment Method Selection (Server Component)
+|   |   |— RadioGroup (Payment options)
+|   |   |— RadioGroupItem (Individual payment methods)
+|   |   |— Label (Payment method labels)
+|   |   |— Card (Payment method cards with icons)
+|   |   |— Alert (Payment instructions)
+|   |
+|   |— Payment Processing (Server Actions)
+|       |— Progress (Processing indicator)
+|       |— Alert (Status messages)
+|       |— Button (Payment completion actions)
+|
+|— Event Information (Server Component)
+|   |— Tabs (Event details sections)
+|   |— TabsList (Section navigation)
+|   |— TabsContent (Section content)
+|   |— Typography (Rich text content)
+|   |— Accordion (FAQ and additional info)
+|
+|— Venue Information (Server Component)
+|   |— Card (Venue details container)
+|   |— MapEmbed (Google Maps integration)
+|   |— Typography (Venue information)
+|   |— Badge (Accessibility features)
+|
+|— Related Events (Server Component)
+|   |— Carousel (Related events slider)
+|   |— CarouselContent (Event cards)
+|   |— CarouselItem (Individual events)
+|   |— CarouselNext/Previous (Navigation)
+```
+
+## 4. Enhanced Authentication Pages
+
+```
+Authentication Pages (Server Components + Server Actions)
+|
+|— Sign In Page (Server Component)
+|   |— Card (Form container)
+|   |— CardHeader (Welcome messaging)
+|   |— CardContent (Form fields)
 |   |— CardFooter (Alternative actions)
-|
-|— Language Selector
-    |— Select (Language dropdown)
-    |— SelectContent (Dropdown options)
-    |— SelectItem (Individual language options)
-```
-
-## 3. Landing Page (Guest Dashboard)
-
-```
-Hero Section
-|
-|— Card (Hero content wrapper)
-|— Button (Primary and secondary CTAs)
-|— Typography (h1, h2, p - Headlines and text)
-
-Features Overview Section
-|
-|— Grid (Feature cards layout)
-|— Card (Individual feature cards)
-|   |— CardHeader (Feature titles)
-|   |— CardContent (Feature descriptions)
-|   |— Icons (Feature illustrations from lucide-react)
-
-Social Proof Section
-|
-|— Statistics Cards
-|   |— Card (Statistics cards)
-|   |— Badge (Counter displays)
-|
-|— Testimonials Carousel
-    |— Carousel (Testimonials slider)
-    |— CarouselContent (Testimonial items)
-    |— CarouselItem (Individual testimonials)
-    |— Avatar (Profile photos)
-
-Pricing Section
-|
-|— Card (Pricing display)
-|— Badge (Commission highlight)
-|— List (Feature list items)
-|— Check (Feature checkmarks - lucide icon)
-```
-
-## 4. Authenticated Organizer Dashboard
-
-```
-Dashboard Header
-|
-|— Card (Welcome message container)
-|— Typography (Welcome text and date)
-|— Button (Quick action buttons - Create Event, QR Scanner)
-
-Summary Cards Section
-|
-|— Grid (Cards layout - responsive)
-|— Card (Metric containers)
-|   |— CardHeader (Card titles)
-|   |— CardContent (Metric displays)
-|   |— Progress (Growth indicators)
-|   |— Badge (Status indicators)
-|   |— Separator (Visual separation)
-
-My Events Section
-|
-|— Card (Section container)
-|   |— CardHeader (Section title and actions)
-|   |   |— Typography (Section heading)
-|   |   |— Button (View all events link)
 |   |
-|   |— Events DataTable System (TanStack Table Implementation)
-|   |   |— DataTable Toolbar Components
-|   |   |   |— Input (Global search with search icon)
-|   |   |   |— Popover (Status filter dropdown)
-|   |   |   |   |— PopoverTrigger (Filter button with badge count)
-|   |   |   |   |— PopoverContent (Filter options)
-|   |   |   |   |— Checkbox (Multi-select status filters)
-|   |   |   |   |— Label (Filter labels with counts)
-|   |   |   |
-|   |   |   |— DropdownMenu (Column visibility toggle)
-|   |   |   |   |— DropdownMenuTrigger (Columns button)
-|   |   |   |   |— DropdownMenuContent (Column options)
-|   |   |   |   |— DropdownMenuCheckboxItem (Show/hide columns)
-|   |   |   |
-|   |   |   |— AlertDialog (Bulk delete confirmation)
-|   |   |   |   |— AlertDialogTrigger (Delete selected button)
-|   |   |   |   |— AlertDialogContent (Confirmation dialog)
-|   |   |   |   |— AlertDialogAction (Confirm delete)
-|   |   |   |
-|   |   |   |— Button (Add event, Export data, Refresh)
-|   |   |   |— Badge (Selection count indicator)
-|   |   |
-|   |   |— Enhanced DataTable Components
-|   |   |   |— Table (Core table with fixed layout)
-|   |   |   |— TableHeader (Sortable column headers)
-|   |   |   |   |— TableHead (Column header cells with sorting)
-|   |   |   |   |— Button (Sort toggle with chevron icons)
-|   |   |   |   |— Checkbox (Select all checkbox)
-|   |   |   |
-|   |   |   |— TableBody (Data rows container)
-|   |   |   |— TableRow (Individual event rows with selection state)
-|   |   |   |— TableCell (Data cells with proper alignment)
-|   |   |   |   |— Checkbox (Row selection)
-|   |   |   |   |— Avatar (Event poster thumbnails)
-|   |   |   |   |— Link (Event name as clickable link)
-|   |   |   |   |— Typography (Formatted date, location, revenue)
-|   |   |   |   |— Badge (Status badges with color variants)
-|   |   |   |   |— Progress (Ticket sales progress bar)
-|   |   |   |   |— DropdownMenu (Row action menu)
-|   |   |   |       |— DropdownMenuTrigger (Three dots menu button)
-|   |   |   |       |— DropdownMenuContent (Action options)
-|   |   |   |       |— DropdownMenuItem (Individual actions)
-|   |   |   |       |— DropdownMenuSeparator (Visual separation)
-|   |   |   |
-|   |   |   |— Empty State Components
-|   |   |   |   |— TableRow (Empty state row)
-|   |   |   |   |— TableCell (Centered empty message)
-|   |   |   |   |— Typography ("No results" message)
-|   |   |   |   |— Button (Create first event CTA)
-|   |   |   |
-|   |   |   |— Loading State Components
-|   |   |       |— Skeleton (Loading placeholder rows)
-|   |   |       |— TableRow (Skeleton row containers)
-|   |   |       |— TableCell (Skeleton cell content)
-|   |   |
-|   |   |— Advanced DataTable Pagination  
-|   |       |— Pagination Container
-|   |       |   |— Label (Rows per page label)
-|   |       |   |— Select (Page size selector)
-|   |       |   |   |— SelectTrigger (Dropdown trigger)
-|   |       |   |   |— SelectContent (Size options)
-|   |       |   |   |— SelectItem (10, 25, 50, 100 options)
-|   |       |   |
-|   |       |   |— Typography (Page info display)
-|   |       |   |— Button (First/Previous/Next/Last navigation)
-|   |       |   |— ChevronFirstIcon, ChevronLeftIcon, ChevronRightIcon, ChevronLastIcon
-|   |       |
-|   |       |— Selection Status Display
-|   |           |— Typography (Selected rows count)
-|   |           |— Typography (Total rows count)
-|   |           |— Button (Clear selection)
-
-DataTable Dependencies & Requirements
-|
-|— Required Packages
-|   |— @tanstack/react-table (Core table functionality)
-|   |— Existing Shadcn/UI components
-|   |
-|— Enhanced Features Implementation
-|   |— Multi-column filtering with custom filter functions
-|   |— Global search across multiple columns
-|   |— Column sorting with multiple sort states
-|   |— Row selection with bulk actions
-|   |— Column visibility controls
-|   |— Pagination with customizable page sizes
-|   |— Loading and empty states
-|   |— Mobile-responsive table design
-|   |— Accessibility compliance (ARIA labels, keyboard navigation)
-|   |— Indonesian localization (IDR formatting, date formats)
-
-Recent Activity Section
-|
-|— Card (Activity feed container)
-|— ScrollArea (Scrollable activity list)
-|— Avatar (Activity icons)
-|— Typography (Activity descriptions)
-|— Link (View all activities)
-```
-
-## 5. Modal Structures
-
-```
-Create New Event Modal
-|
-|— Dialog (Modal container)
-|   |— DialogContent (Modal body)
-|   |— DialogHeader (Modal title and close)
-|   |   |— DialogTitle (Modal heading)
-|   |   |— DialogDescription (Modal subtitle)
-|   |   |— Button (Close button)
-|   |   |— Progress (Step indicator)
-|   |
-|   |— Modal Body
-|   |   |— Form (Form wrapper)
-|   |   |— FormField (Individual form fields)
+|   |— Form (Server Action integration)
+|   |   |— FormField (Email and password)
 |   |   |— FormItem (Field containers)
-|   |   |— FormLabel (Field labels)
+|   |   |— FormLabel (Enhanced with required indicators)
 |   |   |— FormControl (Input wrappers)
-|   |   |— FormMessage (Validation messages)
-|   |   |
-|   |   |— Step 1: Event Details Form
-|   |   |   |— Input (Event name field)
-|   |   |   |— Textarea (Event description)
-|   |   |   |— Calendar (Date picker)
-|   |   |   |— TimePicker (Time selection)
-|   |   |   |— Input (Location field with autocomplete)
-|   |   |   |— FileInput (Poster upload)
-|   |   |   |— Card (Upload area container)
-|   |   |   |— Typography (File requirements)
-|   |   |
-|   |   |— Step 2: Ticket Configuration
-|   |   |   |— Card (Ticket type cards)
-|   |   |   |— Input (Ticket name, price, quantity)
-|   |   |   |— Textarea (Ticket description)
-|   |   |   |— Button (Add/Remove ticket types)
-|   |   |   |— Separator (Visual separation)
-|   |   |   |— Typography (Pricing summary)
-|   |   |
-|   |   |— Step 3: Publication Settings
-|   |       |— Input (Custom URL field)
-|   |       |— RadioGroup (Visibility options)
-|   |       |— RadioGroupItem (Individual radio options)
-|   |       |— Calendar (Publication date picker)
-|   |       |— Checkbox (Terms agreement)
-|   |       |— Link (Privacy policy link)
+|   |   |— FormMessage (Server validation messages)
+|   |   |— Input (Email, password fields)
+|   |   |— Checkbox (Remember me)
+|   |   |— Button (Sign in - Server Action)
 |   |
-|   |— DialogFooter (Action buttons)
-|       |— Button (Back, Cancel, Next, Save Draft, Publish)
-
-Success State Modal
-|
-|— Dialog (Success modal)
-|— CheckCircle (Success icon - lucide)
-|— Typography (Success message)
-|— Input (Event URL display)
-|— Button (Copy link, share options)
-|— Separator (Visual breaks)
-```
-
-## 6. Additional Modal Structures
-
-```
-Delete Confirmation Modal
-|
-|— AlertDialog (Confirmation modal)
-|   |— AlertDialogContent (Modal content)
-|   |— AlertDialogHeader (Warning section)
-|   |   |— AlertTriangle (Warning icon - lucide)
-|   |   |— AlertDialogTitle (Confirmation title)
-|   |   |— AlertDialogDescription (Warning message)
+|   |— Social Authentication (Server Actions)
+|   |   |— Button (Google Sign-In with OAuth Server Action)
+|   |   |— Separator (Visual division)
 |   |
-|   |— Checkbox (Confirmation checkbox)
-|   |— AlertDialogFooter (Action buttons)
-|       |— AlertDialogCancel (Cancel button)
-|       |— AlertDialogAction (Delete button - destructive)
-
-QR Scanner Modal
+|   |— Navigation Links (Server Component)
+|   |   |— Typography (Role-based messaging)
+|   |   |— Link (Sign up options)
+|   |   |— Button (Register as Organizer CTA)
 |
-|— Dialog (Full screen modal)
-|   |— Card (Scanner interface)
-|   |   |— Camera View Container
-|   |   |— Button (Control buttons - flash, switch camera)
+|— Organization Registration (Server Component + Server Actions)
+|   |— Multi-step Form (Server Actions)
+|   |   |— Progress (Step indicator)
+|   |   |— Card (Step containers)
+|   |   |— FormField (Organization details)
+|   |   |— Input (Organization name, industry, size)
+|   |   |— Select (Business type dropdown)
+|   |   |— Textarea (Organization description)
+|   |   |— Button (Next/Previous/Submit - Server Actions)
 |   |
-|   |— Scan Result Display
-|   |   |— Success State (Green)
-|   |   |   |— Alert (Success message)
-|   |   |   |— CheckCircle (Success icon - lucide)
-|   |   |   |— Typography (Attendee information)
-|   |   |
-|   |   |— Already Checked State (Yellow)
-|   |   |   |— Alert (Warning message)
-|   |   |   |— AlertTriangle (Warning icon - lucide)
-|   |   |   |— Typography (Previous check-in time)
-|   |   |
-|   |   |— Invalid Ticket State (Red)
-|   |       |— Alert (Error message)
-|   |       |— XCircle (Error icon - lucide)
-|   |       |— Typography (Error reason)
+|   |— Onboarding Success (Server Component)
+|       |— Alert (Success message)
+|       |— Typography (Next steps guidance)
+|       |— Button (Continue to dashboard)
+```
+
+## 5. Enhanced Organizer Dashboard
+
+```
+Dashboard Layout (Server Components + Selective Client Components)
+|
+|— Dashboard Header (Server Component)
+|   |— Card (Welcome container)
+|   |— Typography (Personalized greeting - server-rendered)
+|   |— Badge (Time-based indicators)
+|   |— Button (Quick actions - Client Component for immediate feedback)
+|
+|— Enhanced Summary Cards (Server Components)
+|   |— Grid (Responsive cards layout)
+|   |— Card (Metric containers with real-time data)
+|   |   |— CardHeader (Metric titles)
+|   |   |— CardContent (Server-calculated statistics)
+|   |   |— Progress (Growth indicators)
+|   |   |— Badge (Status and trend indicators)
+|   |   |— ChartContainer (Revenue/sales charts - Server Component)
 |   |
-|   |— Control Buttons
-|       |— Button (Close scanner, Manual entry, Statistics)
-|       |— Separator (Visual breaks)
-
-Edit Event Modal
+|   |— Skeleton (Loading states for server data)
 |
-|— Dialog (Similar structure to Create Event Modal)
-|— Pre-populated form fields
-|— Additional Action Buttons
-    |— Button (Delete Event)
-    |— Button (Duplicate Event)
-    |— Button (View Public Page)
-```
-
-## 7. Form Components (General)
-
-```
-Form Elements Structure
-|
-|— Form (React Hook Form wrapper)
-|   |— FormField (Field wrapper)
-|   |— FormItem (Field container)
-|   |— FormLabel (Field labels)
-|   |— FormControl (Input control wrapper)
-|   |— FormDescription (Help text)
-|   |— FormMessage (Validation errors)
-|
-|— Input Components
-|   |— Input (Text inputs)
-|   |— Textarea (Multi-line text)
-|   |— Select (Dropdown selections)
-|   |— Checkbox (Checkboxes)
-|   |— RadioGroup (Radio button groups)
-|   |— Switch (Toggle switches)
-|   |— Slider (Range inputs)
-|   |— Calendar (Date selection)
-|   |— Button (Form actions)
-
-Validation & Feedback
-|
-|— Alert (Form-level messages)
-|— AlertDescription (Error details)
-|— Badge (Status indicators)
-|— Progress (Form completion)
-|— Skeleton (Loading states)
-```
-
-## 8. Data Display Components
-
-```
-Enhanced DataTable System (TanStack Table + Shadcn/UI)
-|
-|— DataTable Core Components
-|   |— useReactTable (TanStack Table hook for state management)
-|   |— Table (Shadcn base table component)
-|   |— TableHeader (Column headers with sorting capabilities)
-|   |— TableBody (Data rows container)
-|   |— TableRow (Individual rows with selection state)
-|   |— TableHead (Sortable column headers)
-|   |— TableCell (Data cells with proper content alignment)
-|
-|— DataTable Enhanced Features
-|   |— Column Sorting
-|   |   |— Button (Sort toggle with visual indicators)
-|   |   |— ChevronUpIcon, ChevronDownIcon (Sort direction icons)
-|   |   |— Multi-column sorting support
-|   |
-|   |— Column Filtering & Search
-|   |   |— Input (Global search with search icon)
+|— Advanced Events DataTable (TanStack Table + Server Components)
+|   |— DataTable Toolbar (Client Component for immediate interactions)
+|   |   |— Input (Global search with debounced Server Actions)
 |   |   |— Popover (Advanced filter dropdown)
-|   |   |— Checkbox (Multi-select filters)
-|   |   |— Custom filter functions for complex data
-|   |
-|   |— Column Visibility
-|   |   |— DropdownMenu (Column toggle menu)
-|   |   |— DropdownMenuCheckboxItem (Show/hide individual columns)
-|   |   |— Persistent column preferences
-|   |
-|   |— Row Selection
-|   |   |— Checkbox (Row and header selection checkboxes)
-|   |   |— Bulk action support
-|   |   |— Selection state management
-|   |
-|   |— Advanced Pagination
-|   |   |— Pagination (Enhanced pagination component)
-|   |   |— Select (Rows per page selector)
-|   |   |— Button (First, Previous, Next, Last navigation)
-|   |   |— Typography (Page information display)
-|   |   |— Custom page size options (5, 10, 25, 50, 100)
+|   |   |   |— PopoverTrigger (Filter button with active count)
+|   |   |   |— PopoverContent (Filter interface)
+|   |   |   |— Checkbox (Multi-select filters)
+|   |   |   |— DatePickerRange (Date range filtering)
+|   |   |   |— Slider (Revenue range filtering)
+|   |   |   |— Button (Clear filters, Apply filters)
+|   |   |
+|   |   |— DropdownMenu (Column visibility)
+|   |   |   |— DropdownMenuTrigger (Columns button)
+|   |   |   |— DropdownMenuContent (Column options)
+|   |   |   |— DropdownMenuCheckboxItem (Show/hide columns)
+|   |   |
+|   |   |— Bulk Actions (Client Component)
+|   |   |   |— AlertDialog (Bulk delete confirmation)
+|   |   |   |— Button (Bulk operations)
+|   |   |   |— Badge (Selection count)
+|   |   |
+|   |   |— Export Options (Server Actions)
+|   |       |— DropdownMenu (Export format selection)
+|   |       |— Button (Export triggers)
+|   |       |— Progress (Export progress)
 |
-|— DataTable Action Components  
-|   |— Row Actions
-|   |   |— DropdownMenu (Three dots menu for each row)
-|   |   |— DropdownMenuTrigger (EllipsisIcon button)
-|   |   |— DropdownMenuContent (Action options)
-|   |   |— DropdownMenuItem (Edit, View, Delete, etc.)
-|   |   |— DropdownMenuSeparator (Visual grouping)
-|   |
-|   |— Bulk Actions
-|   |   |— AlertDialog (Bulk delete confirmation)
-|   |   |— Button (Bulk operation triggers)
-|   |   |— Badge (Selection count indicator)
-|   |
-|   |— Data Export
-|   |   |— Button (Export selected/all data)
-|   |   |— Select (Export format options)
-|   |   |— Progress (Export progress indicator)
+|   |— Enhanced DataTable Core (Server Component base)
+|   |   |— Table (Core table with server-side data)
+|   |   |— TableHeader (Server-rendered headers with sort indicators)
+|   |   |   |— TableHead (Sortable column headers)
+|   |   |   |— Button (Sort controls with Server Actions)
+|   |   |   |— ChevronUp/Down (Sort direction indicators)
+|   |   |   |— Checkbox (Select all - Client Component)
+|   |   |
+|   |   |— TableBody (Server-rendered data rows)
+|   |   |— TableRow (Event rows with server data)
+|   |   |— TableCell (Data cells with proper formatting)
+|   |   |   |— Checkbox (Row selection - Client Component)
+|   |   |   |— Avatar (Event poster thumbnails)
+|   |   |   |— Link (Event name - server-rendered)
+|   |   |   |— Typography (Formatted dates, IDR amounts)
+|   |   |   |— Badge (Status with Indonesian localization)
+|   |   |   |— Progress (Ticket sales progress)
+|   |   |   |— DropdownMenu (Row actions - Client Component)
+|   |   |       |— DropdownMenuTrigger (Three dots menu)
+|   |   |       |— DropdownMenuContent (Action options)
+|   |   |       |— DropdownMenuItem (Server Action triggers)
+|   |   |       |— DropdownMenuSeparator (Visual grouping)
+|   |   |
+|   |   |— Enhanced Loading States
+|   |   |   |— TableRow (Skeleton rows)
+|   |   |   |— Skeleton (Cell placeholders)
+|   |   |   |— ShimmerEffect (Loading animation)
+|   |   |
+|   |   |— Advanced Empty States
+|   |       |— TableRow (Empty row)
+|   |       |— TableCell (Centered empty content)
+|   |       |— EmptyStateIllustration (Custom graphic)
+|   |       |— Typography (Contextual messaging)
+|   |       |— Button (Create first event CTA)
 |
-|— DataTable State Management
-|   |— Sorting State (SortingState from TanStack Table)
-|   |— Filter State (ColumnFiltersState)
-|   |— Visibility State (VisibilityState) 
-|   |— Selection State (RowSelectionState)
-|   |— Pagination State (PaginationState)
+|   |— Enhanced Pagination (Server Component)
+|       |— PaginationContainer (Server-side pagination)
+|       |— Select (Page size with Server Action)
+|       |— Typography (Indonesian-localized page info)
+|       |— Button (Navigation with Server Actions)
+|       |— PaginationEllipsis (Large dataset handling)
 |
-|— DataTable Responsive Design
-|   |— Mobile Table Adaptation
-|   |   |— Horizontal scroll for wide tables
-|   |   |— Essential columns prioritized
-|   |   |— Action menu accessible on mobile
-|   |
-|   |— Loading & Empty States
-|   |   |— Skeleton (Loading state placeholders)
-|   |   |— EmptyState (No data illustration)
-|   |   |— Typography (Helper messages)
-|   |   |— Button (Call-to-action for empty states)
-
-Basic Table Components (for simple displays)
-|
-|— Table (Simple data display without advanced features)
-|   |— TableHeader (Basic column headers)
-|   |— TableBody (Simple data rows)
-|   |— TableRow (Basic table rows)
-|   |— TableHead (Simple column headers)
-|   |— TableCell (Basic data cells)
-|   |— Simple pagination with Pagination component
-
-Cards & Content Structure
-|
-|— Card (Content containers)
-|   |— CardHeader (Card titles)
-|   |— CardTitle (Main headings)
-|   |— CardDescription (Subtitles)
-|   |— CardContent (Main content)
-|   |— CardFooter (Action areas)
-
-Media & Assets Structure
-|
-|— Avatar (Profile images, thumbnails)
-|   |— AvatarImage (Image component)
-|   |— AvatarFallback (Placeholder content)
-|
-|— AspectRatio (Image aspect ratios)
+|— Real-time Activity Feed (Server Component + WebSocket)
+|   |— Card (Activity container)
+|   |— ScrollArea (Scrollable feed)
+|   |— ActivityItem (Individual activities)
+|   |— Avatar (Activity icons)
+|   |— Typography (Activity descriptions)
+|   |— Badge (Activity types and timestamps)
+|   |— Link (View all activities)
 ```
 
-## 9. Feedback & Status Components
+## 6. Enhanced Modal Structures
 
 ```
-Loading States
+Create Event Modal (Client Component + Server Actions)
 |
-|— Skeleton (Content placeholders)
-|— Spinner (Loading indicators)
-|— Progress (Progress bars)
+|— Dialog (Modal container - Client Component for UX)
+|   |— DialogContent (Modal body with proper sizing)
+|   |— DialogHeader (Modal title and progress)
+|   |— DialogDescription (Context and guidance)
+|   |
+|   |— Multi-step Form System (Client Component + Server Actions)
+|   |   |— Progress (Visual step indicator)
+|   |   |— StepIndicator (Current step highlighting)
+|   |
+|   |— Step 1: Event Details (Server Action: createEventAction)
+|   |   |— Form (React Hook Form + Server Action)
+|   |   |— FormField (Event details)
+|   |   |— Input (Event name with validation)
+|   |   |— Textarea (Event description with rich text)
+|   |   |— Calendar (Date picker with Indonesian locale)
+|   |   |— TimePicker (Time selection)
+|   |   |— Input (Location with autocomplete)
+|   |   |— FileUploader (Poster upload with preview)
+|   |   |— Card (Upload area with drag & drop)
+|   |
+|   |— Step 2: Ticket Configuration (Server Action: updateEventAction)
+|   |   |— Dynamic Ticket Types (Client Component)
+|   |   |— Card (Ticket type containers)
+|   |   |— Input (Ticket name, price in IDR, quantity)
+|   |   |— Textarea (Ticket description)
+|   |   |— Button (Add/Remove ticket types)
+|   |   |— Separator (Visual ticket separation)
+|   |   |— Alert (Pricing summary with calculations)
+|   |
+|   |— Step 3: Publication (Server Action: publishEventAction)
+|   |   |— Input (Custom URL with validation)
+|   |   |— RadioGroup (Publication status)
+|   |   |— Calendar (Publication date)
+|   |   |— Checkbox (Terms acceptance)
+|   |   |— Alert (Publication guidelines)
+|   |
+|   |— Success State (Server Component)
+|   |   |— CheckCircle (Success icon)
+|   |   |— Typography (Success messaging)
+|   |   |— Input (Generated URL with copy functionality)
+|   |   |— ShareButtons (Social sharing)
+|   |   |— Button (Next steps actions)
+|
+|— Enhanced Error Handling
+|   |— Alert (Validation errors)
+|   |— FormMessage (Field-specific errors)
+|   |— Toast (Success/error notifications)
+```
 
-Messages & Alerts
-|
-|— Alert (Status messages)
-|   |— AlertDescription (Message content)
-|
-|— Toast (Notification messages)
-|   |— ToastAction (Toast actions)
-|
-|— Badge (Status indicators)
-|— Label (Content labels)
+## 7. QR Scanner Implementation
 
-Icons from lucide-react
+```
+QR Scanner Interface (Client Component + Server Actions)
 |
-|— Success & Status Icons
-|   |— CheckCircle (Success states)
-|   |— AlertTriangle (Warnings)
-|   |— XCircle (Errors)
+|— Dialog (Full-screen modal)
+|   |— DialogContent (Scanner interface)
+|   |
+|— Camera Interface (Client Component)
+|   |— CameraView (Video stream)
+|   |— ScannerOverlay (QR targeting)
+|   |— Button (Camera controls - flash, switch)
+|   |— Alert (Scanner status and instructions)
 |
-|— Action Icons
-|   |— Eye (View actions)
-|   |— Edit (Edit actions)
-|   |— Trash (Delete actions)
+|— Scan Results (Server Component + Server Actions)
+|   |— Success State (Server Action: validateTicketAction)
+|   |   |— Alert (Success styling with green theme)
+|   |   |— CheckCircle (Success icon)
+|   |   |— Typography (Indonesian success message)
+|   |   |— Card (Attendee information display)
+|   |   |— Badge (Ticket type and timestamp)
+|   |
+|   |— Already Checked State (Server validation)
+|   |   |— Alert (Warning styling with yellow theme)
+|   |   |— AlertTriangle (Warning icon)
+|   |   |— Typography (Previous check-in info)
+|   |   |— Card (Check-in history)
+|   |
+|   |— Invalid Ticket State (Server validation)
+|   |   |— Alert (Error styling with red theme)
+|   |   |— XCircle (Error icon)
+|   |   |— Typography (Error explanation)
+|   |   |— Card (Troubleshooting suggestions)
+|
+|— Scanner Controls (Client Component)
+|   |— Button (Close scanner)
+|   |— Button (Manual entry mode)
+|   |— Button (Scanner statistics)
+|   |— Switch (Audio feedback toggle)
+|
+|— Manual Entry Fallback (Server Action)
+|   |— Input (Ticket code entry)
+|   |— Button (Validate manually)
+|   |— FormMessage (Validation feedback)
+```
+
+## 8. Enhanced Form Components
+
+```
+Server-First Form System
+|
+|— Form (React Hook Form + Server Actions)
+|   |— FormField (Server-validated fields)
+|   |— FormItem (Field containers with proper spacing)
+|   |— FormLabel (Enhanced with required indicators)
+|   |— FormControl (Input wrappers with validation)
+|   |— FormDescription (Helpful field guidance)
+|   |— FormMessage (Server validation messages)
+|
+|— Indonesian Market Specific Components
+|   |— CurrencyInput (IDR formatting)
+|   |— PhoneInput (Indonesian phone number format)
+|   |— LocationInput (Indonesian cities autocomplete)
+|   |— DatePicker (Indonesian calendar locale)
+|   |— TimePicker (Indonesian time format)
+|
+|— Enhanced Input Components
+|   |— Input (Enhanced with validation states)
+|   |— Textarea (Rich text with formatting)
+|   |— Select (Server-populated options)
+|   |— Checkbox (Enhanced styling and states)
+|   |— RadioGroup (Improved accessibility)
+|   |— Switch (Professional toggle design)
+|   |— Slider (Range inputs with IDR formatting)
+|
+|— File Upload Components
+|   |— FileUploader (Drag & drop with preview)
+|   |— ImageUpload (Event poster specific)
+|   |— MultiFileUpload (Multiple attachments)
+|   |— ProgressBar (Upload progress)
+|   |— Alert (Upload status and errors)
+```
+
+## 9. Performance & Optimization Components
+
+```
+Server-First Performance Enhancements
+|
+|— Loading States (Server Component optimized)
+|   |— Skeleton (Content placeholders)
+|   |— TableSkeleton (DataTable loading states)
+|   |— CardSkeleton (Dashboard card loading)
+|   |— FormSkeleton (Form loading states)
+|   |— ShimmerEffect (Smooth loading animations)
+|
+|— Error Boundaries (Server Component)
+|   |— ErrorBoundary (Global error handling)
+|   |— ErrorFallback (User-friendly error display)
+|   |— Alert (Error messaging)
+|   |— Button (Error recovery actions)
+|
+|— Optimization Components
+|   |— LazyLoad (Component lazy loading)
+|   |— VirtualizedList (Large dataset handling)
+|   |— InfiniteScroll (Pagination alternative)
+|   |— Suspense (Server Component streaming)
+|
+|— Indonesian Market Optimizations
+|   |— CurrencyFormatter (IDR display)
+|   |— DateFormatter (Indonesian locale)
+|   |— PhoneFormatter (Indonesian numbers)
+|   |— AddressFormatter (Indonesian addresses)
+```
+
+## 10. Implementation Priority & Dependencies
+
+### Phase 1: Core Server Components (Week 1)
+1. **Enhanced Navigation System** (Server Components)
+2. **Authentication Pages** (Server Actions)
+3. **Basic Dashboard Structure** (Server Components)
+4. **Event Creation Modal** (Client + Server Actions)
+
+### Phase 2: Public Features (Week 2)
+1. **Event Discovery Page** (/events - Server Components)
+2. **Enhanced Event Detail Pages** (Server Components + SSG)
+3. **Purchase Modal System** (Client + Server Actions)
+4. **Payment Integration** (Server Actions)
+
+### Phase 3: Advanced Features (Week 3-4)
+1. **Advanced DataTable System** (TanStack + Server Components)
+2. **QR Scanner Interface** (Client + Server Actions)
+3. **Analytics Dashboard** (Server Components)
+4. **Performance Optimizations**
+
+### Required Dependencies
+```bash
+# Core dependencies (already installed)
+@tanstack/react-table    # Advanced DataTable functionality
+@radix-ui/react-*       # Shadcn/UI base components
+
+# Additional Server-First dependencies
+next                    # Version 15 with App Router
+react-hook-form        # Form handling with Server Actions
+zod                    # Schema validation
+lucide-react          # Icon system
+```
+
+### Indonesian Market Enhancements
+- **Currency Formatting**: IDR-specific number formatting
+- **Date Localization**: Indonesian calendar and time formats
+- **Payment Methods**: QRIS, GoPay, OVO, DANA integration components
+- **Mobile Optimization**: Touch-friendly Indonesian mobile patterns
+- **Accessibility**: Indonesian screen reader and assistive technology support
+
+This enhanced implementation plan provides a comprehensive component mapping strategy that leverages the server-first architecture while maintaining the context-aware navigation and enhanced user experience outlined in the updated UX structure plan.
 |   |— Download (Download actions)
 |   |— Share (Share actions)
 |   |— Plus (Add actions)
